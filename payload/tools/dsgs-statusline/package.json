@@ -1,0 +1,19 @@
+{
+  "name": "dsgs-statusline",
+  "version": "0.1.0",
+  "description": "DSGS status line as a DSH client UI surface — a session projection plus a bar docked above the composer. DSGS-only addition; both halves tested, GUI mounting not yet verified.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": ["index.js", "client.js", "cordis.patch.yml", "README.md", "test/client.test.mjs"],
+  "keywords": ["dsh", "deepseek-harness", "plugin", "statusline", "game-studio", "DSGS"],
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+}
+
+

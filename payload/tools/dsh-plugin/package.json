@@ -1,0 +1,35 @@
+{
+  "name": "dsgs-hooks",
+  "version": "0.1.0",
+  "description": "Mount DSGS hook configs on DSH with direct hook execution — immune to the sandboxed-shell silent no-op, and independent of the harness launch directory.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "hooks",
+    "game-studio",
+    "DSGS"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
+
+

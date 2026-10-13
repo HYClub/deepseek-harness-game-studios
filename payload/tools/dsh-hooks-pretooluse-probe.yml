@@ -1,0 +1,12 @@
+# One-off overlay for the PreToolUse-context probe: mounts the project's own plugin (`dsgs-hooks`)
+# against a config whose PreToolUse hook emits a fixed advisory, so the harness — not a fake — is
+# what decides whether `additionalContexts` on a pre-execute result reaches the model.
+- insert:
+    - id: dsgs-hooks-probe
+      name: "file:///D:/Work/dsh/tools/dsh-plugin/index.js"
+      config:
+        configPath: "D:/Work/dsh/.verify-logs/pretooluse-probe-hooks.json"
+        projectDir: "D:/Work/dsh"
+        auditFile: "D:/Work/dsh/.verify-logs/hook-invocations.log"
+        defaultTimeoutMs: 15000
+

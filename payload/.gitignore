@@ -1,0 +1,188 @@
+# === IDE and Editor ===
+.vs/
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# === Claude Code Local ===
+.claude/settings.local.json
+CLAUDE.local.md
+project.local.yaml
+production/session-logs/
+# Ephemeral per-session checkpoint. directory-structure.md documents this as
+# gitignored; the rule was missing, so active.md would have been committed.
+production/session-state/
+.scratch/
+# Per-agent working memory written at runtime — not release material
+.claude/agent-memory/
+
+
+# === Local sandboxes and scratch work ===
+examples/
+sandbox/
+sandboxes/
+tests/sandboxes/
+qa-sandbox/
+
+# === Runtime Artifacts (auto-generated, start empty on fresh clone) ===
+# Created on first use by /consistency-check and /architecture-review
+docs/consistency-failures.md
+
+# === Build Output ===
+build/
+builds/
+bin/
+# ...but not an addon's own scripts: gdUnit4's test runner lives in
+# addons/gdUnit4/bin/, and without it neither /smoke-check nor CI can run tests.
+!addons/gdUnit4/bin/
+obj/
+out/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+
+# === Engine: Godot ===
+# Two subtleties, both of which produced a silently-wrong rule before this:
+#  1. A pattern with an internal `/` is anchored to THIS directory, so `.godot/*`
+#     would only match a top-level `.godot` and miss `examples/<game>/.godot`.
+#     `**/` makes it match at any depth.
+#  2. Git cannot re-include a file whose PARENT DIRECTORY is excluded, so
+#     `**/.godot/` plus a `!` negation is inert. Exclude the CONTENTS instead.
+**/.godot/*
+# ...except the script class registry. `class_name` declarations resolve from this
+# one file, so on a FRESH CLONE every script referencing a class_name fails to
+# parse — while `godot --headless --path . --quit` still exits 0, so no CI check
+# catches it. Fresh clones hit this trap reliably.
+# Keep this un-ignore, or run `godot --headless --import` once after cloning.
+!**/.godot/global_script_class_cache.cfg
+*.translation
+export_presets.cfg
+# Uncomment if using Godot:
+# *.import
+
+# === Engine: Unity ===
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+crashlytics-buildid.txt
+sysinfo.txt
+# Uncomment if using Unity:
+# [Aa]ssets/[Aa]sset[Ss]tore[Tt]ools/
+
+# === Engine: Unreal ===
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.VC.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+# Uncomment if using Unreal:
+# *.uasset
+# *.umap
+
+# === Compiled Shaders ===
+*.spv
+*.cso
+*.dxbc
+
+# === Temporary and Cache ===
+*.tmp
+*.temp
+*.cache
+*.log
+__pycache__/
+*.pyc
+node_modules/
+.npm/
+
+# === Archives ===
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# === Secrets and Environment ===
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# === Large Binary Assets (use Git LFS instead) ===
+# Uncomment and configure with Git LFS for your project:
+# *.png
+# *.jpg
+# *.jpeg
+# *.wav
+# *.mp3
+# *.ogg
+# *.fbx
+# *.blend
+# *.psd
+# *.tga
+# *.exr
+# *.hdr
+
+# === OS Generated ===
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# === Test Output ===
+# gdUnit4 writes reports/ and Unity's -testResults writes test-results/, both at
+# the project root. Anchored so a reports/ folder elsewhere stays tracked.
+/reports/
+/test-results/
+
+# 上游参考克隆（含自己的 .git），不作为本仓库内容
+_external/
+
+# === DSH 移植的本地工作物 ===
+# profile 配置备份、最小闭环 smoke 工程副本、子代理的临时探针文件
+.local-backups/
+.smoke/
+.probe-*
+.tmp-*
+
+
+# 验证日志（本地证据，不进仓库）
+.verify-logs/
+

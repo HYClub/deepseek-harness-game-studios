@@ -1,0 +1,44 @@
+{
+  "$comment": [
+    "DSH-only hooks, merged into the generated .dsh/hooks.json by tools/build-dsh.mjs.",
+    "These have no upstream original: they replace an upstream mechanism that DSH",
+    "does not have, or adapt a DSGS instruction to DSH's tool surface.",
+    "Commands are project-relative, like the ported DSGS hooks."
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "write|edit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \".dsh/hooks/rules-context.mjs\"",
+          "timeout": 10
+        }
+      ]
+    },
+    {
+      "$comment": [
+        "Advisory reroute. Upstream raises these two as PreToolUse advisories, and DSH never",
+        "surfaces a pre-execute systemMessage (the bridge maps only deny/ask there), so the",
+        "model never saw them. The same scripts are registered a second time here, where",
+        "additionalContext IS delivered — a commit or push that just happened is still the",
+        "right moment to hear about a TODO, a hardcoded value or a protected branch.",
+        "The PreToolUse registrations stay: that is where they can still BLOCK."
+      ],
+      "matcher": "pwsh|bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \".dsh/hooks/validate-commit.mjs\"",
+          "timeout": 15
+        },
+        {
+          "type": "command",
+          "command": "node \".dsh/hooks/validate-push.mjs\"",
+          "timeout": 10
+        }
+      ]
+    }
+  ]
+}
+

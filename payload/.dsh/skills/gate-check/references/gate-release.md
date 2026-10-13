@@ -1,0 +1,56 @@
+> **DSH 运行注意（由 `dsh-src/skill-notes/gate-check.md` 注入）**
+>
+> - **上游在 `minimal` 档自相矛盾，本移植没有改动上游内容**：`help` 明确写"`minimal` 路径没有阶段门禁、
+>   永不提示 `/gate-check`"，而本技能的 `references/gate-systems-design.md` 又为 `minimal` 定义了一套缩减门禁
+>   （"有内容的 brief = PASS"）。两者不可能同时为真。
+> - **DSH 侧的处理原则**（避免在矛盾里"选边"造成静默放行）：
+>   1. 若证据无法验证（例如 `qa.level: minimal` + `review_mode: solo` 下只剩"brief 非空"这一条），
+>      **输出 CONCERNS / NOT ASSESSED，不要输出 PASS**；本技能 §4 的"绝不假设 PASS"优先于任何缩减行。
+>   2. **不要在被判 PASS 时顺手写 `project.stage`**：`help` 的下一步映射不认那个阶段，会立刻自相矛盾。
+>      先把这个矛盾报告给用户，由用户决定以哪一侧为准。
+>   3. 报告里点明"本次门禁在 `minimal` 档下实际只校验了哪些东西"，别让读者以为过了全套检查。
+> - `performance.enforce: block` 与 `testing.strict.*: true` 分支在本次移植验收里**未实测**；
+>   用到这两条时请把结论至少降一档（NOT ASSESSED）并说明。
+
+> Gate definition, loaded by `/gate-check` for the TARGET PHASE ONLY.
+> Never load the other five — one gate applies per invocation.
+
+
+# Gate: Polish → Release
+
+
+**Required Artifacts:**
+- [ ] All features from milestone plan are implemented
+- [ ] Content is complete (all levels, assets, dialogue referenced in design docs exist)
+- [ ] Localization strings are externalized (no hardcoded player-facing text in the code root)
+- [ ] QA test plan exists (`/qa-plan` output in `production/qa/`)
+- [ ] QA sign-off report exists (`/team-qa` output — APPROVED or APPROVED WITH CONDITIONS)
+- [ ] All Must Have story test evidence is present (Logic/Integration: test files pass; UI: retained screenshots of each screen touched; Visual/Feel: retained screenshots plus lead sign-off — both in `production/qa/evidence/`, and no `qa.level` waives either)
+- [ ] Smoke check passes cleanly (PASS verdict) on the release candidate build
+- [ ] No test regressions from previous sprint (test suite passes fully)
+- [ ] Balance data has been reviewed (`/balance-check` run)
+- [ ] Release checklist completed (`/release-checklist` run)
+- [ ] Store metadata prepared (if applicable)
+- [ ] Changelog / patch notes drafted
+
+**Quality Checks:**
+- [ ] Full QA pass signed off by `qa-lead`
+- [ ] All tests passing
+- [ ] Performance targets met across all target platforms
+- [ ] No known open S1 Critical, S2 High or S3 Medium bugs
+- [ ] No open CRITICAL or HIGH findings in the newest `production/security/security-audit-*.md` whose **Scope** is `full`, as updated by any later `quick` report (the re-run `/security-audit` prescribes after remediation). A later `network`, `save` or `input` report adds its open findings but never clears a category it did not scan — any open CRITICAL or HIGH finding means not ready (a blocker). No `full`-scope audit report means the check could not run: this item is NOT ASSESSED, never passed. A report whose release recommendation is itself NOT ASSESSED makes this item NOT ASSESSED too
+- [ ] Accessibility basics covered (remapping, text scaling if applicable)
+- [ ] Localization verified for all target languages — every translated locale being shipped has a `/localize qa` verdict of PASS or PASS WITH CONDITIONS (`production/localization/loc-qa-[locale]-[date].md`). A FAIL blocks that locale; the others may still ship. A locale with no QA report, or whose QA reported NOT ASSESSED (nobody has played it), has not been verified: this item is NOT ASSESSED, never passed. The source locale (`en`, per `/localize`) is not a target language and needs no `/localize qa` report; a game that ships only its source locale marks this item N/A and says so
+- [ ] Legal requirements met (EULA, privacy policy, age ratings if applicable)
+- [ ] Build compiles and packages cleanly
+
+## Workflow tier reductions
+
+The checklist above is the **`full` baseline**. At lower tiers apply the
+reduction for the resolved tier; items not named keep their status above.
+Reductions only ever *relax* a requirement — `workflow_overrides` is the
+only thing that adds one.
+
+- **`full`** — all features + content complete + localization + QA sign-off + smoke (PASS) + no open S1–S3 bugs all required
+- **`standard`** — content-complete audit + QA sign-off + localization → recommended; **all features + smoke + no open S1 Critical bugs** required; open S2 High and S3 Medium bugs → recommended
+- **`minimal`** — only **smoke + no open S1 Critical bugs** required; everything else **drops**

@@ -1,0 +1,310 @@
+---
+name: code-review
+description: "Architectural code review — coding standards, SOLID, testability, performance concerns."
+argument-hint: "[path-to-file-or-directory]"
+user-invocable: true
+allowed-tools: read, glob, grep, pwsh(git log *), subagent, ask_user_question, pwsh(node tools/yaml-helper.mjs resolve_config *)
+model: sonnet
+---
+<!-- DSGS-GENERATED:BEGIN — do not edit by hand -->
+> **生成物，勿手改**：改动会在下次生成时被覆盖。
+>
+> - 重新生成：`node tools/build-dsh.mjs`（内容源与 `dsh-src/` → `.dsh/`）。
+> - 工具名是 DSH 的：`pwsh` / `read` / `write` / `edit` / `grep` / `glob` / `subagent` / `ask_user_question` / `todo_write` / `web_search`。
+> - 委派子代理：读角色卡 `.dsh/agents/<name>.md`，把卡片正文连同任务作为 `subagent`（一次性/可续）或 `workflow`（批量编排）的 prompt。约定见 `.dsh/agents/README.md`。
+> - 本技能的基础目录见会话注入的 `Base directory for this skill`；相对路径都相对它解析。
+> - 正文里的「前置命令」块需要你亲自运行（原文的预执行行在 DSH 不生效）。
+> - frontmatter 里的 `argument-hint`、`allowed-tools`、`model` 是上游字段，DSH 原样保留但不读取：工具可用性由会话权限决定，技能不能固定模型，子代理的模型在 `subagent`/`workflow` 调用处指定。
+<!-- DSGS-GENERATED:END -->
+
+> **DSH 运行注意（由 `dsh-src/skill-notes/code-review.md` 注入）**
+>
+> - **规则文件要主动读，别等注入。** `rules-context.mjs` 钩子是在**写入/编辑之后**才注入匹配规则的；
+>   本技能主要是"读代码 + 出评审"，不会触发写入，因此**Phase 1 必须自己读**
+>   `.dsh/rules/INDEX.md` 与匹配目标路径的 `.dsh/rules/*.md`（例如 `src/gameplay/**` → `gameplay-code.md`、
+>   `src/ui/**` → `ui-code.md`）。实测：不读规则的评审会漏掉只有规则才能发现的项。
+> - **Phase 7 的专家评审只有主代理能发起。** DSH 默认 `subagent` 深度上限是 1：主代理委派专家正常，
+>   但**子代理再委派会被拒绝**（`subagent depth 2 exceeds maxDepth 1`）。如果你自己是子代理：
+>   把专家评审标成 **NOT ASSESSED**，并明确写出"因委派深度受限未运行"——**绝不要自己扮演专家下结论**
+>   （本技能本来也禁止模拟专家裁决）。
+> - 由此带来一个必须点明的事实：在配了引擎的项目上，若 Phase 7 无法运行，**本技能的最终裁决在结构上就是
+>   NOT ASSESSED**（你亲自跑完的 Phase 1–6 结论仍可写成"评审者本人的发现"）。把这句话写进报告，
+>   不要让读者以为过了全套。
+
+
+**前置命令（DSH 不会预执行技能里的 `!` 命令，需要你自己运行它）**
+
+```pwsh
+node tools/yaml-helper.mjs resolve_config --keys automation
+```
+
+把输出当作已解析的项目配置使用；没有输出块时按 `.dsh/docs/config-resolution.md` 的默认值处理。
+
+
+
+Every `ask_user_question` call follows `.dsh/docs/automation-modes.md`
+(collaborative asks always · guided major-only · autonomous logs and proceeds;
+`automation_always_ask` categories always prompt).
+
+## Insufficient input — check this before producing any report
+
+**If the inputs this skill needs do not exist, the answer is "could not run" —
+not a filled-in report.** Check first, and stop if the check fails.
+
+1. List the inputs this skill reads (data files, prior reports, profiler output,
+   test results, registries, source code).
+2. For each, record `FOUND` or `ABSENT` — not "assumed present".
+3. If any input required for a section is ABSENT, that section is
+   **`NOT ASSESSED — NO DATA`**. Do not estimate it, do not infer it from an
+   adjacent artifact, and do not leave a mandated cell to be filled by whoever
+   reads the template next.
+4. If **every** required input is ABSENT, stop and report
+   **`NOT ASSESSED — NO DATA`** as the whole verdict, naming what was missing and
+   which skill produces it.
+
+**A verdict of `NOT ASSESSED` is a success.** It is the correct, useful answer to
+"what does the data say?" when there is no data. The failure mode this prevents is
+specific and has been observed in practice: report templates whose verdict
+enum had no "could not run" state produced **false clean passes** — an asset audit
+returning COMPLIANT on a project with no assets and no standards, and a
+performance profile reporting ">99% headroom against a 16.67ms budget" with zero
+profiler data and no budget ever set.
+
+**Absence of evidence is never evidence of absence.** A scan that finds no
+matches because there are no files to scan has not verified anything. Say which of
+the two happened — a reader cannot tell from a green result.
+
+---
+
+## Phase 1: Load Target Files
+
+Read the target file(s) in full. Read AGENTS.md for project coding standards.
+
+---
+
+## Phase 2: Identify Engine Specialists
+
+Read the `specialists` block from `project.yaml`; if it is absent, fall back to the `## Engine Specialists` section of `.dsh/docs/technical-preferences.md`. Note:
+
+- The **Primary** specialist — `<engine>-specialist` derived from `engine.name` (Godot→`godot-specialist`, Unity→`unity-specialist`, Unreal→`unreal-specialist`); used for architecture and broad engine concerns
+- The **Language/Code Specialist** — `specialists.code` — used when reviewing the project's primary language files
+- The **Shader Specialist** — `specialists.shader` — used when reviewing shader files
+- The **UI Specialist** — `specialists.ui` — used when reviewing UI code
+
+**A value of `null` means UNSET — treat that key as absent and skip its
+specialist. Never spawn it as an agent name.** The v1.0 migration writes `null`
+for any specialist the legacy file did not name, and it writes the whole block
+whenever *one* member is set — so a project that configured only its code
+specialist carries `shader: null` and `ui: null`. The config reader returns the
+four-character string `"null"` for these, which is not empty and therefore reads
+as configured. `null`, empty, and missing are the same state here.
+
+If no engine is configured (no `engine.name` in `project.yaml`, and `technical-preferences.md` reads `[TO BE CONFIGURED]` or is missing), skip engine specialist steps. **Record ``Engine validation: NOT ASSESSED — no engine configured (`engine.name` unset in `project.yaml`)`` in this run's output.** A skipped check that says nothing is indistinguishable from a check that passed; the reader cannot tell engine guidance was never sought.
+
+---
+
+## Phase 3: ADR Compliance Check
+
+**Argument:** `/code-review [file(s)]` may optionally include a story file path as the last argument (e.g., `/code-review Assets/Scripts/Combat/Attack.cs production/epics/combat/story-001.md`). If a story path is provided, read it to extract the governing ADR reference.
+
+Search for ADR references in, in priority order:
+1. The story file (if provided as argument)
+2. Header comments at the top of the implementation files
+3. Commit messages referencing these files (`git log --oneline -- [file]`)
+
+Look for patterns like `ADR-NNNN` or `docs/architecture/adr-` (either case).
+
+If no ADR references found, note: "No ADR references found — ADR compliance check skipped. For full ADR compliance review, provide the story path: `/code-review [files] [story-path]`."
+
+For each referenced ADR, load **only the sections this check needs — never an unbounded full read.** A substantial ADR exceeds the 25k-token `read` cap, and a capped read's only recovery is paging the remainder — the most expensive way to read a file. Use the same pattern as `/dev-story` and `/create-stories`:
+
+1. **Map the headings** (cheap — line numbers only): `Grep pattern="^## " path="[adr-file]" output_mode="content" -n`
+2. **Bounded-read only `## Decision` and `## Consequences`**, using the line numbers to set `read(offset, limit)` spans that end where the next heading begins. If the heading map is empty (a nonstandard ADR predating the template), fall back to one full `read`; if that truncates at the cap, grep for the decision/consequence content directly rather than paging the remainder.
+
+A referenced ADR whose file is missing, or that cannot be read, makes ADR
+Compliance `NOT ASSESSED — [ADR] could not be read`: name it. No reference at
+all is `NO ADRS FOUND`, a different result.
+
+From those two sections, classify any deviation:
+
+- **ARCHITECTURAL VIOLATION** (BLOCKING): Uses a pattern explicitly rejected in the ADR
+- **ADR DRIFT** (WARNING): Meaningfully diverges from the chosen approach without using a forbidden pattern
+- **MINOR DEVIATION** (INFO): Small difference from ADR guidance that doesn't affect overall architecture
+
+---
+
+## Phase 4: Standards Compliance
+
+Identify the system category (engine, gameplay, AI, networking, UI, tools) and evaluate:
+
+- [ ] Public methods and classes have doc comments
+- [ ] Cyclomatic complexity under 10 per method
+- [ ] No method exceeds 40 lines (excluding data declarations)
+- [ ] Dependencies are injected (no static singletons for game state)
+- [ ] Configuration values loaded from data files
+- [ ] Systems expose interfaces (not concrete class dependencies)
+
+---
+
+## Phase 5: Architecture and SOLID
+
+**Architecture:**
+- [ ] Correct dependency direction (engine <- gameplay, not reverse)
+- [ ] No circular dependencies between modules
+- [ ] Proper layer separation (UI does not own game state)
+- [ ] Events/signals used for cross-system communication
+- [ ] Consistent with established patterns in the codebase
+
+**SOLID:**
+- [ ] Single Responsibility: Each class has one reason to change
+- [ ] Open/Closed: Extendable without modification
+- [ ] Liskov Substitution: Subtypes substitutable for base types
+- [ ] Interface Segregation: No fat interfaces
+- [ ] Dependency Inversion: Depends on abstractions, not concretions
+
+---
+
+## Phase 6: Game-Specific Concerns
+
+- [ ] Frame-rate independence (delta time usage)
+- [ ] No allocations in hot paths (update loops)
+- [ ] Proper null/empty state handling
+- [ ] Thread safety where required
+- [ ] Resource cleanup (no leaks)
+
+---
+
+## Phase 7: Specialist Reviews (Parallel)
+
+Spawn all applicable specialists simultaneously via `subagent` — do not wait for one before starting the next.
+
+> **Verify every specialist finding before reporting it. Do not pass findings
+> through unchecked.** For each finding, record in the report:
+>
+> - **File and line** it refers to.
+> - **Evidence** — the quoted code, or the concrete input/state that triggers it.
+> - **Confidence** — `VERIFIED` (you checked it yourself) or `UNVERIFIED —
+>   specialist claim` (you could not).
+>
+> A finding you could not verify is reported as unverified or dropped, never
+> promoted to a defect on the strength of confident phrasing.
+>
+> **Why this is mandatory.** Agents are reliable when deriving and unreliable when
+> diagnosing existing code. In practice, three separate agents
+> produced three different **wrong** claims about the same six-line function,
+> every one fluent enough to pass a skim — including a spawned specialist here
+> alleging a float-precision bug that enumerating the inputs disproves. Without
+> this step the parent review is a laundering channel: a guess enters as a
+> specialist finding and leaves as a reviewed defect.
+
+### Engine Specialists
+
+If an engine is configured, determine which specialist applies to each file and spawn in parallel:
+
+- Primary language files (`.gd`, `.cs`, `.cpp`) → Language/Code Specialist
+- Shader files (`.gdshader`, `.hlsl`, shader graph) → Shader Specialist
+- UI screen/widget code → UI Specialist
+- Cross-cutting or unclear → Primary Specialist
+
+Also spawn the **Primary Specialist** for any file touching engine architecture (scene structure, node hierarchy, lifecycle hooks).
+
+### QA Testability Review
+
+For Logic and Integration stories, also spawn `qa-tester` via `subagent` in parallel with the engine specialists. Pass:
+- The implementation files being reviewed
+- The story's `## QA Test Cases` section (the pre-written test specs from qa-lead)
+- The story's `## Acceptance Criteria`
+
+Ask the qa-tester to evaluate:
+- [ ] Are all test hooks and interfaces exposed (not hidden behind private/internal access)?
+- [ ] Do the QA test cases from the story's `## QA Test Cases` section map to testable code paths?
+- [ ] Are any acceptance criteria untestable as implemented (e.g., hardcoded values, no seam for injection)?
+- [ ] Does the implementation introduce any new edge cases not covered by the existing QA test cases?
+- [ ] Are there any observable side effects that should have a test but don't?
+
+For Visual/Feel and UI stories: qa-tester reviews whether the manual verification steps in `## QA Test Cases` are achievable with the implementation as written — e.g., "is the state the manual checker needs to reach actually reachable?"
+
+Collect all specialist findings before producing output.
+
+---
+
+## Phase 8: Output Review
+
+```
+## Code Review: [File/System Name]
+
+### Engine Specialist Findings: [N/A — no engine configured / CLEAN / ISSUES FOUND]
+[Findings from engine specialist(s), or "No engine configured." if skipped]
+
+### Testability: [N/A — no story path given / N/A — Visual/Feel or Config story / TESTABLE / GAPS / BLOCKING]
+[qa-tester findings: test hooks, coverage gaps, untestable paths, new edge cases]
+[If BLOCKING: implementation must expose [X] before tests in ## QA Test Cases can run]
+
+### ADR Compliance: [NOT ASSESSED / NO ADRS FOUND / COMPLIANT / DRIFT / VIOLATION]
+[List each ADR checked, result, and any deviations with severity]
+
+### Standards Compliance: [X/6 passing]
+[List failures with line references; a missing doc comment names the method or class]
+
+### Architecture: [NOT ASSESSED / CLEAN / MINOR ISSUES / VIOLATIONS FOUND]
+[List specific architectural concerns]
+
+### SOLID: [NOT ASSESSED / COMPLIANT / ISSUES FOUND]
+[List specific violations]
+
+### Game-Specific Concerns
+[List game development specific issues]
+
+### Positive Observations
+[What is done well -- always include this section]
+
+### Required Changes
+[Must-fix items before approval — ARCHITECTURAL VIOLATIONs always appear here]
+
+### Suggestions
+[Nice-to-have improvements]
+
+### Verdict: [NOT ASSESSED / APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]
+```
+
+Choose the verdict, first match wins:
+- **CHANGES REQUIRED** — anything under Required Changes
+- **NOT ASSESSED** — nothing to review (the no-data path above), the engine
+  specialist review did not run — no engine configured, or a specialist that
+  could not be spawned — or any report section reads `NOT ASSESSED` (ADR
+  Compliance with a referenced ADR that could not be read, Architecture, SOLID);
+  name which. NOT ASSESSED ranks below CHANGES REQUIRED, because a known
+  defect is more actionable than a skipped check, and above both approvals: a
+  review that skipped the engine check has not approved the code. (`NO ADRS
+  FOUND` is not NOT ASSESSED: with no ADR to check, it does not stop an
+  approval.)
+- **APPROVED WITH SUGGESTIONS** — only Suggestions
+- **APPROVED** — no required changes and no suggestions
+
+This skill is read-only — no files are written.
+
+---
+
+## Phase 9: Next Steps
+
+Use `ask_user_question`:
+- Prompt: "Code review complete — verdict: [NOT ASSESSED / APPROVED / APPROVED WITH SUGGESTIONS / CHANGES REQUIRED]. How would you like to proceed?" (the Phase 8 verdict, word for word)
+- Options (adjust based on verdict):
+  - If APPROVED:
+    - `[A] Run /story-done to mark the story complete`
+    - `[B] Stop here`
+  - If APPROVED WITH SUGGESTIONS:
+    - `[A] Apply the suggestions, then run /story-done`
+    - `[B] Run /story-done now — suggestions noted for later`
+    - `[C] Stop here`
+  - If CHANGES REQUIRED:
+    - `[A] Fix the issues and re-run /code-review`
+    - `[B] Run /story-done anyway with noted exceptions`
+    - `[C] Stop here`
+  - If NOT ASSESSED:
+    - `[A] Fix what stopped the review (point me at the code, run /setup-engine, or fix the unreadable ADR reference), then re-run /code-review`
+    - `[B] Stop here`
+
+If an ARCHITECTURAL VIOLATION is found:
+- If the violation contradicts an **existing ADR**: fix the implementation to comply with `docs/architecture/[adr-file].md`. If the design has legitimately changed, run `/architecture-decision` to formally *revise* the existing ADR — do not create a competing one.
+- If **no ADR exists** for the pattern that was violated: run `/architecture-decision` to document the correct approach before fixing the code.

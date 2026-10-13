@@ -1,0 +1,11 @@
+# One-off overlay: exercise the `ask` decision on PreToolUse, to see whether its reason text
+# reaches the model before the tool runs. Paired with `.verify-logs/pretooluse-ask-probe-hooks.json`.
+- insert:
+    - id: dsgs-hooks-askprobe
+      name: "file:///D:/Work/dsh/tools/dsh-plugin/index.js"
+      config:
+        configPath: "D:/Work/dsh/.verify-logs/pretooluse-ask-probe-hooks.json"
+        projectDir: "D:/Work/dsh"
+        auditFile: "D:/Work/dsh/.verify-logs/hook-invocations.log"
+        defaultTimeoutMs: 15000
+

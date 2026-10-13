@@ -1,0 +1,13 @@
+# Bundle patch for the merged DSGS package.
+#
+# Two rows, both naming subpath exports of this package, so one install brings the hook bridge and
+# the status-line projection together. Configs are empty on purpose:
+#   - dsgs-hooks finds <project>/.dsh/hooks.json by walking up from the launch directory,
+#   - dsgs-statusline registers its projection and does no I/O at all.
+- insert:
+    - id: dsgs-hooks
+      name: "deepseek-harness-game-studios/hooks"
+      config: {}
+    - id: dsgs-statusline
+      name: "deepseek-harness-game-studios/statusline"
+      config: {}
