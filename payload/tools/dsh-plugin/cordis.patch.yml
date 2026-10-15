@@ -1,0 +1,12 @@
+# Bundle patch for dsgs-hooks.
+#
+# Adding this package to a profile's `dsh.profile.bundles` composes this patch, which
+# inserts the one row that mounts the plugin. No configPath is set on purpose: the plugin
+# finds `<project>/.dsh/hooks.json` by walking up from the launch directory, so a
+# plugin-manager install works with no configuration. Override it per run with the
+# DSH_DSGS_HOOKS_CONFIG environment variable (or set configPath here).
+- insert:
+    - id: dsgs-hooks
+      name: "dsgs-hooks"
+      config: {}
+

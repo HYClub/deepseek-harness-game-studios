@@ -1,0 +1,14 @@
+# Bundle patch for dsgs-statusline.
+#
+# Loading the server half is verified: with a synchronous `apply` (no dynamic import, no timer) the
+# profile boots and returns. An earlier revision awaited an import and polled a renderer; that
+# revision made `dsh --profile <p> --help` never return, which is why this patch is only restored
+# now that the plugin does no I/O at all.
+#
+# The client half is still a no-op (see `client.js`): the slot contract is known, the component is
+# not written, and registering an unrenderable view would break the GUI.
+- insert:
+    - id: dsgs-statusline
+      name: "dsgs-statusline"
+      config: {}
+
