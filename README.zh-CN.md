@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.1.5-orange.svg)
+![Version](https://img.shields.io/badge/version-0.1.6-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-76-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -159,6 +159,7 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
 
 
 

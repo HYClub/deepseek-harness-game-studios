@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.1.5-orange.svg)
+![Version](https://img.shields.io/badge/version-0.1.6-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-76-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -165,6 +165,7 @@ repository.
 
 MIT License — see [LICENSE](LICENSE). Upstream copyright © 2026 Donchitos; the port layer (generator,
 Node hooks, plugin, installers, DSGS-only skills) is released under the same license.
+
 
 
 
