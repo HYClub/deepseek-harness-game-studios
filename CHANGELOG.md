@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.8 — the framework changelog travels with the project
+
+- A project seeded from the framework now carries the changelog its upgrade guide refers to, so the two documents stay together.
+
 ## 0.1.7 — upgrades remove files that are no longer shipped
 
 - An installed copy is rebuilt when the version changes, so a project no longer picks up documents or tools that a later version has removed.
@@ -36,6 +40,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 
