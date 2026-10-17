@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.1.6-orange.svg)
+![Version](https://img.shields.io/badge/version-0.1.7-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-76-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -26,11 +26,11 @@
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.4** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.7** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
-（没有 `bash` 工具、管道捕获子进程被沙箱拒绝、不展开 `@path`）。所以我们**不改上游内容**，而是生成
+（没有 `bash` 工具、管道捕获子进程被沙箱拒绝、不展开 `@path`）。本项目**不改上游内容**，而是生成
 DSH 可运行的等价物，并验证**内容零丢失**。
 
 > 本仓库根**就是插件包**。它要安装的框架打包在 `payload/` 下 —— 你不需要看它。
@@ -159,6 +159,8 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
 
 
 

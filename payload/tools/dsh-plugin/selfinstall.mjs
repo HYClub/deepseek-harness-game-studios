@@ -9,11 +9,11 @@
  *
  * @module dsh-plugin/selfinstall
  */
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, copyFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, copyFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /** Payload version stamped into `<home>/DSGS/package-version.txt`. */
-export const INSTALL_VERSION = '0.1.6';
+export const INSTALL_VERSION = '0.1.7';
 
 /** Paths never copied out of the framework (build output, scratch, caches). */
 const SKIP = new Set(['node_modules', '.git', 'dist', '.smoke', '_external', '.verify-logs', '.local-backups', 'production/session-logs']);
@@ -157,6 +157,8 @@ export function ensureMachineInstall({ payloadDir, homeDir, log = () => {} }) {
     const skillsPresent = ['dsgs-init', 'start'].every((n) => existsSync(join(homeDir, 'skills', n, 'SKILL.md')));
     const fresh = skillsPresent && existsSync(join(target, '.dsh', 'skills')) && existsSync(stamp) && readFileSync(stamp, 'utf8').trim() === INSTALL_VERSION;
     if (!fresh) {
+      // `target` is a managed directory: rebuild it so files removed from the payload disappear too.
+      rmSync(target, { recursive: true, force: true });
       mkdirSync(target, { recursive: true });
       copyTree(payloadDir, target, null);
       writeFileSync(stamp, INSTALL_VERSION);
@@ -179,6 +181,8 @@ export function ensureMachineInstall({ payloadDir, homeDir, log = () => {} }) {
   }
   return report;
 }
+
+
 
 
 

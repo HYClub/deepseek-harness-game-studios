@@ -126,8 +126,8 @@ function headerFor(kind, rel, meta = {}) {
   if (upstreamKeys.length > 0) {
     // Fidelity: those fields are KEPT in the frontmatter above (DSH ignores keys it does not
     // know), so this note explains rather than replaces them.
-    lines.push(`> - frontmatter 里的 ${upstreamKeys.map(([key]) => `\`${key}\``).join('、')} 是上游字段，DSH 原样保留但不读取：`
-      + '工具可用性由会话权限决定，技能不能固定模型，子代理的模型在 `subagent`/`workflow` 调用处指定。');
+    lines.push(`> - \`${upstreamKeys.map(([key]) => key).join('`, `')}\` ${upstreamKeys.length === 1 ? 'is an upstream field kept as written' : 'are upstream fields kept as written'} but not read here:`
+      + ' tool availability is decided by session permissions, a skill cannot pin a model, and a subagent model is chosen at the `subagent` / `workflow` call site.');
   }
   // No provenance line: PORT-MANIFEST.json already records the source path for every
   // output file, and an end user opening a skill card does not need the port's history.
@@ -846,4 +846,5 @@ async function convert() {
 }
 
 await convert();
+
 

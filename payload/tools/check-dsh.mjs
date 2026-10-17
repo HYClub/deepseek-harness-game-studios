@@ -19,7 +19,7 @@ const MIRRORED_DIRS = ['skills', 'agents', 'rules', 'hooks', 'scripts', 'docs'];
 /** Files that legitimately exist only on the DSH side (hand-written or generated). */
 const GENERATED_EXTRAS = new Set(['agents/README.md', 'rules/INDEX.md', 'docs/studio-rules.md']);
 /** Files the hand-written overlay (`dsh-src/`) adds to the generated tree. */
-const OVERLAY_EXTRAS = new Set(['docs/dsh-differences.md', 'statusline.mjs', 'skills/statusline/SKILL.md', 'skills/dsgs-install/SKILL.md']);
+const OVERLAY_EXTRAS = new Set(['docs/dsh-differences.md', 'docs/hooks-reference/dsh-differences.md', 'statusline.mjs', 'skills/statusline/SKILL.md', 'skills/dsgs-install/SKILL.md']);
 
 /** DSH-side additions by shape: the Node hook ports and their shared helpers. */
 function isGeneratedExtra(rel) {
@@ -294,6 +294,7 @@ console.log(JSON.stringify(report, null, 2));
 console.log(`\nSUMMARY skills=${report.skills} agents=${report.agents} rules=${report.rules} hooks=${report.hooks} `
   + `errors=${errors.length} warnings=${warnings.length}`);
 process.exit(errors.length === 0 ? 0 : 1);
+
 
 
 

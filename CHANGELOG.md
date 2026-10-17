@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7 — upgrades remove files that are no longer shipped
+
+- An installed copy is rebuilt when the version changes, so a project no longer picks up documents or tools that a later version has removed.
+
 ## 0.1.6 — releases now add to the repository history
 
 - Publishing a version records a new commit in the plugin repository instead of replacing its history, so earlier releases and their notes stay reachable.
@@ -32,6 +36,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

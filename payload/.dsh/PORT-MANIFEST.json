@@ -1,9 +1,9 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "generatedAt": "2026-10-13T15:15:21.027Z",
+  "generatedAt": "2026-10-17T12:00:06.762Z",
   "generatedFrom": "content-source",
   "output": ".dsh",
-  "fileCount": 324,
+  "fileCount": 325,
   "files": [
     {
       "kind": "skill",
@@ -11,7 +11,7 @@
       "output": ".dsh/skills/adopt/SKILL.md",
       "upstreamFrontmatter": "name: adopt\ndescription: \"Brownfield audit — do existing artifacts actually work? Numbered migration plan. Unlike /project-stage-detect, checks compliance not existence.\"\nargument-hint: \"[focus: full | gdds | adrs | stories | infra]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/adopt/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "9f126d50097315a0",
-      "outputSha256": "08eb0cd52c1632b6",
+      "outputSha256": "9bd46c95f2b42dcf",
       "rewritten": true
     },
     {
@@ -28,7 +28,7 @@
       "output": ".dsh/skills/architecture-decision/SKILL.md",
       "upstreamFrontmatter": "name: architecture-decision\ndescription: \"Create an ADR documenting a technical decision: context, alternatives considered, consequences.\"\nargument-hint: \"[title | retrofit <path> | accept <ADR-id>] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(wc -c *), Bash(bash \"*/.claude/skills/architecture-decision/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "6b3b43c9d0f4ace6",
-      "outputSha256": "0464a77dece51b03",
+      "outputSha256": "a4b79061aa018caa",
       "rewritten": true
     },
     {
@@ -37,7 +37,7 @@
       "output": ".dsh/skills/architecture-review/SKILL.md",
       "upstreamFrontmatter": "name: architecture-review\ndescription: \"Traceability matrix mapping GDD requirements to ADRs. Finds gaps, cross-ADR conflicts, engine compatibility. PASS/CONCERNS/NOT ASSESSED/FAIL.\"\nargument-hint: \"[focus: full | coverage | consistency | engine | single-gdd path/to/gdd.md]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/architecture-review/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: opus",
       "sourceSha256": "a08fbede25d5f2cb",
-      "outputSha256": "668c36fa1283daf5",
+      "outputSha256": "92b32ec264660b51",
       "rewritten": true
     },
     {
@@ -46,7 +46,7 @@
       "output": ".dsh/skills/art-bible/SKILL.md",
       "upstreamFrontmatter": "name: art-bible\ndescription: \"Author the Art Bible — visual identity gating asset production. Run before /map-systems.\"\nargument-hint: \"[--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/art-bible/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "7cb412d112f443dd",
-      "outputSha256": "437b090974c52a7e",
+      "outputSha256": "7f365102341f5a46",
       "rewritten": true
     },
     {
@@ -55,7 +55,7 @@
       "output": ".dsh/skills/asset-audit/SKILL.md",
       "upstreamFrontmatter": "name: asset-audit\ndescription: \"Audit assets against naming conventions, file size budgets, format standards. Finds orphaned assets, missing references.\"\nargument-hint: \"[category|all]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(stat *), Bash(file *), Bash(od *), Bash(wc *), Bash(du *)\nmodel: sonnet\n# Read-only diagnostic skill — no specialist agent delegation needed",
       "sourceSha256": "cf459aeee8c1f866",
-      "outputSha256": "6ec8f9fd46c1f70f",
+      "outputSha256": "4bb2587f758861a9",
       "rewritten": true
     },
     {
@@ -64,7 +64,7 @@
       "output": ".dsh/skills/asset-spec/SKILL.md",
       "upstreamFrontmatter": "name: asset-spec\ndescription: \"Per-asset visual specs plus AI generation prompts from GDDs and character profiles. After the art bible.\"\nargument-hint: \"[system:<name> | level:<name> | character:<name>] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/asset-spec/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "e9cac66c06300496",
-      "outputSha256": "4ffdb75fe29b9295",
+      "outputSha256": "4a357f7e2596509f",
       "rewritten": true
     },
     {
@@ -73,7 +73,7 @@
       "output": ".dsh/skills/balance-check/SKILL.md",
       "upstreamFrontmatter": "name: balance-check\ndescription: \"Find balance outliers, broken progressions, degenerate strategies, economy imbalances in formulas and data. 'Check game balance'.\"\nargument-hint: \"[system-name|path-to-data-file]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/balance-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "37cad855a7f47c85",
-      "outputSha256": "b3ec973fbc0e9823",
+      "outputSha256": "338ce394f8170e1d",
       "rewritten": true
     },
     {
@@ -82,7 +82,7 @@
       "output": ".dsh/skills/brainstorm/SKILL.md",
       "upstreamFrontmatter": "name: brainstorm\ndescription: \"Guided concept ideation using professional studio techniques, player psychology, creative exploration.\"\nargument-hint: \"[genre or theme hint, or 'open'] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, WebSearch, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/brainstorm/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "a7e0babdf3681b26",
-      "outputSha256": "7f8339094bcdd786",
+      "outputSha256": "307b6eb478a4f73e",
       "rewritten": true
     },
     {
@@ -91,7 +91,7 @@
       "output": ".dsh/skills/bug-report/SKILL.md",
       "upstreamFrontmatter": "name: bug-report\ndescription: \"Structured bug report from a description, or analyze code for potential bugs. Reproduction steps, severity.\"\nargument-hint: \"[description] | analyze [path-to-file] | verify [BUG-ID] | close [BUG-ID]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/bug-report/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d0395ae9f6ef2408",
-      "outputSha256": "cc351d624fae1371",
+      "outputSha256": "659dea5a1f4cfda0",
       "rewritten": true
     },
     {
@@ -100,7 +100,7 @@
       "output": ".dsh/skills/bug-triage/SKILL.md",
       "upstreamFrontmatter": "name: bug-triage\ndescription: \"Re-evaluate open bugs — priority vs severity, assign to sprints, surface systemic trends. Run when the count grows.\"\nargument-hint: \"[sprint | full | trend]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash(bash \"*/.claude/skills/bug-triage/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "88986266997d33ae",
-      "outputSha256": "27ddc9ef42e44608",
+      "outputSha256": "1281f9de369b718e",
       "rewritten": true
     },
     {
@@ -109,7 +109,7 @@
       "output": ".dsh/skills/changelog/SKILL.md",
       "upstreamFrontmatter": "name: changelog\ndescription: \"Auto-generate a changelog from git commits and sprint data. Internal and player-facing versions.\"\nargument-hint: \"[version|sprint-number]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Bash(bash \"*/.claude/skills/changelog/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "5684779b602f8588",
-      "outputSha256": "925e7984771f1587",
+      "outputSha256": "65b03d48bbf8a312",
       "rewritten": true
     },
     {
@@ -118,7 +118,7 @@
       "output": ".dsh/skills/code-review/SKILL.md",
       "upstreamFrontmatter": "name: code-review\ndescription: \"Architectural code review — coding standards, SOLID, testability, performance concerns.\"\nargument-hint: \"[path-to-file-or-directory]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(git log *), Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/code-review/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "a104c61223768f22",
-      "outputSha256": "e20af35a40a71ed1",
+      "outputSha256": "171f962b781f1ce0",
       "rewritten": true
     },
     {
@@ -127,7 +127,7 @@
       "output": ".dsh/skills/consistency-check/SKILL.md",
       "upstreamFrontmatter": "name: consistency-check\ndescription: \"Scan GDDs against the entity registry for cross-document conflicts. Grep-first approach targets conflicting sections, different stats.\"\nargument-hint: \"[full | since-last-review | entity:<name> | item:<name>]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion, Bash(bash \"*/.claude/skills/consistency-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "6e75dac4220c6d6a",
-      "outputSha256": "0ee6ecf16557eb7c",
+      "outputSha256": "679bead486bd4f63",
       "rewritten": true
     },
     {
@@ -136,7 +136,7 @@
       "output": ".dsh/skills/content-audit/SKILL.md",
       "upstreamFrontmatter": "name: content-audit\ndescription: \"Audit GDD content counts against what's implemented — planned vs built.\"\nargument-hint: \"[system-name | --summary | (no arg = full audit)]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/content-audit/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "bc5e242b46fd05e0",
-      "outputSha256": "6e2d2f868eb6b41e",
+      "outputSha256": "0da9706fc9744523",
       "rewritten": true
     },
     {
@@ -145,7 +145,7 @@
       "output": ".dsh/skills/create-architecture/SKILL.md",
       "upstreamFrontmatter": "name: create-architecture\ndescription: \"Author the architecture blueprint before code is written. Validates decisions against the pinned engine, flags knowledge gaps.\"\nargument-hint: \"[focus-area: full | layers | data-flow | api-boundaries | adr-audit] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/create-architecture/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "7521c92f713a754d",
-      "outputSha256": "51ce1b87fe87e6de",
+      "outputSha256": "ea2504354b46a628",
       "rewritten": true
     },
     {
@@ -154,7 +154,7 @@
       "output": ".dsh/skills/create-control-manifest/SKILL.md",
       "upstreamFrontmatter": "name: create-control-manifest\ndescription: \"Flat must-do/never-do rules sheet per system and layer, extracted from Accepted ADRs. ADRs explain why; this is actionable.\"\nargument-hint: \"[update — regenerate from current ADRs] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/create-control-manifest/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "7f8234550e7025eb",
-      "outputSha256": "fb4700906a2ca338",
+      "outputSha256": "b63a01a4ef963573",
       "rewritten": true
     },
     {
@@ -171,7 +171,7 @@
       "output": ".dsh/skills/create-epics/SKILL.md",
       "upstreamFrontmatter": "name: create-epics\ndescription: \"Turn GDDs plus architecture into epics — one per architectural module, with untraced requirements. Then /create-stories [epic-slug].\"\nargument-hint: \"[system-name | layer: foundation|core|feature|presentation | all] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/create-epics/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "7a4d61c61be76ffd",
-      "outputSha256": "482f5c051d9a620d",
+      "outputSha256": "48128574833ad47d",
       "rewritten": true
     },
     {
@@ -188,7 +188,7 @@
       "output": ".dsh/skills/create-stories/SKILL.md",
       "upstreamFrontmatter": "name: create-stories\ndescription: \"Break one epic into implementable stories embedding TR-ID, ADR guidance, acceptance criteria. Reads the control manifest. After /create-epics.\"\nargument-hint: \"[epic-slug | epic-path] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/create-stories/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "83d5918b53fc215a",
-      "outputSha256": "cbbd806c48d53984",
+      "outputSha256": "5c4002db00c50710",
       "rewritten": true
     },
     {
@@ -197,7 +197,7 @@
       "output": ".dsh/skills/day-one-patch/SKILL.md",
       "upstreamFrontmatter": "name: day-one-patch\ndescription: \"Day-one launch patch — focused fix for known issues found after gold master. Mini-sprint with QA gate and rollback.\"\nargument-hint: \"[scope: known-bugs | cert-feedback | all]\"\nuser-invocable: true\ndisable-model-invocation: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion\nmodel: sonnet",
       "sourceSha256": "031d11d6e22b9565",
-      "outputSha256": "630a2aabede704c1",
+      "outputSha256": "9541783cfc640ec1",
       "rewritten": true
     },
     {
@@ -206,7 +206,7 @@
       "output": ".dsh/skills/design-review/SKILL.md",
       "upstreamFrontmatter": "name: design-review\ndescription: \"Reviews one design document for completeness, internal consistency, implementability, and design standards. Before handing to programmers.\"\nargument-hint: \"[path-to-design-doc] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/design-review/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d21b65ae0895cc21",
-      "outputSha256": "0496ab39520cf8fa",
+      "outputSha256": "9a21bb6da7b04c2e",
       "rewritten": true
     },
     {
@@ -215,7 +215,7 @@
       "output": ".dsh/skills/design-system/SKILL.md",
       "upstreamFrontmatter": "name: design-system\ndescription: \"Section-by-section GDD authoring for one system — walks through each required section, cross-references dependencies.\"\nargument-hint: \"<system-name> [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/design-system/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "92e55d07242e080f",
-      "outputSha256": "8268c5b98f7c46fe",
+      "outputSha256": "b94755aa1218e6fd",
       "rewritten": true
     },
     {
@@ -232,7 +232,7 @@
       "output": ".dsh/skills/dev-story/SKILL.md",
       "upstreamFrontmatter": "name: dev-story\ndescription: \"Implement a story: ADR guidelines, right programmer agent, code plus test. Then /story-done (/story-readiness before, /code-review after, at standard/full).\"\nargument-hint: \"[story-path]\"\nuser-invocable: true\ndisable-model-invocation: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/dev-story/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d7d1298109e094e8",
-      "outputSha256": "62d69eaa55a7f586",
+      "outputSha256": "2652fde21aaa0fef",
       "rewritten": true
     },
     {
@@ -241,7 +241,7 @@
       "output": ".dsh/skills/estimate/SKILL.md",
       "upstreamFrontmatter": "name: estimate\ndescription: \"Estimate task effort from complexity, dependencies, velocity, risk. Structured estimate with confidence levels.\"\nargument-hint: \"[task-description]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep\nmodel: sonnet",
       "sourceSha256": "cee5d4daeaed285f",
-      "outputSha256": "9488ce10ba25ed7f",
+      "outputSha256": "3d9f3691f7f69da2",
       "rewritten": true
     },
     {
@@ -306,7 +306,7 @@
       "output": ".dsh/skills/gate-check/SKILL.md",
       "upstreamFrontmatter": "name: gate-check\ndescription: \"Ready to advance between development phases? PASS/CONCERNS/NOT ASSESSED/FAIL with blockers and required artifacts. 'Can we move to production?'\"\nargument-hint: \"[target-phase: systems-design | technical-setup | pre-production | production | polish | release] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/gate-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: opus",
       "sourceSha256": "be9c7ee9b8c0489c",
-      "outputSha256": "a66eb2f31ed1ee2f",
+      "outputSha256": "4e84b2900e59b61b",
       "rewritten": true
     },
     {
@@ -315,7 +315,7 @@
       "output": ".dsh/skills/help/SKILL.md",
       "upstreamFrontmatter": "name: help\ndescription: \"What should I do next? Use when stuck or you don't know what to do.\"\nargument-hint: \"[optional: what you just finished, e.g. 'finished design-review' or 'stuck on ADRs']\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(bash \"*/.claude/skills/help/../../hooks/yaml-helper.sh\" resolve_config *), Bash(bash \"*/.claude/skills/help/../../scripts/story-status.sh\"), Bash(bash .claude/scripts/story-status.sh*), Bash(bash .claude/scripts/artifact-check.sh *), Bash(bash \".claude/scripts/artifact-check.sh\" *), Bash(bash ./.claude/scripts/artifact-check.sh *), Bash(git log *)\nmodel: haiku",
       "sourceSha256": "522fa9d5514db418",
-      "outputSha256": "dc6cb0c3787c6553",
+      "outputSha256": "1cc94e37de1503f0",
       "rewritten": true
     },
     {
@@ -324,7 +324,7 @@
       "output": ".dsh/skills/hotfix/SKILL.md",
       "upstreamFrontmatter": "name: hotfix\ndescription: \"Emergency fix bypassing normal sprint process — hotfix branch, approvals tracked, backport verified, full audit trail.\"\nargument-hint: \"[bug-id or description]\"\nuser-invocable: true\ndisable-model-invocation: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion\nmodel: sonnet",
       "sourceSha256": "69ce27ea3ef40ad1",
-      "outputSha256": "283788650e858a1a",
+      "outputSha256": "c1a41f96798fc000",
       "rewritten": true
     },
     {
@@ -333,7 +333,7 @@
       "output": ".dsh/skills/launch-checklist/SKILL.md",
       "upstreamFrontmatter": "name: launch-checklist\ndescription: \"Launch readiness across every department: code, content, store, marketing, community, infrastructure, legal, go/no-go sign-offs.\"\nargument-hint: \"[launch-date or 'dry-run']\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/launch-checklist/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "94da5745b2e9d73a",
-      "outputSha256": "708f0b6ab71af912",
+      "outputSha256": "b27ec68f052ee176",
       "rewritten": true
     },
     {
@@ -342,7 +342,7 @@
       "output": ".dsh/skills/localize/SKILL.md",
       "upstreamFrontmatter": "name: localize\ndescription: \"Localization pipeline — find hardcoded strings, extract string tables, cultural review, VO, RTL, enforce string freeze.\"\nargument-hint: \"[scan|extract|validate|status|brief|cultural-review|vo-pipeline|rtl-check|freeze|qa]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/localize/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "488ee8fa4280e5d2",
-      "outputSha256": "12745da5b0108ccc",
+      "outputSha256": "d142f636f5237dfe",
       "rewritten": true
     },
     {
@@ -351,7 +351,7 @@
       "output": ".dsh/skills/map-systems/SKILL.md",
       "upstreamFrontmatter": "name: map-systems\ndescription: \"Decompose a concept into individual systems, map dependencies, prioritize design order, create the systems index.\"\nargument-hint: \"[next | system-name] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Agent, Bash(bash \"*/.claude/skills/map-systems/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "f03742ae01445105",
-      "outputSha256": "01255c12922692be",
+      "outputSha256": "5813ae00e7f6aeae",
       "rewritten": true
     },
     {
@@ -360,7 +360,7 @@
       "output": ".dsh/skills/milestone-review/SKILL.md",
       "upstreamFrontmatter": "name: milestone-review\ndescription: \"Milestone progress review — completeness, quality metrics, risk, go/no-go recommendation. At checkpoints or before a deadline.\"\nargument-hint: \"[milestone-name|current] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/milestone-review/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "3fccf9c2597b0a7e",
-      "outputSha256": "d24e610445242e99",
+      "outputSha256": "1ba0b2406221120a",
       "rewritten": true
     },
     {
@@ -369,7 +369,7 @@
       "output": ".dsh/skills/onboard/SKILL.md",
       "upstreamFrontmatter": "name: onboard\ndescription: \"Onboarding doc for a new contributor or agent — project state, conventions, priorities relevant to the specified role.\"\nargument-hint: \"[role|area]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/onboard/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: haiku",
       "sourceSha256": "1fea87375332f862",
-      "outputSha256": "44cd828a04f8af53",
+      "outputSha256": "5620f67777fd0c2e",
       "rewritten": true
     },
     {
@@ -378,7 +378,7 @@
       "output": ".dsh/skills/patch-notes/SKILL.md",
       "upstreamFrontmatter": "name: patch-notes\ndescription: \"Player-facing patch notes from git history and changelogs. Translates developer language into player communication.\"\nargument-hint: \"[version] [--style brief|detailed|full]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, Bash(bash \"*/.claude/skills/patch-notes/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "23cf1e7ae25bcdef",
-      "outputSha256": "790908b8cc9d69f1",
+      "outputSha256": "13e622d612cc0003",
       "rewritten": true
     },
     {
@@ -387,7 +387,7 @@
       "output": ".dsh/skills/perf-profile/SKILL.md",
       "upstreamFrontmatter": "name: perf-profile\ndescription: \"Performance profiling — find bottlenecks, measure against budgets, produce ranked optimization recommendations.\"\nargument-hint: \"[system-name or 'full']\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, Bash(bash \"*/.claude/skills/perf-profile/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "c0e5dcb088ae2b80",
-      "outputSha256": "08e0783c80495fa5",
+      "outputSha256": "3e014dfae14bcd4f",
       "rewritten": true
     },
     {
@@ -396,7 +396,7 @@
       "output": ".dsh/skills/playtest-report/SKILL.md",
       "upstreamFrontmatter": "name: playtest-report\ndescription: \"Structured playtest report template, or turn existing playtest notes into structured feedback.\"\nargument-hint: \"[new|analyze path-to-notes] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/playtest-report/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "e3fb83ac622eb666",
-      "outputSha256": "0bac8c0f031736da",
+      "outputSha256": "d1806a0f0e341f29",
       "rewritten": true
     },
     {
@@ -405,7 +405,7 @@
       "output": ".dsh/skills/project-stage-detect/SKILL.md",
       "upstreamFrontmatter": "name: project-stage-detect\ndescription: \"Analyze project state, detect stage, identify gaps, recommend next steps. 'Where are we in development?'\"\nargument-hint: \"[optional: role filter like 'programmer' or 'designer']\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/project-stage-detect/../../hooks/yaml-helper.sh\" resolve_config *), Bash(bash .claude/scripts/artifact-check.sh), Bash(bash \".claude/scripts/artifact-check.sh\"), Bash(bash ./.claude/scripts/artifact-check.sh), Bash(bash .claude/scripts/artifact-check.sh *), Bash(bash \".claude/scripts/artifact-check.sh\" *), Bash(bash ./.claude/scripts/artifact-check.sh *)\nmodel: haiku\n# Read-only diagnostic skill — no specialist agent delegation needed",
       "sourceSha256": "4a2e0f9c98883954",
-      "outputSha256": "fc42e80d3b6e484e",
+      "outputSha256": "ae52426e66241401",
       "rewritten": true
     },
     {
@@ -414,7 +414,7 @@
       "output": ".dsh/skills/propagate-design-change/SKILL.md",
       "upstreamFrontmatter": "name: propagate-design-change\ndescription: \"A GDD changed — scan ADRs and the traceability index for now-stale architectural decisions. Impact report, guides resolution.\"\nargument-hint: \"[path/to/changed-gdd.md] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/propagate-design-change/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "253eae37dc89c2f5",
-      "outputSha256": "e61974a3d2fb6ba4",
+      "outputSha256": "b36dab9adbe1f2f0",
       "rewritten": true
     },
     {
@@ -423,7 +423,7 @@
       "output": ".dsh/skills/prototype/SKILL.md",
       "upstreamFrontmatter": "name: prototype\ndescription: \"Concept prototype before GDDs — throwaway HTML, Engine or Paper build, PROCEED/PIVOT/KILL/NOT ASSESSED. After /brainstorm and /setup-engine.\"\nargument-hint: \"[concept-description] [--path html|engine|paper] [--review full|lean|solo] [--spike]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/prototype/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "6b4e186d6b5215fd",
-      "outputSha256": "a9d1e20d6c46e3d9",
+      "outputSha256": "1ac14dab0943180e",
       "rewritten": true
     },
     {
@@ -432,7 +432,7 @@
       "output": ".dsh/skills/qa-plan/SKILL.md",
       "upstreamFrontmatter": "name: qa-plan\ndescription: \"QA test plan for a sprint — classifies stories by Logic/Integration/Visual/UI, covers automated tests, manual cases, smoke scope.\"\nargument-hint: \"[sprint | feature: system-name | story: path]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/qa-plan/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "a854582e521b3366",
-      "outputSha256": "f49642332e32252a",
+      "outputSha256": "e699f49ad0586578",
       "rewritten": true
     },
     {
@@ -441,7 +441,7 @@
       "output": ".dsh/skills/quick-design/SKILL.md",
       "upstreamFrontmatter": "name: quick-design\ndescription: \"Lightweight spec for small changes — tuning adjustments, minor mechanics. Embeds directly into stories; skips full GDD.\"\nargument-hint: \"[brief description of the change]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/quick-design/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "90696274bde6e272",
-      "outputSha256": "a3e8d9febddbcf6c",
+      "outputSha256": "13503db76b986721",
       "rewritten": true
     },
     {
@@ -450,7 +450,7 @@
       "output": ".dsh/skills/regression-suite/SKILL.md",
       "upstreamFrontmatter": "name: regression-suite\ndescription: \"Map test coverage to GDD critical paths, find fixed bugs lacking regression tests, flag drift from new features.\"\nargument-hint: \"[update | audit | report]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/regression-suite/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "715596b033b3abb1",
-      "outputSha256": "bc8887a72426f1b3",
+      "outputSha256": "860f6e654c8511b2",
       "rewritten": true
     },
     {
@@ -459,7 +459,7 @@
       "output": ".dsh/skills/release-checklist/SKILL.md",
       "upstreamFrontmatter": "name: release-checklist\ndescription: \"Pre-release checklist — build verification, certification requirements, store metadata, launch readiness.\"\nargument-hint: \"[platform: pc|console|mobile|all]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/release-checklist/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "9baffd7eeecbf1c9",
-      "outputSha256": "5dfa34cc2d615644",
+      "outputSha256": "83203bc6af8d9bfb",
       "rewritten": true
     },
     {
@@ -468,7 +468,7 @@
       "output": ".dsh/skills/retrospective/SKILL.md",
       "upstreamFrontmatter": "name: retrospective\ndescription: \"Sprint or milestone retrospective from completed work, velocity, blockers. Actionable insights for the next iteration.\"\nargument-hint: \"[sprint-N|milestone-name]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, AskUserQuestion, Bash(bash \"*/.claude/skills/retrospective/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "3cce692be0e1217b",
-      "outputSha256": "6bd6cdbafe2a9846",
+      "outputSha256": "bc8da57ac195de7c",
       "rewritten": true
     },
     {
@@ -477,7 +477,7 @@
       "output": ".dsh/skills/reverse-document/SKILL.md",
       "upstreamFrontmatter": "name: reverse-document\ndescription: \"Generate missing design or architecture docs from existing implementation — works backwards from code and prototypes.\"\nargument-hint: \"<type> <path> (e.g., 'design src/gameplay/combat' or 'architecture Assets/Scripts/Core')\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash(bash \"*/.claude/skills/reverse-document/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet\n# Read-only diagnostic skill — no specialist agent delegation needed",
       "sourceSha256": "74245b18a937b50b",
-      "outputSha256": "a22974d710790333",
+      "outputSha256": "3c541d04e5d911b3",
       "rewritten": true
     },
     {
@@ -486,7 +486,7 @@
       "output": ".dsh/skills/review-all-gdds/SKILL.md",
       "upstreamFrontmatter": "name: review-all-gdds\ndescription: \"Holistic cross-GDD review — contradictions between systems, dominant strategies, economic imbalance, cognitive overload, pillar drift.\"\nargument-hint: \"[focus: full | consistency | design-theory | since-last-review]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/review-all-gdds/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: opus",
       "sourceSha256": "f2bb0d7a8a05f7eb",
-      "outputSha256": "bef089676541bdfd",
+      "outputSha256": "09adf29144b1947a",
       "rewritten": true
     },
     {
@@ -495,7 +495,7 @@
       "output": ".dsh/skills/scope-check/SKILL.md",
       "upstreamFrontmatter": "name: scope-check\ndescription: \"Scope creep check — current scope versus the original plan. Flags additions, quantifies bloat, recommends cuts. 'Any scope creep?'\"\nargument-hint: \"[feature-name or sprint-N]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(git log *)\nmodel: haiku",
       "sourceSha256": "e107c71689aedeb0",
-      "outputSha256": "d21b82b2622db967",
+      "outputSha256": "a35c34ebcbdfcb00",
       "rewritten": true
     },
     {
@@ -504,7 +504,7 @@
       "output": ".dsh/skills/security-audit/SKILL.md",
       "upstreamFrontmatter": "name: security-audit\ndescription: \"Security audit — save tampering, cheat vectors, network exploits, data exposure, input validation. Before public or multiplayer release.\"\nargument-hint: \"[full | network | save | input | quick]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Agent, Bash(bash \"*/.claude/skills/security-audit/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "c7ee7cf8a2e973cf",
-      "outputSha256": "7d9220a9b9d465f0",
+      "outputSha256": "ede6e1ef9f0709a0",
       "rewritten": true
     },
     {
@@ -513,7 +513,7 @@
       "output": ".dsh/skills/settings/SKILL.md",
       "upstreamFrontmatter": "name: settings\ndescription: \"View or change project config — effective merged values, or set locally in project.local.yaml.\"\nargument-hint: \"[key | key=value | --local key=value]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion\nmodel: sonnet",
       "sourceSha256": "d34fd40603b2195f",
-      "outputSha256": "6d87410004b6796d",
+      "outputSha256": "9136967d7aa875e8",
       "rewritten": true
     },
     {
@@ -530,7 +530,7 @@
       "output": ".dsh/skills/setup-engine/SKILL.md",
       "upstreamFrontmatter": "name: setup-engine\ndescription: \"Configure engine and version. Pins it in CLAUDE.md; WebSearch fills reference docs when the version is beyond LLM training data.\"\nargument-hint: \"[engine] | [engine version] | refresh | upgrade [old-version] [new-version] | no args for guided selection\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/setup-engine/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "e430997ed4c77d04",
-      "outputSha256": "7f049f94427fccec",
+      "outputSha256": "9afb65ba8b732ed3",
       "rewritten": true
     },
     {
@@ -539,7 +539,7 @@
       "output": ".dsh/skills/skill-improve/SKILL.md",
       "upstreamFrontmatter": "name: skill-improve\ndescription: \"Improve a skill via a test-fix-retest loop — static checks, targeted fixes, keep or revert on score change.\"\nargument-hint: \"[skill-name]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, Bash(bash \"*/.claude/skills/skill-improve/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "8fbf8f3e51c5e6a1",
-      "outputSha256": "73afa9c19ce2455c",
+      "outputSha256": "75574c525257360e",
       "rewritten": true
     },
     {
@@ -548,7 +548,7 @@
       "output": ".dsh/skills/skill-test/SKILL.md",
       "upstreamFrontmatter": "name: skill-test\ndescription: \"Validate skill files for structural compliance and behavioral correctness. Four modes: static linter, spec, category rubric, audit.\"\nargument-hint: \"static [skill-name | all] | spec [skill-or-agent-name] | category [skill-or-agent-name | all] | audit\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/skill-test/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d927ccbd6f7ff0e3",
-      "outputSha256": "1541897c4821c9f2",
+      "outputSha256": "87c216e335e71bcf",
       "rewritten": true
     },
     {
@@ -557,7 +557,7 @@
       "output": ".dsh/skills/smoke-check/SKILL.md",
       "upstreamFrontmatter": "name: smoke-check\ndescription: \"Critical-path smoke gate before QA hand-off — runs the automated suite. A failed check means the build is not QA-ready.\"\nargument-hint: \"[sprint | quick | --platform pc|console|mobile|all]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/smoke-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "5650cf167fcc4506",
-      "outputSha256": "f9ca525e96471697",
+      "outputSha256": "13c9b666bf2fc385",
       "rewritten": true
     },
     {
@@ -566,7 +566,7 @@
       "output": ".dsh/skills/soak-test/SKILL.md",
       "upstreamFrontmatter": "name: soak-test\ndescription: \"Soak test protocol for extended play — what to observe and log for slow leaks, fatigue, late-appearing edge cases.\"\nargument-hint: \"[duration: 30m | 1h | 2h | 4h] [focus: memory | stability | balance | all]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/soak-test/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "b0268c95cc393350",
-      "outputSha256": "894c3443965be131",
+      "outputSha256": "c5433ec6b72d4eda",
       "rewritten": true
     },
     {
@@ -575,7 +575,7 @@
       "output": ".dsh/skills/sprint-plan/SKILL.md",
       "upstreamFrontmatter": "name: sprint-plan\ndescription: \"New or updated sprint plan from the current milestone, completed work, and available capacity.\"\nargument-hint: \"[new|update|status] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/sprint-plan/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "92015a9bf998d507",
-      "outputSha256": "261fcd6f3b5ebc20",
+      "outputSha256": "e38b435865bb8905",
       "rewritten": true
     },
     {
@@ -584,7 +584,7 @@
       "output": ".dsh/skills/sprint-status/SKILL.md",
       "upstreamFrontmatter": "name: sprint-status\ndescription: \"Fast, concise sprint snapshot — burndown and emerging risks for situational awareness. 'How is the sprint going?'\"\nargument-hint: \"[sprint-number or blank for current]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(bash \"*/.claude/skills/sprint-status/../../hooks/yaml-helper.sh\" resolve_config *), Bash(bash \"*/.claude/skills/sprint-status/../../scripts/story-status.sh\"), Bash(bash .claude/scripts/story-status.sh*)\nmodel: haiku",
       "sourceSha256": "2622108162d6ed82",
-      "outputSha256": "26139668a7619add",
+      "outputSha256": "f116765891641c9e",
       "rewritten": true
     },
     {
@@ -593,7 +593,7 @@
       "output": ".dsh/skills/start/SKILL.md",
       "upstreamFrontmatter": "name: start\ndescription: \"First-time onboarding — asks where you are, then guides you to the right workflow.\"\nargument-hint: \"[no arguments]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion\nmodel: sonnet",
       "sourceSha256": "132cc5a633e86575",
-      "outputSha256": "2d231c9c4415fd87",
+      "outputSha256": "787ec6748d4e334e",
       "rewritten": true
     },
     {
@@ -610,7 +610,7 @@
       "output": ".dsh/skills/story-done/SKILL.md",
       "upstreamFrontmatter": "name: story-done\ndescription: \"End-of-story completion review — verifies each acceptance criterion, checks GDD/ADR deviations, prompts code review, updates status.\"\nargument-hint: \"[story-file-path] [--review full|lean|solo]\"\nuser-invocable: true\ndisable-model-invocation: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/story-done/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "07cbbed6a0d8b3d2",
-      "outputSha256": "6b040581ff6d575b",
+      "outputSha256": "3743ca01a61e938d",
       "rewritten": true
     },
     {
@@ -627,7 +627,7 @@
       "output": ".dsh/skills/story-readiness/SKILL.md",
       "upstreamFrontmatter": "name: story-readiness\ndescription: \"Is a story implementation-ready? Checks clear acceptance criteria, open questions, ADR refs. READY/NEEDS WORK/BLOCKED/NOT ASSESSED.\"\nargument-hint: \"[story-file-path or 'all' or 'sprint'] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/story-readiness/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "c3b8ae00afa2a873",
-      "outputSha256": "f144a2d1f9fb0729",
+      "outputSha256": "e8a28386421e2dfe",
       "rewritten": true
     },
     {
@@ -636,7 +636,7 @@
       "output": ".dsh/skills/team-audio/SKILL.md",
       "upstreamFrontmatter": "name: team-audio\ndescription: \"Orchestrate the audio team — audio-director, sound-designer, technical-artist, gameplay-programmer — direction through implementation.\"\nargument-hint: \"[feature or area to design audio for] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-audio/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "cb6067a42503379a",
-      "outputSha256": "3ad3eee0aef425d7",
+      "outputSha256": "015e0454f4c65721",
       "rewritten": true
     },
     {
@@ -645,7 +645,7 @@
       "output": ".dsh/skills/team-combat/SKILL.md",
       "upstreamFrontmatter": "name: team-combat\ndescription: \"Orchestrate the combat team — game-designer, gameplay-programmer, ai-programmer, technical-artist, sound-designer, qa-tester — design through implement and validate.\"\nargument-hint: \"[combat feature description] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-combat/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "5db705f404f963c7",
-      "outputSha256": "7e6cd711b0675ef2",
+      "outputSha256": "081c55d82b024278",
       "rewritten": true
     },
     {
@@ -654,7 +654,7 @@
       "output": ".dsh/skills/team-level/SKILL.md",
       "upstreamFrontmatter": "name: team-level\ndescription: \"Orchestrate the level team — level-designer, narrative-director, world-builder, art-director, systems-designer, qa-tester — for complete area creation.\"\nargument-hint: \"[level name or area to design] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-level/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "68ec9d2f18396ccf",
-      "outputSha256": "38960578ac1c849a",
+      "outputSha256": "9da3953a7206421a",
       "rewritten": true
     },
     {
@@ -663,7 +663,7 @@
       "output": ".dsh/skills/team-live-ops/SKILL.md",
       "upstreamFrontmatter": "name: team-live-ops\ndescription: \"Orchestrate the live-ops team — live-ops-designer, economy-designer, analytics-engineer, community-manager, writer — for a season or live event.\"\nargument-hint: \"[season name or event description] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-live-ops/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "39598b2f8c8ebda7",
-      "outputSha256": "ac6b1fac17ace9f8",
+      "outputSha256": "a59ec046bb192f04",
       "rewritten": true
     },
     {
@@ -672,7 +672,7 @@
       "output": ".dsh/skills/team-narrative/SKILL.md",
       "upstreamFrontmatter": "name: team-narrative\ndescription: \"Orchestrate the narrative team — narrative-director, writer, world-builder, level-designer — for story, world lore, narrative-driven levels.\"\nargument-hint: \"[narrative content description] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-narrative/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "a99b07003b9c39ed",
-      "outputSha256": "d0856018a63ead0d",
+      "outputSha256": "41e5ecc963ed6f63",
       "rewritten": true
     },
     {
@@ -681,7 +681,7 @@
       "output": ".dsh/skills/team-polish/SKILL.md",
       "upstreamFrontmatter": "name: team-polish\ndescription: \"Orchestrate the polish team — performance-analyst, technical-artist, sound-designer, qa-tester — to optimize and harden a feature or area.\"\nargument-hint: \"[feature or area to polish] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-polish/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d2bea963ed907426",
-      "outputSha256": "271b9b14185beddd",
+      "outputSha256": "0f002d406a4a22a8",
       "rewritten": true
     },
     {
@@ -690,7 +690,7 @@
       "output": ".dsh/skills/team-qa/SKILL.md",
       "upstreamFrontmatter": "name: team-qa\ndescription: \"Orchestrate the QA team through a full testing cycle — qa-lead strategy and test plan, qa-tester case writing, execution, sign-off.\"\nargument-hint: \"[sprint | feature: system-name] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/team-qa/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "0ab2bc67d3a95691",
-      "outputSha256": "0321d09d11f114ae",
+      "outputSha256": "89b0e13203ec1843",
       "rewritten": true
     },
     {
@@ -699,7 +699,7 @@
       "output": ".dsh/skills/team-release/SKILL.md",
       "upstreamFrontmatter": "name: team-release\ndescription: \"Orchestrate the release team — release-manager, qa-lead, devops-engineer, producer — to execute a release from candidate to deployment.\"\nargument-hint: \"[version number or 'next'] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-release/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d7fbdf2807a2ce18",
-      "outputSha256": "611001a513407d19",
+      "outputSha256": "25fdd93ddfa3af65",
       "rewritten": true
     },
     {
@@ -708,7 +708,7 @@
       "output": ".dsh/skills/team-ui/SKILL.md",
       "upstreamFrontmatter": "name: team-ui\ndescription: \"Orchestrate the UI team through the UX pipeline — authoring, visual design, implementation, review, polish. Uses /ux-design, /ux-review, studio templates.\"\nargument-hint: \"[UI feature description] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, TaskCreate, TaskGet, TaskList, TaskUpdate, Bash(bash \"*/.claude/skills/team-ui/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "1c093c20361e8594",
-      "outputSha256": "4ae24f65a078ac2b",
+      "outputSha256": "3460245d0e66ea89",
       "rewritten": true
     },
     {
@@ -717,7 +717,7 @@
       "output": ".dsh/skills/tech-debt/SKILL.md",
       "upstreamFrontmatter": "name: tech-debt\ndescription: \"Track, categorize and prioritize technical debt across the codebase — scans for debt indicators, maintains a register.\"\nargument-hint: \"[scan|add|prioritize|report]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/tech-debt/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "db5118f6924d97cd",
-      "outputSha256": "81d0763f8a5f5a2f",
+      "outputSha256": "f2b4a1f1098af818",
       "rewritten": true
     },
     {
@@ -726,7 +726,7 @@
       "output": ".dsh/skills/test-evidence-review/SKILL.md",
       "upstreamFrontmatter": "name: test-evidence-review\ndescription: \"Quality review of test files and evidence — goes beyond existence, evaluates assertion coverage. ADEQUATE/INCOMPLETE/MISSING/NOT ASSESSED per story.\"\nargument-hint: \"[story-path | sprint | system-name]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/test-evidence-review/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "4fda2284471e7b97",
-      "outputSha256": "3b3510f494eb653f",
+      "outputSha256": "f2ca30c524efd563",
       "rewritten": true
     },
     {
@@ -735,7 +735,7 @@
       "output": ".dsh/skills/test-flakiness/SKILL.md",
       "upstreamFrontmatter": "name: test-flakiness\ndescription: \"Find flaky tests from CI logs — aggregates pass rates, spots intermittent failures, recommends quarantine. After multiple runs.\"\nargument-hint: \"[ci-log-path | scan | registry]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Bash(bash \"*/.claude/skills/test-flakiness/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "01c9988360bbdaaf",
-      "outputSha256": "08ceee93fe2e3cc1",
+      "outputSha256": "2225a56f1bc2c149",
       "rewritten": true
     },
     {
@@ -744,7 +744,7 @@
       "output": ".dsh/skills/test-helpers/SKILL.md",
       "upstreamFrontmatter": "name: test-helpers\ndescription: \"Generate engine-specific test helper libraries — assertion utilities, factory functions, mocks in the engine's test folder. Reduces boilerplate.\"\nargument-hint: \"[system-name | all | scaffold]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/test-helpers/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "bbf26e091df9fbf8",
-      "outputSha256": "38cb40ed24f7c7e0",
+      "outputSha256": "4fb33ae556e09dcc",
       "rewritten": true
     },
     {
@@ -753,7 +753,7 @@
       "output": ".dsh/skills/test-setup/SKILL.md",
       "upstreamFrontmatter": "name: test-setup\ndescription: \"Scaffold the test framework and CI — tests/ directory, engine test runner, GitHub Actions workflow. Once, before the first sprint.\"\nargument-hint: \"[force]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Bash(bash \"*/.claude/skills/test-setup/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "9fcd81170855dd61",
-      "outputSha256": "55b938dfb57ad05b",
+      "outputSha256": "842c991b08fc2241",
       "rewritten": true
     },
     {
@@ -786,7 +786,7 @@
       "output": ".dsh/skills/ux-design/SKILL.md",
       "upstreamFrontmatter": "name: ux-design\ndescription: \"Section-by-section UX spec authoring for a screen, flow or HUD. Reads the player journey to provide context; also project-wide accessibility.\"\nargument-hint: \"[screen/flow name] or 'hud' or 'patterns' or 'accessibility'\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/ux-design/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "39287bc970c83b8b",
-      "outputSha256": "5f4b0a333430860f",
+      "outputSha256": "508c0393e8d70cf2",
       "rewritten": true
     },
     {
@@ -795,7 +795,7 @@
       "output": ".dsh/skills/ux-review/SKILL.md",
       "upstreamFrontmatter": "name: ux-review\ndescription: \"Validate a UX spec, HUD design or pattern library — accessibility, GDD alignment, readiness. APPROVED / NOT ASSESSED / NEEDS REVISION / MAJOR REVISION NEEDED.\"\nargument-hint: \"[file-path or 'all' or 'hud' or 'patterns']\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(bash \"*/.claude/skills/ux-review/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "b932cc17ab61aaef",
-      "outputSha256": "b474fb132c3ce3a1",
+      "outputSha256": "e776928722ab2692",
       "rewritten": true
     },
     {
@@ -804,7 +804,7 @@
       "output": ".dsh/skills/vertical-slice/SKILL.md",
       "upstreamFrontmatter": "name: vertical-slice\ndescription: \"Pre-production validation — end-to-end build to confirm the full loop is achievable before committing to Production. After GDDs, architecture, UX specs.\"\nargument-hint: \"[--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/vertical-slice/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "5ca4cb1420837ed7",
-      "outputSha256": "99c05ec58995e40d",
+      "outputSha256": "c8119fa23a96685c",
       "rewritten": true
     },
     {
@@ -813,7 +813,7 @@
       "output": ".dsh/agents/accessibility-specialist.md",
       "upstreamFrontmatter": "name: accessibility-specialist\ndescription: \"Accessibility standards and assistive features — remapping, text scaling, colorblind modes, screen reader support.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 10",
       "sourceSha256": "5c01bb2dc107cace",
-      "outputSha256": "0f46c0a30229b6d2",
+      "outputSha256": "7665b45dbe5d0f39",
       "rewritten": true
     },
     {
@@ -822,7 +822,7 @@
       "output": ".dsh/agents/ai-programmer.md",
       "upstreamFrontmatter": "name: ai-programmer\ndescription: \"Implements game AI — behavior trees, state machines, pathfinding, perception, decision-making, NPC and enemy behavior, AI debugging.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "fd9499532679c40b",
-      "outputSha256": "e48e79096aeecb14",
+      "outputSha256": "5cf9de769a3e7c07",
       "rewritten": true
     },
     {
@@ -831,7 +831,7 @@
       "output": ".dsh/agents/analytics-engineer.md",
       "upstreamFrontmatter": "name: analytics-engineer\ndescription: \"Telemetry and analytics — event tracking, player behavior, A/B test frameworks, dashboard specification, data pipelines.\"\ntools: Read, Glob, Grep, Write, Edit, Bash, WebSearch\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "4765444393bbf361",
-      "outputSha256": "733662d7aa8ac548",
+      "outputSha256": "f341d88a710548cc",
       "rewritten": true
     },
     {
@@ -840,7 +840,7 @@
       "output": ".dsh/agents/art-director.md",
       "upstreamFrontmatter": "name: art-director\ndescription: \"Owns visual identity — style guides, art bible, asset standards, color palettes, UI visual direction.\"\ntools: Read, Glob, Grep, Write, Edit, WebSearch\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "408c67a62b22e4b4",
-      "outputSha256": "65b17e1830e99209",
+      "outputSha256": "d4e6951f7ed3dae3",
       "rewritten": true
     },
     {
@@ -849,7 +849,7 @@
       "output": ".dsh/agents/audio-director.md",
       "upstreamFrontmatter": "name: audio-director\ndescription: \"Owns sonic identity — music direction, sound palette, audio implementation strategy, mix balance.\"\ntools: Read, Glob, Grep, Write, Edit, WebSearch\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "ff6646cf1dec5018",
-      "outputSha256": "266a47e1fe68aeec",
+      "outputSha256": "09199eafdcf817a8",
       "rewritten": true
     },
     {
@@ -858,7 +858,7 @@
       "output": ".dsh/agents/community-manager.md",
       "upstreamFrontmatter": "name: community-manager\ndescription: \"Player-facing communication — patch notes, social posts, community updates, feedback collection, player bug triage, crisis communication.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: sonnet\nmaxTurns: 10\ndisallowedTools: Bash",
       "sourceSha256": "5d75220aace9d532",
-      "outputSha256": "64547deaa37b0639",
+      "outputSha256": "3fd3ba37c9e1ed27",
       "rewritten": true
     },
     {
@@ -867,7 +867,7 @@
       "output": ".dsh/agents/creative-director.md",
       "upstreamFrontmatter": "name: creative-director\ndescription: \"Highest creative authority — vision, tone, aesthetic direction. Use when a decision affects game identity or department leads deadlock.\"\ntools: Read, Glob, Grep, Write, Edit, WebSearch\nmodel: opus\nmaxTurns: 30\nmemory: project\ndisallowedTools: Bash",
       "sourceSha256": "5929d8d01f91030a",
-      "outputSha256": "bac59cb45cea19f8",
+      "outputSha256": "e86ada2469bb46ad",
       "rewritten": true
     },
     {
@@ -876,7 +876,7 @@
       "output": ".dsh/agents/devops-engineer.md",
       "upstreamFrontmatter": "name: devops-engineer\ndescription: \"Build pipelines, CI/CD configuration, version control workflow, branching strategy, automated test pipelines, deployment infrastructure.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 10",
       "sourceSha256": "8077488ead994594",
-      "outputSha256": "875d4faa42c385c2",
+      "outputSha256": "efd6c49ca9d80b34",
       "rewritten": true
     },
     {
@@ -885,7 +885,7 @@
       "output": ".dsh/agents/economy-designer.md",
       "upstreamFrontmatter": "name: economy-designer\ndescription: \"Resource economies — loot tables, sink/faucet analysis, progression curve calibration, economic balance.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "67714853584eef14",
-      "outputSha256": "368bd06660356ddf",
+      "outputSha256": "fd33a82b18732a29",
       "rewritten": true
     },
     {
@@ -894,7 +894,7 @@
       "output": ".dsh/agents/engine-programmer.md",
       "upstreamFrontmatter": "name: engine-programmer\ndescription: \"Core engine systems — rendering pipeline, physics, memory, resource loading, scene management, performance-critical framework code.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "c3baa0a6616972fd",
-      "outputSha256": "4aa00b1bdad8068f",
+      "outputSha256": "06e7de57b611582c",
       "rewritten": true
     },
     {
@@ -903,7 +903,7 @@
       "output": ".dsh/agents/game-designer.md",
       "upstreamFrontmatter": "name: game-designer\ndescription: \"Mechanical and systems design — core loops, progression, combat, economy, player-facing rules. Mechanics-level questions.\"\ntools: Read, Glob, Grep, Write, Edit, WebSearch\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nskills: [balance-check]\nmemory: project",
       "sourceSha256": "1a9c55d0ff1f2d4c",
-      "outputSha256": "06d75978464b5a7b",
+      "outputSha256": "a78ecf53e3bbce40",
       "rewritten": true
     },
     {
@@ -912,7 +912,7 @@
       "output": ".dsh/agents/gameplay-programmer.md",
       "upstreamFrontmatter": "name: gameplay-programmer\ndescription: \"Implements designed mechanics as code — player systems, combat, interactive features, gameplay system code.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "d7b114253eaa4e76",
-      "outputSha256": "d057732c2ca8334a",
+      "outputSha256": "2d609736ac425e05",
       "rewritten": true
     },
     {
@@ -921,7 +921,7 @@
       "output": ".dsh/agents/godot-csharp-specialist.md",
       "upstreamFrontmatter": "name: godot-csharp-specialist\ndescription: \"Godot 4 C# quality — .NET patterns, attribute-based exports, signal delegates, async patterns, type-safe node access.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "dcc6b7bf4d3c98ce",
-      "outputSha256": "813d38967710732c",
+      "outputSha256": "ab1b41b549c1679b",
       "rewritten": true
     },
     {
@@ -930,7 +930,7 @@
       "output": ".dsh/agents/godot-gdextension-specialist.md",
       "upstreamFrontmatter": "name: godot-gdextension-specialist\ndescription: \"Native code integration with Godot — GDExtension API, godot-cpp and godot-rust bindings, custom node types, the native boundary.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "447ea6a84d98b99d",
-      "outputSha256": "dbfc04942f261006",
+      "outputSha256": "826ae20b45e6bb45",
       "rewritten": true
     },
     {
@@ -939,7 +939,7 @@
       "output": ".dsh/agents/godot-gdscript-specialist.md",
       "upstreamFrontmatter": "name: godot-gdscript-specialist\ndescription: \"GDScript code quality — static typing enforcement, signal architecture, coroutine patterns, GDScript idioms, typed and performant.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "942ba01a4c5caac1",
-      "outputSha256": "acd10a94dd0c6b31",
+      "outputSha256": "07ad33358948fc42",
       "rewritten": true
     },
     {
@@ -948,7 +948,7 @@
       "output": ".dsh/agents/godot-shader-specialist.md",
       "upstreamFrontmatter": "name: godot-shader-specialist\ndescription: \"Godot rendering customization — shading language, visual shaders, material setup, particle shaders, post-processing.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "8abec4b035bb2b30",
-      "outputSha256": "7766b3009226936d",
+      "outputSha256": "f4e51bfd5947d033",
       "rewritten": true
     },
     {
@@ -957,7 +957,7 @@
       "output": ".dsh/agents/godot-specialist.md",
       "upstreamFrontmatter": "name: godot-specialist\ndescription: \"Authority on Godot-specific patterns and APIs — node/scene architecture, signals, resources; guides GDScript vs C# vs GDExtension.\"\ntools: Read, Glob, Grep, Write, Edit, Bash, Agent(godot-gdscript-specialist, godot-csharp-specialist, godot-shader-specialist, godot-gdextension-specialist)\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "4f84df12289023ea",
-      "outputSha256": "c0a3396075c6b626",
+      "outputSha256": "fc3923a111128e75",
       "rewritten": true
     },
     {
@@ -966,7 +966,7 @@
       "output": ".dsh/agents/lead-programmer.md",
       "upstreamFrontmatter": "name: lead-programmer\ndescription: \"Lead programmer — code-level architecture, coding standards, code review, API design, refactoring strategy, assigning work to specialist programmers.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20\nskills: [tech-debt]\nmemory: project",
       "sourceSha256": "9a8ff4f614016c45",
-      "outputSha256": "83ad75dd67830790",
+      "outputSha256": "060047f2be2de1b6",
       "rewritten": true
     },
     {
@@ -975,7 +975,7 @@
       "output": ".dsh/agents/level-designer.md",
       "upstreamFrontmatter": "name: level-designer\ndescription: \"Spatial design for levels and areas — encounter layouts, pacing, difficulty, layout planning, environmental storytelling.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "50f504a503910915",
-      "outputSha256": "f9a3b454c8a03499",
+      "outputSha256": "a18d35221295fb5a",
       "rewritten": true
     },
     {
@@ -984,7 +984,7 @@
       "output": ".dsh/agents/live-ops-designer.md",
       "upstreamFrontmatter": "name: live-ops-designer\ndescription: \"Post-launch content — seasonal events, battle passes, content cadence, retention, engagement analytics. Keeps the game fresh.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash",
       "sourceSha256": "6c860d01f334da65",
-      "outputSha256": "9fa39ac26fe6678e",
+      "outputSha256": "a289e56ffaf63be6",
       "rewritten": true
     },
     {
@@ -993,7 +993,7 @@
       "output": ".dsh/agents/localization-lead.md",
       "upstreamFrontmatter": "name: localization-lead\ndescription: \"Internationalization architecture — i18n system design, string extraction workflows, locale testing, locale-specific issues, translation pipeline.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20\nmemory: project",
       "sourceSha256": "e5c03d4eba9d746c",
-      "outputSha256": "da6da76632289937",
+      "outputSha256": "c194f4a0a55845cf",
       "rewritten": true
     },
     {
@@ -1002,7 +1002,7 @@
       "output": ".dsh/agents/narrative-director.md",
       "upstreamFrontmatter": "name: narrative-director\ndescription: \"Story architecture, world-building, character design, dialogue strategy. Narrative structure and direction rather than writing individual lines.\"\ntools: Read, Glob, Grep, Write, Edit, WebSearch\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "68a4b4487e4adbf3",
-      "outputSha256": "42a02e6174cb455b",
+      "outputSha256": "bcc47d77f39b95f0",
       "rewritten": true
     },
     {
@@ -1011,7 +1011,7 @@
       "output": ".dsh/agents/network-programmer.md",
       "upstreamFrontmatter": "name: network-programmer\ndescription: \"Multiplayer networking — state replication, lag compensation, matchmaking, network protocol, netcode and bandwidth optimization.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "92fa451fcc514429",
-      "outputSha256": "3362b45b29fba205",
+      "outputSha256": "958395309ece8998",
       "rewritten": true
     },
     {
@@ -1020,7 +1020,7 @@
       "output": ".dsh/agents/performance-analyst.md",
       "upstreamFrontmatter": "name: performance-analyst\ndescription: \"Performance analyst — profiling, bottlenecks, memory analysis, frame time investigation, recommends optimizations, tracks metrics over time.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20\nmemory: project",
       "sourceSha256": "9bb89d18279ee9a2",
-      "outputSha256": "e40c5a0f46a11824",
+      "outputSha256": "0112c2f0aaf64a6c",
       "rewritten": true
     },
     {
@@ -1029,7 +1029,7 @@
       "output": ".dsh/agents/producer.md",
       "upstreamFrontmatter": "name: producer\ndescription: \"Production concerns — sprint planning, milestone tracking, risk, scope, cross-department coordination when multiple departments must synchronize.\"\ntools: Read, Glob, Grep, Write, Edit, Bash, WebSearch\nmodel: opus\nmaxTurns: 30\nmemory: project\nskills: [scope-check, estimate]",
       "sourceSha256": "919a8f2f5d464087",
-      "outputSha256": "3a55bbc632ed4c02",
+      "outputSha256": "028a520687942764",
       "rewritten": true
     },
     {
@@ -1038,7 +1038,7 @@
       "output": ".dsh/agents/prototyper.md",
       "upstreamFrontmatter": "name: prototyper\ndescription: \"Throwaway builds — concept prototypes after brainstorm to test an idea is fun before GDDs; vertical slices pre-production. Speed over standards.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 25\nisolation: worktree",
       "sourceSha256": "0d962cf47be8e5be",
-      "outputSha256": "0d03500ab3b176a1",
+      "outputSha256": "f3ae05b1f2c6bfc5",
       "rewritten": true
     },
     {
@@ -1047,7 +1047,7 @@
       "output": ".dsh/agents/qa-lead.md",
       "upstreamFrontmatter": "name: qa-lead\ndescription: \"Test strategy and process — test plan creation, bug severity assessment, regression planning, release quality gates, readiness evaluation.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20\nskills: [bug-report, release-checklist]\nmemory: project",
       "sourceSha256": "5b01b242afe31f4a",
-      "outputSha256": "6c90f9f4117c4981",
+      "outputSha256": "99ca67ca03dea509",
       "rewritten": true
     },
     {
@@ -1056,7 +1056,7 @@
       "output": ".dsh/agents/qa-tester.md",
       "upstreamFrontmatter": "name: qa-tester\ndescription: \"Writes test cases, bug reports, and checklists — test case generation, regression checklist creation, execution documentation.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 10",
       "sourceSha256": "2500855056d30e0f",
-      "outputSha256": "597313326eecb54f",
+      "outputSha256": "fc779b135e12564a",
       "rewritten": true
     },
     {
@@ -1065,7 +1065,7 @@
       "output": ".dsh/agents/release-manager.md",
       "upstreamFrontmatter": "name: release-manager\ndescription: \"Release pipeline — certification checklists, store submissions and page prep, platform requirements, version numbering, release-day coordination.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20\nskills: [release-checklist, changelog, patch-notes]",
       "sourceSha256": "66d65df0c229a93c",
-      "outputSha256": "7e7478dea58958da",
+      "outputSha256": "3451e45481d65a01",
       "rewritten": true
     },
     {
@@ -1074,7 +1074,7 @@
       "output": ".dsh/agents/security-engineer.md",
       "upstreamFrontmatter": "name: security-engineer\ndescription: \"Protects against cheating, exploits, breaches — anti-cheat measures, secure save data and network comms, player privacy compliance.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "eb88afaa2b38c4a8",
-      "outputSha256": "2db30581468849b8",
+      "outputSha256": "0197251941a3c35a",
       "rewritten": true
     },
     {
@@ -1083,7 +1083,7 @@
       "output": ".dsh/agents/sound-designer.md",
       "upstreamFrontmatter": "name: sound-designer\ndescription: \"SFX specifications and spec sheets — audio event documentation, mixing parameters, sound category definitions.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 10\ndisallowedTools: Bash",
       "sourceSha256": "e959b46bf07b4185",
-      "outputSha256": "23c14e9f25f99b31",
+      "outputSha256": "81669803d5b02a68",
       "rewritten": true
     },
     {
@@ -1092,7 +1092,7 @@
       "output": ".dsh/agents/systems-designer.md",
       "upstreamFrontmatter": "name: systems-designer\ndescription: \"Detailed subsystem mechanics — combat formulas, progression curves, crafting recipes, status effect interactions, mathematical modeling of a mechanic.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "a2ebbd05fbf6e2f2",
-      "outputSha256": "65c226dbc985f17f",
+      "outputSha256": "f632be5078dcffd2",
       "rewritten": true
     },
     {
@@ -1101,7 +1101,7 @@
       "output": ".dsh/agents/technical-artist.md",
       "upstreamFrontmatter": "name: technical-artist\ndescription: \"Technical artist bridging art and engineering — shaders, VFX, rendering optimization, art pipeline tools, art-to-engine issues.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "34cbd53347f5f001",
-      "outputSha256": "56161354555948e8",
+      "outputSha256": "50499082569d4381",
       "rewritten": true
     },
     {
@@ -1110,7 +1110,7 @@
       "output": ".dsh/agents/technical-director.md",
       "upstreamFrontmatter": "name: technical-director\ndescription: \"High-level technical decisions — engine architecture, technology choices, performance strategy, technical risk, cross-system conflicts.\"\ntools: Read, Glob, Grep, Write, Edit, Bash, WebSearch\nmodel: opus\nmaxTurns: 30\nmemory: project",
       "sourceSha256": "b20b51e318f744c4",
-      "outputSha256": "df5293ccb2ff9fbb",
+      "outputSha256": "d6bae05e171adb39",
       "rewritten": true
     },
     {
@@ -1119,7 +1119,7 @@
       "output": ".dsh/agents/tools-programmer.md",
       "upstreamFrontmatter": "name: tools-programmer\ndescription: \"Internal dev tools — editor extensions, content authoring tools, debug utilities, pipeline automation, editor workflow.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "acb025f3b1690e04",
-      "outputSha256": "1a62909d2e7f249f",
+      "outputSha256": "fccc4216fba3f3e0",
       "rewritten": true
     },
     {
@@ -1128,7 +1128,7 @@
       "output": ".dsh/agents/ue-blueprint-specialist.md",
       "upstreamFrontmatter": "name: ue-blueprint-specialist\ndescription: \"Blueprint architecture and Blueprint/C++ boundary — optimization, maintainable graphs. Prevents Blueprint spaghetti, enforces clean BP patterns.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: sonnet\nmaxTurns: 20\ndisallowedTools: Bash",
       "sourceSha256": "81f4ef6991836b4e",
-      "outputSha256": "9d209af424b61b0e",
+      "outputSha256": "82663168fe58b561",
       "rewritten": true
     },
     {
@@ -1137,7 +1137,7 @@
       "output": ".dsh/agents/ue-gas-specialist.md",
       "upstreamFrontmatter": "name: ue-gas-specialist\ndescription: \"Gameplay Ability System — abilities, gameplay effects, attribute sets, tags, ability tasks, prediction. Prevents common GAS anti-patterns.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "f906f55b81ccb96f",
-      "outputSha256": "5f415940deafcfb9",
+      "outputSha256": "d334cbe705cc6eaa",
       "rewritten": true
     },
     {
@@ -1146,7 +1146,7 @@
       "output": ".dsh/agents/ue-replication-specialist.md",
       "upstreamFrontmatter": "name: ue-replication-specialist\ndescription: \"Unreal networking — property replication, RPCs, client prediction, relevancy, net serialization, bandwidth. Server-authoritative architecture.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "b09e381216ae3b2e",
-      "outputSha256": "a6c99c937f7fff08",
+      "outputSha256": "fbabf7930e721c58",
       "rewritten": true
     },
     {
@@ -1155,7 +1155,7 @@
       "output": ".dsh/agents/ue-umg-specialist.md",
       "upstreamFrontmatter": "name: ue-umg-specialist\ndescription: \"Unreal UI implementation — UMG widget hierarchy, data binding, CommonUI input routing, widget styling, UI optimization.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "ebd4881b30a83900",
-      "outputSha256": "ef243abf26539973",
+      "outputSha256": "1614937b9cb9c7fb",
       "rewritten": true
     },
     {
@@ -1164,7 +1164,7 @@
       "output": ".dsh/agents/ui-programmer.md",
       "upstreamFrontmatter": "name: ui-programmer\ndescription: \"Implements user interface systems — menus, HUDs, inventory screens, dialogue boxes, UI framework code, screen flow.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "c6f84c61a7fe7ed4",
-      "outputSha256": "9456d6bfdfa432cf",
+      "outputSha256": "4d11498ecf14c641",
       "rewritten": true
     },
     {
@@ -1173,7 +1173,7 @@
       "output": ".dsh/agents/unity-addressables-specialist.md",
       "upstreamFrontmatter": "name: unity-addressables-specialist\ndescription: \"Unity asset management — Addressable groups, loading/unloading, content catalogs, remote delivery, asset bundle optimization, fast load times.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "c6b21eac538d06c3",
-      "outputSha256": "13b3751e5237abe7",
+      "outputSha256": "cc114b5035e9be59",
       "rewritten": true
     },
     {
@@ -1182,7 +1182,7 @@
       "output": ".dsh/agents/unity-dots-specialist.md",
       "upstreamFrontmatter": "name: unity-dots-specialist\ndescription: \"Unity Data-Oriented Technology Stack — Entity Component System, Jobs, Burst compiler optimization, hybrid renderer, correct ECS patterns.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "aca1d91ea06788e4",
-      "outputSha256": "299e19dc28f91632",
+      "outputSha256": "556823a5e18768cd",
       "rewritten": true
     },
     {
@@ -1191,7 +1191,7 @@
       "output": ".dsh/agents/unity-shader-specialist.md",
       "upstreamFrontmatter": "name: unity-shader-specialist\ndescription: \"Unity rendering — Shader Graph, custom HLSL, VFX Graph, render pipeline customization (URP/HDRP), post-processing within performance budgets.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "408f711444531a1b",
-      "outputSha256": "4c5100307da6d651",
+      "outputSha256": "9d560af4765659e6",
       "rewritten": true
     },
     {
@@ -1200,7 +1200,7 @@
       "output": ".dsh/agents/unity-specialist.md",
       "upstreamFrontmatter": "name: unity-specialist\ndescription: \"Authority on Unity-specific patterns and APIs — guides MonoBehaviour vs DOTS/ECS, Unity subsystems including Addressables and Input System.\"\ntools: Read, Glob, Grep, Write, Edit, Bash, Agent(unity-dots-specialist, unity-shader-specialist, unity-addressables-specialist, unity-ui-specialist)\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "52e2092eb4b71e4b",
-      "outputSha256": "a2862dcee5686d87",
+      "outputSha256": "211ece81f0ec44bf",
       "rewritten": true
     },
     {
@@ -1209,7 +1209,7 @@
       "output": ".dsh/agents/unity-ui-specialist.md",
       "upstreamFrontmatter": "name: unity-ui-specialist\ndescription: \"Unity UI implementation — UI Toolkit (UXML/USS), UGUI Canvas, data binding, runtime UI performance, cross-platform adaptation.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: sonnet\nmaxTurns: 20",
       "sourceSha256": "61d463efe46d3cfc",
-      "outputSha256": "6dfba8158dab5642",
+      "outputSha256": "118fb5479d1ff96b",
       "rewritten": true
     },
     {
@@ -1218,7 +1218,7 @@
       "output": ".dsh/agents/unreal-specialist.md",
       "upstreamFrontmatter": "name: unreal-specialist\ndescription: \"Authority on Unreal-specific patterns and APIs — guides Blueprint vs C++, UE subsystems (GAS, Enhanced Input, Niagara, etc.).\"\ntools: Read, Glob, Grep, Write, Edit, Bash, Agent(ue-gas-specialist, ue-blueprint-specialist, ue-replication-specialist, ue-umg-specialist)\nmodel: inherit\nmaxTurns: 20",
       "sourceSha256": "0f94720c92093dd4",
-      "outputSha256": "ad1b0d5332ea7d8e",
+      "outputSha256": "ae27ef5de3476601",
       "rewritten": true
     },
     {
@@ -1227,7 +1227,7 @@
       "output": ".dsh/agents/ux-designer.md",
       "upstreamFrontmatter": "name: ux-designer\ndescription: \"User experience flows, interaction design, information architecture — user flow mapping, interaction pattern design, onboarding, accessibility requirements.\"\ntools: Read, Glob, Grep, Write, Edit, WebSearch\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "7ef98780134e2b6e",
-      "outputSha256": "93bbde7c5e75a85e",
+      "outputSha256": "0b7e09cd7145ab47",
       "rewritten": true
     },
     {
@@ -1236,7 +1236,7 @@
       "output": ".dsh/agents/world-builder.md",
       "upstreamFrontmatter": "name: world-builder\ndescription: \"World builder for lore — factions, cultures, history, geography, ecology, world rules. Faction design, lore consistency checks.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "45e6f1997d936b20",
-      "outputSha256": "da2f0ed4be794a66",
+      "outputSha256": "a1899e7d6e247a65",
       "rewritten": true
     },
     {
@@ -1245,7 +1245,7 @@
       "output": ".dsh/agents/writer.md",
       "upstreamFrontmatter": "name: writer\ndescription: \"Writer of player-facing text — dialogue, lore entries, item and ability descriptions, environmental text.\"\ntools: Read, Glob, Grep, Write, Edit\nmodel: inherit\nmaxTurns: 20\ndisallowedTools: Bash\nmemory: project",
       "sourceSha256": "b7dcc680584048d7",
-      "outputSha256": "14dcd59006edd29b",
+      "outputSha256": "c928deafeafca6d5",
       "rewritten": true
     },
     {
@@ -2420,6 +2420,14 @@
       "sourceSha256": "ad419abf2f17df85",
       "outputSha256": "bc0a2d16ce4c287c",
       "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/docs/hooks-reference/dsh-differences.md",
+      "output": ".dsh/docs/hooks-reference/dsh-differences.md",
+      "sourceSha256": "57483b4c632648b8",
+      "outputSha256": "57483b4c632648b8",
+      "rewritten": false
     },
     {
       "kind": "overlay",
