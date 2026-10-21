@@ -8,7 +8,7 @@
 >   （`tools/build-dsh.mjs` 从 `.dsh/docs/technical-preferences.md` 复制），手改会在下次生成时被覆盖。
 >   DSH 侧 `project.yaml` 是唯一来源，`/settings` 与 `node tools/yaml-helper.mjs` 都读它；
 >   `technical-preferences.md` 只作为读不到键时的 legacy 回退。
-> - **本注记压过正文第 5 节的"双写"要求**（实测冲突记录：`docs/DSH-SMOKE-CURRENT.md` F1）。
+> - **本注记压过正文第 5 节的"双写"要求**（实测冲突记录见框架仓库的验收台账（F1））。
 >   正文第 5 节让你"创建或更新 `.dsh/docs/technical-preferences.md`"、§5.5.3 又要求读回 `project.yaml`
 >   并核对"四个块与写进 `technical-preferences.md` 的值一致，不一致就报给用户并停止"——**这两句在 DSH 侧
 >   无法同时满足**，因为那个文件是生成物。本移植的等价做法是：

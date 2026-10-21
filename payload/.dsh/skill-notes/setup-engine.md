@@ -8,7 +8,7 @@
 >   （`tools/build-dsh.mjs` 从 `.dsh/docs/technical-preferences.md` 复制），手改会在下次生成时被覆盖。
 >   DSH 侧 `project.yaml` 是唯一来源，`/settings` 与 `node tools/yaml-helper.mjs` 都读它；
 >   `technical-preferences.md` 只作为读不到键时的 legacy 回退。
-> - **本注记压过正文第 5 节的"双写"要求**（实测冲突记录：`docs/DSH-SMOKE-CURRENT.md` F1）。
+> - **本注记压过正文第 5 节的"双写"要求**（实测冲突记录见框架仓库的验收台账（F1））。
 >   正文第 5 节让你"创建或更新 `.dsh/docs/technical-preferences.md`"、§5.5.3 又要求读回 `project.yaml`
 >   并核对"四个块与写进 `technical-preferences.md` 的值一致，不一致就报给用户并停止"——**这两句在 DSH 侧
 >   无法同时满足**，因为那个文件是生成物。本移植的等价做法是：
@@ -19,3 +19,4 @@
 >      测试框架），按 §8.5 报告给用户并说明原因，**不要**换成未经技能授权的命令来"消除"它。
 >   正文里凡出现"写 `technical-preferences.md`"的句子，按本节理解。
 > - 沙箱限制下 Godot 需要把 `APPDATA` 指到工作区内才能启动，见 `dev-story` 技能里的同一段说明。
+

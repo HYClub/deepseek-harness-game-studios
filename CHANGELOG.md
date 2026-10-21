@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.9 — the rules a project inherits are actually read
+
+- A project's `CLAUDE.md` now spells out the `@path` imports it used to carry. This runtime does not expand them, so until now those four documents were referenced but never read; they are now written out as "read this file" instructions, and the release gate fails if an unexpanded import would ship.
+- Every agent role card states the tools its role should stay within, using the same tool names as the frontmatter directly above it, so a delegated role reads one vocabulary rather than two. The boundary is advisory: the runtime cannot enforce a per-agent tool set.
+- The notes the generator adds to skill and role cards are written in Chinese, like the rest of what a project receives. Contributor documentation and release text stay in English.
+- The bash ↔ Node comparison now counts its skips and fails when the count is unexpected, instead of skipping the two YAML-dependent pairs quietly.
 ## 0.1.8 — the framework changelog travels with the project
 
 - A project seeded from the framework now carries the changelog its upgrade guide refers to, so the two documents stay together.
@@ -40,6 +46,8 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
+
 
 
 

@@ -1,56 +1,56 @@
 #!/usr/bin/env node
-/**
- * migrate-v1-config.mjs — convert a v1.0 DSGS project to v1.1 `project.yaml`.
- *
- * DSH-native port of `.dsh/scripts/migrate-v1-config.sh` (697 lines, function
- * bodies byte-for-byte referenced below). The shell original is the specification:
- * every message, exit code, guard and row of the migration report is reproduced
- * here, including the ones its comments explain at length. Where the comments say
- * "do not simplify this", the port keeps the shape they defend.
- *
- * WHY THIS IS A SCRIPT AND NOT SKILL PROSE
- *   "Migration on a real v1.0 project loses data" is the highest-severity risk in
- *   this area, so every failure mode the spec names (malformed file, enum
- *   mismatch, split-brain, custom sections) is a testable branch here.
- *
- * MODES  (same as the original)
- *   (default)   migrate: write project.yaml + production/migration-report.md
- *   --dry-run   report what would happen; write nothing
- *   --finalize  delete legacy files, but ONLY after proving their content is
- *               preserved in project.yaml
- *   --root DIR  port-only: project root to operate on (fixtures/tests). Default
- *               resolution is described at `resolveRoot()`.
- *
- * NON-DESTRUCTIVE BY DEFAULT. Migration leaves every legacy file in place, so the
- * whole operation stays reversible with `git checkout` until --finalize is run
- * deliberately. That is why --finalize is a separate invocation.
- *
- * EXIT CODES (unchanged): 0 success/no-op, 2 usage, 3 refused (split-brain /
- * missing project.yaml for --finalize), 4 refused (content not preserved).
- *
- * SUBSTITUTIONS FORCED BY THE DSH SANDBOX (reported, never silent)
- *   - The original shells out to `awk`, `sed` and `grep` for every parse. None of
- *     them exists in the DSH sandbox and Git Bash/WSL cannot start at all, so
- *     `tp_get`, `num`, `is_num`, `yaml_list`, `trim_line`, `re_quote` and
- *     `agent_name(s)` are reimplemented in JS below. Each one carries the comment
- *     from the original that says why it is written the way it is.
- *     `runtime.capture()` is unusable on Windows (it wraps the command line in the
- *     POSIX `{ cmd ; } > file` form, which cmd.exe cannot parse), so subprocesses
- *     go through `_capture.mjs`'s `runCommand()` — direct spawn with stdout/stderr
- *     redirected into a private temp file. No pipe is ever opened.
- *   - The original reads `project.yaml` with `grep -qE '^\s*key:\s*"?value"?'`.
- *     That is config reading, and PORTING.md says config reads go through
- *     `tools/yaml-helper.mjs`, so the three conflict checks call
- *     `__call get_yaml_key <file> <dotted.path>` instead. The comparison is the
- *     same "does project.yaml carry this value" test, made against the PARSED
- *     value rather than the raw line, so a trailing comment after the value no
- *     longer counts as a disagreement. That direction fails closed (refuse and
- *     ask, never delete) and is called out in the delivered report.
- *   - `.dsh/` paths in messages are printed as `.dsh/`, matching every other
- *     ported script.
- *
- * Test: `node tools/tests/scripts/migrate-v1-config.test.mjs`
- */
+/  
+   migrate-v1-config.mjs — convert a v1.0 DSGS project to v1.1 `project.yaml`.
+  
+   DSH-native port of `.dsh/scripts/migrate-v1-config.sh` (697 lines, function
+   bodies byte-for-byte referenced below). The shell original is the specification:
+   every message, exit code, guard and row of the migration report is reproduced
+   here, including the ones its comments explain at length. Where the comments say
+   "do not simplify this", the port keeps the shape they defend.
+  
+   WHY THIS IS A SCRIPT AND NOT SKILL PROSE
+     "Migration on a real v1.0 project loses data" is the highest-severity risk in
+     this area, so every failure mode the spec names (malformed file, enum
+     mismatch, split-brain, custom sections) is a testable branch here.
+  
+   MODES  (same as the original)
+     (default)   migrate: write project.yaml + production/migration-report.md
+     --dry-run   report what would happen; write nothing
+     --finalize  delete legacy files, but ONLY after proving their content is
+                 preserved in project.yaml
+     --root DIR  port-only: project root to operate on (fixtures/tests). Default
+                 resolution is described at `resolveRoot()`.
+  
+   NON-DESTRUCTIVE BY DEFAULT. Migration leaves every legacy file in place, so the
+   whole operation stays reversible with `git checkout` until --finalize is run
+   deliberately. That is why --finalize is a separate invocation.
+  
+   EXIT CODES (unchanged): 0 success/no-op, 2 usage, 3 refused (split-brain /
+   missing project.yaml for --finalize), 4 refused (content not preserved).
+  
+   SUBSTITUTIONS FORCED BY THE DSH SANDBOX (reported, never silent)
+     - The original shells out to `awk`, `sed` and `grep` for every parse. None of
+       them exists in the DSH sandbox and Git Bash/WSL cannot start at all, so
+       `tp_get`, `num`, `is_num`, `yaml_list`, `trim_line`, `re_quote` and
+       `agent_name(s)` are reimplemented in JS below. Each one carries the comment
+       from the original that says why it is written the way it is.
+       `runtime.capture()` is unusable on Windows (it wraps the command line in the
+       POSIX `{ cmd ; } > file` form, which cmd.exe cannot parse), so subprocesses
+       go through `_capture.mjs`'s `runCommand()` — direct spawn with stdout/stderr
+       redirected into a private temp file. No pipe is ever opened.
+     - The original reads `project.yaml` with `grep -qE '^\s key:\s "?value"?'`.
+       That is config reading, and PORTING.md says config reads go through
+       `tools/yaml-helper.mjs`, so the three conflict checks call
+       `__call get_yaml_key <file> <dotted.path>` instead. The comparison is the
+       same "does project.yaml carry this value" test, made against the PARSED
+       value rather than the raw line, so a trailing comment after the value no
+       longer counts as a disagreement. That direction fails closed (refuse and
+       ask, never delete) and is called out in the delivered report.
+     - `.dsh/` paths in messages are printed as `.dsh/`, matching every other
+       ported script.
+  
+   Test: the matching test in the framework repository's test tree
+  /
 import { existsSync, mkdirSync, readFileSync, realpathSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -64,7 +64,7 @@ const STAGE_TXT = 'production/stage.txt';
 const REVIEW_TXT = 'production/review-mode.txt';
 const TP = '.dsh/docs/technical-preferences.md';
 const REPORT = 'production/migration-report.md';
-/** The Node port's own path, as the user must type it for --finalize. */
+/   The Node port's own path, as the user must type it for --finalize.  /
 const SELF = '.dsh/scripts/migrate-v1-config.mjs';
 
 // ---------------------------------------------------------------------------
@@ -75,7 +75,7 @@ let MANUAL = '';
 const warn = (message) => { WARN += `- ${message}\n`; };
 const manual = (message) => { MANUAL += `- ${message}\n`; };
 
-/** Read a text file, or '' when it is absent/unreadable (the shell's `[ -f ]` gates). */
+/   Read a text file, or '' when it is absent/unreadable (the shell's `[ -f ]` gates).  /
 function readTextOr(file, root) {
   const full = join(root, file);
   if (!existsSync(full)) return '';
@@ -92,13 +92,13 @@ const isFile = (file, root) => existsSync(join(root, file));
 // Legacy detection (original lines 56-86)
 // ---------------------------------------------------------------------------
 
-/**
- * Every key the migration hands to tp_get. A key missing from here fails safe
- * (the file reads as unconfigured) rather than resurrecting the false positive
- * the original's comment block documents: `\*\*[^*]+\*\*` matched ANY bullet,
- * including the template's prose `- **Required Tests**: …` line, so every fresh
- * clone looked like a v1.0 project.
- */
+/  
+   Every key the migration hands to tp_get. A key missing from here fails safe
+   (the file reads as unconfigured) rather than resurrecting the false positive
+   the original's comment block documents: `\ \ [^ ]+\ \ ` matched ANY bullet,
+   including the template's prose `-   Required Tests  : …` line, so every fresh
+   clone looked like a v1.0 project.
+  /
 const TP_KEYS = [
   'Engine', 'Language', 'Rendering', 'Physics', 'Target Platforms', 'Primary Input',
   'Gamepad Support', 'Touch Support', 'Classes', 'Variables', 'Constants',
@@ -107,20 +107,20 @@ const TP_KEYS = [
   'Additional Specialists', 'Language/Code Specialist', 'Shader Specialist', 'UI Specialist',
 ];
 
-/**
- * `grep -qE "^[[:space:]]*-[[:space:]]+\*\*(…)\*\*:[[:space:]]*[^[:space:]\[]"`.
- * A value under a key nothing reads is not data this migration would carry over,
- * so it cannot be evidence that a migration is needed.
- */
+/  
+   `grep -qE "^[[:space:]] -[[:space:]]+\ \ (…)\ \ :[[:space:]] [^[:space:]\[]"`.
+   A value under a key nothing reads is not data this migration would carry over,
+   so it cannot be evidence that a migration is needed.
+  /
 function tpConfigured(root) {
   const text = readTextOr(TP, root);
   if (text === '') return false;
   const names = TP_KEYS.join('|');
-  const re = new RegExp(`^[ \\t]*-[ \\t]+\\*\\*(${names})\\*\\*:[ \\t]*[^ \\t\\[]`, 'm');
+  const re = new RegExp(`^[ \\t] -[ \\t]+\\ \\ (${names})\\ \\ :[ \\t] [^ \\t\\[]`, 'm');
   return re.test(text);
 }
 
-/** `legacy_present()`: any of the three legacy sources, TP only when configured. */
+/   `legacy_present()`: any of the three legacy sources, TP only when configured.  /
 function legacyPresent(root) {
   return isFile(STAGE_TXT, root) || isFile(REVIEW_TXT, root) || tpConfigured(root);
 }
@@ -129,22 +129,22 @@ function legacyPresent(root) {
 // technical-preferences.md parsing (original lines 88-146)
 // ---------------------------------------------------------------------------
 
-/**
- * `tp_get <section> <key>` -> value, or '' when absent/unconfigured.
- *
- * JOINS WRAPPED CONTINUATION LINES. Reading only the first physical line
- * truncated values mid-sentence — a framerate budget migrated as
- * "...Pro-tier target.** *(Changed", cut exactly where the author had wrapped.
- * A continuation is indented and is not itself a new `- **Key**:` bullet.
- *
- * The section match is a SUBSTRING, as `index($0, "## " sec) == 1` in the awk
- * original; section headers may only be recognised at column 1.
- */
+/  
+   `tp_get <section> <key>` -> value, or '' when absent/unconfigured.
+  
+   JOINS WRAPPED CONTINUATION LINES. Reading only the first physical line
+   truncated values mid-sentence — a framerate budget migrated as
+   "...Pro-tier target.    (Changed", cut exactly where the author had wrapped.
+   A continuation is indented and is not itself a new `-   Key  :` bullet.
+  
+   The section match is a SUBSTRING, as `index($0, "## " sec) == 1` in the awk
+   original; section headers may only be recognised at column 1.
+  /
 function tpGet(section, key, root) {
   const text = readTextOr(TP, root);
   if (text === '') return '';
   const lines = text.split('\n');
-  const keyRe = new RegExp(`^- \\*\\*${key}\\*\\*:[ \\t]*`);
+  const keyRe = new RegExp(`^- \\ \\ ${key}\\ \\ :[ \\t] `);
   let inside = false;
   let grab = false;
   let val = '';
@@ -153,7 +153,7 @@ function tpGet(section, key, root) {
     if (line.startsWith(`## ${section}`)) { inside = true; continue; }
     if (inside && line.startsWith('## ')) inside = false;
     if (inside && grab) {
-      if (/^[ \t]+[^ \t]/.test(line) && !/^[ \t]*-[ \t]+\*\*/.test(line)) {
+      if (/^[ \t]+[^ \t]/.test(line) && !/^[ \t] -[ \t]+\ \ /.test(line)) {
         val += ` ${line.replace(/^[ \t]+/, '').replace(/[ \t]+$/, '')}`;
         continue;
       }
@@ -169,45 +169,45 @@ function tpGet(section, key, root) {
   return grab ? cleanup(val) : '';
 }
 
-/** The `sed 's/^\[TO BE CONFIGURED.*$//'` the awk pipeline ends with. */
+/   The `sed 's/^\[TO BE CONFIGURED. $//'` the awk pipeline ends with.  /
 function cleanup(value) {
-  return value.replace(/^\[TO BE CONFIGURED.*$/, '');
+  return value.replace(/^\[TO BE CONFIGURED. $/, '');
 }
 
-/**
- * Strip a trailing unit so "16.67ms" and "1024MB" become numbers. Non-numeric
- * input is returned untouched, which is what surfaces a forked file's prose.
- */
-const num = (value) => String(value).replace(/[ \t]*(ms|MB|mb|fps|FPS|%)[ \t]*$/, '');
+/  
+   Strip a trailing unit so "16.67ms" and "1024MB" become numbers. Non-numeric
+   input is returned untouched, which is what surfaces a forked file's prose.
+  /
+const num = (value) => String(value).replace(/[ \t] (ms|MB|mb|fps|FPS|%)[ \t] $/, '');
 
-/** `grep -qE '^[0-9]+(\.[0-9]+)?$'` — anchored, and an empty string never matches. */
+/   `grep -qE '^[0-9]+(\.[0-9]+)?$'` — anchored, and an empty string never matches.  /
 const isNum = (value) => /^[0-9]+(\.[0-9]+)?$/.test(String(value));
 
-/**
- * Escapes before quoting. These values are hand-written markdown prose, so a
- * double quote inside one is ordinary — and wrapping it unescaped emitted
- * `key: "He said "hi""`, which is not valid YAML and takes the whole file down.
- * Backslashes first, or the quote's escape gets re-escaped.
- */
+/  
+   Escapes before quoting. These values are hand-written markdown prose, so a
+   double quote inside one is ordinary — and wrapping it unescaped emitted
+   `key: "He said "hi""`, which is not valid YAML and takes the whole file down.
+   Backslashes first, or the quote's escape gets re-escaped.
+  /
 function yamlStr(value) {
   if (value === '') return 'null';
   return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
 }
 
-/** `yaml_num`: anything that is not a bare number is written as `null`. */
+/   `yaml_num`: anything that is not a bare number is written as `null`.  /
 const yamlNum = (value) => (value === '' || !isNum(value) ? 'null' : value);
 
 // ---------------------------------------------------------------------------
 // Shared legacy-file reader (original lines 148-169)
 // ---------------------------------------------------------------------------
 
-/**
- * Trim CR and leading/trailing whitespace from the first line, but NEVER interior
- * spaces: two valid v1.1 stages contain one (`Systems Design`, `Technical
- * Setup`). BOTH the migrate step and the finalize verifier must use this — they
- * read the same legacy files and compare the results, so any divergence in
- * trimming desynchronises them.
- */
+/  
+   Trim CR and leading/trailing whitespace from the first line, but NEVER interior
+   spaces: two valid v1.1 stages contain one (`Systems Design`, `Technical
+   Setup`). BOTH the migrate step and the finalize verifier must use this — they
+   read the same legacy files and compare the results, so any divergence in
+   trimming desynchronises them.
+  /
 function trimLine(file, root) {
   const text = readTextOr(file, root);
   if (text === '') return '';
@@ -215,29 +215,29 @@ function trimLine(file, root) {
   return first.replace(/^[ \t]+/, '').replace(/[ \t]+$/, '');
 }
 
-/**
- * `re_quote` is not needed here: the original needed it only because a legacy
- * value was spliced into a `grep -E` pattern. The port compares parsed values,
- * so a forked value like `Alpha (draft)` cannot be read as a regex group.
- */
+/  
+   `re_quote` is not needed here: the original needed it only because a legacy
+   value was spliced into a `grep -E` pattern. The port compares parsed values,
+   so a forked value like `Alpha (draft)` cannot be read as a regex group.
+  /
 
-/**
- * --- preflight: is a legacy file a MIRROR or a rival source? (original 195-213)
- *
- * A legacy file whose value project.yaml ALREADY carries is a MIRROR, not a
- * rival source of truth. `/start` writes production/stage.txt on every NEW v1.1
- * project deliberately, as a mirror for hooks that have not migrated, so
- * collapsing the three states made every onboarded project answer
- * "REFUSED: … Resolve which is authoritative" with nothing to resolve.
- *
- * Config reads go through `tools/yaml-helper.mjs` (PORTING.md), whose
- * `__call get_yaml_key <file> <dotted.path>` returns the parsed scalar or ''.
- * The DOTTED PATH MATTERS: `get_yaml_key` walks a key path, so `stage` alone
- * finds nothing where the original's `grep '^[[:space:]]*stage:'` would have
- * matched the nested line. Every key this migration writes at a fixed place
- * (`project.stage`, `modes.review_mode`, `engine.name`) is therefore read back
- * at that place.
- */
+/  
+   --- preflight: is a legacy file a MIRROR or a rival source? (original 195-213)
+  
+   A legacy file whose value project.yaml ALREADY carries is a MIRROR, not a
+   rival source of truth. `/start` writes production/stage.txt on every NEW v1.1
+   project deliberately, as a mirror for hooks that have not migrated, so
+   collapsing the three states made every onboarded project answer
+   "REFUSED: … Resolve which is authoritative" with nothing to resolve.
+  
+   Config reads go through `tools/yaml-helper.mjs` (PORTING.md), whose
+   `__call get_yaml_key <file> <dotted.path>` returns the parsed scalar or ''.
+   The DOTTED PATH MATTERS: `get_yaml_key` walks a key path, so `stage` alone
+   finds nothing where the original's `grep '^[[:space:]] stage:'` would have
+   matched the nested line. Every key this migration writes at a fixed place
+   (`project.stage`, `modes.review_mode`, `engine.name`) is therefore read back
+   at that place.
+  /
 function yamlKey(root, file, dotted) {
   const helper = join(root, 'tools', 'yaml-helper.mjs');
   if (!existsSync(helper)) {
@@ -256,24 +256,24 @@ function yamlKey(root, file, dotted) {
   return result.status === 0 ? result.stdout : '';
 }
 
-/**
- * `legacy_conflict()` — a legacy value project.yaml does not carry is a genuine
- * second source; one it does carry is a mirror and needs no resolution. Only
- * reachable when project.yaml exists, so a real v1.0 project — which has none —
- * takes exactly the path it did before.
- */
-/**
- * v1.0 used `none` for "no director reviews"; v1.1 renamed that tier to `solo`.
- * Map it transparently rather than writing `none`, which v1.1's enum rejects —
- * that would silently resolve to `lean`, the OPPOSITE of the user's intent. This
- * is a documented rename, not a forked value, so it is coerced-and-flagged
- * rather than preserved-raw.
- *
- * Applied at READ time (the original applies it later, in its parse step) so the
- * preflight's three-state check and the parse step agree on the value: a
- * migrated project's `review_mode: solo` must compare equal to a legacy `none`,
- * or the second run reports a split brain that does not exist.
- */
+/  
+   `legacy_conflict()` — a legacy value project.yaml does not carry is a genuine
+   second source; one it does carry is a mirror and needs no resolution. Only
+   reachable when project.yaml exists, so a real v1.0 project — which has none —
+   takes exactly the path it did before.
+  /
+/  
+   v1.0 used `none` for "no director reviews"; v1.1 renamed that tier to `solo`.
+   Map it transparently rather than writing `none`, which v1.1's enum rejects —
+   that would silently resolve to `lean`, the OPPOSITE of the user's intent. This
+   is a documented rename, not a forked value, so it is coerced-and-flagged
+   rather than preserved-raw.
+  
+   Applied at READ time (the original applies it later, in its parse step) so the
+   preflight's three-state check and the parse step agree on the value: a
+   migrated project's `review_mode: solo` must compare equal to a legacy `none`,
+   or the second run reports a split brain that does not exist.
+  /
 const normalizeReview = (value) => (value === 'none' ? 'solo' : value);
 
 function legacyConflict(root) {
@@ -296,13 +296,13 @@ function legacyConflict(root) {
 // Preflight (original lines 215-252)
 // ---------------------------------------------------------------------------
 
-/**
- * stdout messages + exit code, exactly as the original prints them.
- *
- * Never reached with `--finalize`: `main` handles that mode before this runs, the
- * way the original wraps this whole preflight in `if [ "$MODE" != "finalize" ]`.
- * The guard below states that contract rather than returning a real verdict.
- */
+/  
+   stdout messages + exit code, exactly as the original prints them.
+  
+   Never reached with `--finalize`: `main` handles that mode before this runs, the
+   way the original wraps this whole preflight in `if [ "$MODE" != "finalize" ]`.
+   The guard below states that contract rather than returning a real verdict.
+  /
 function preflight(mode, root) {
   if (mode === 'finalize') return -1;
 
@@ -381,7 +381,7 @@ function finalize(root) {
       // announcement follows only on success.
       unlinkSync(join(root, file));
       process.stdout.write(`deleted ${file}\n`);
-    } catch { /* leave it in place rather than abort finalize halfway */ }
+    } catch { /  leave it in place rather than abort finalize halfway  / }
   }
   process.stdout.write(`NOTE: ${TP} is NOT deleted — it still holds Forbidden Patterns and\n`);
   process.stdout.write('      Allowed Libraries, which have no project.yaml equivalent.\n');
@@ -393,24 +393,24 @@ function finalize(root) {
 // Parse (original lines 290-449)
 // ---------------------------------------------------------------------------
 
-/** The enum check, spelled out so the raw value is preserved on a fork. */
+/   The enum check, spelled out so the raw value is preserved on a fork.  /
 const STAGES = ['', 'Concept', 'Systems Design', 'Technical Setup', 'Pre-Production', 'Production', 'Polish', 'Release'];
 const REVIEW_MODES = ['', 'full', 'lean', 'solo'];
 
-/**
- * `agent_name <prose>` -> first token that looks like an agent name, else the
- * trimmed input unchanged (a value this cannot parse is surfaced, not dropped).
- */
+/  
+   `agent_name <prose>` -> first token that looks like an agent name, else the
+   trimmed input unchanged (a value this cannot parse is surfaced, not dropped).
+  /
 function agentName(value) {
-  const m = /[a-z][a-z0-9]*(-[a-z0-9]+)+/.exec(value);
+  const m = /[a-z][a-z0-9] (-[a-z0-9]+)+/.exec(value);
   if (m !== null) return m[0];
   return value.replace(/^[ \t]+/, '').replace(/[ \t]+$/, '');
 }
 
-/**
- * Split on top-level commas ONLY — a comma inside parentheses stays part of its
- * element (`ue-gas-specialist (abilities, effects)` is ONE specialist).
- */
+/  
+   Split on top-level commas ONLY — a comma inside parentheses stays part of its
+   element (`ue-gas-specialist (abilities, effects)` is ONE specialist).
+  /
 function splitTopLevel(value) {
   const parts = [];
   let depth = 0;
@@ -424,7 +424,7 @@ function splitTopLevel(value) {
   return parts;
 }
 
-/** `agent_names <prose list>` -> comma-separated agent names, one per element. */
+/   `agent_names <prose list>` -> comma-separated agent names, one per element.  /
 function agentNames(value) {
   if (value === '') return '';
   return splitTopLevel(value)
@@ -437,11 +437,11 @@ function agentNames(value) {
 // Migration entry point
 // ---------------------------------------------------------------------------
 
-/**
- * Run one migration invocation.
- * @param {string[]} argv command-line arguments (without `node <script>`)
- * @returns {number} the exit code
- */
+/  
+   Run one migration invocation.
+   @param {string[]} argv command-line arguments (without `node <script>`)
+   @returns {number} the exit code
+  /
 export function main(argv) {
   let mode = 'migrate';
   let root = null;
@@ -575,7 +575,7 @@ export function main(argv) {
 
   // v1.0 /setup-engine wrote every specialist line as `agent-name (what it
   // covers)`, and the Unreal code line as `a-specialist (Blueprint) or
-  // b-specialist (C++)`. Skills pass `specialists.*` straight to the Agent tool
+  // b-specialist (C++)`. Skills pass `specialists. ` straight to the Agent tool
   // as a subagent_type, so anything but the bare agent name is an agent that
   // does not exist. Keep the first agent name per entry.
   const sCodeRaw = tpGet('Engine Specialists', 'Language/Code Specialist', root);
@@ -632,7 +632,7 @@ export function main(argv) {
   // four-character STRING "null" for such a key — not empty — so a caller
   // testing `[ -z ... ]` reads it as CONFIGURED. The value written is
   // deliberately NOT changed; what was missing is telling the user.
-  // performance.* is left to its own loop above on purpose: it distinguishes
+  // performance.  is left to its own loop above on purpose: it distinguishes
   // "held a value that would not convert" from "held nothing".
   const nullWarn = (guard, dotKey, value) => {
     if (guard === '' || value !== '') return;
@@ -661,13 +661,13 @@ export function main(argv) {
 
   // --- helpers for list-ish values --------------------------------------------
 
-  /**
-   * `yaml_list`: "PC, Mac" -> ["PC", "Mac"]; empty -> [].
-   *
-   * Splits on top-level commas ONLY, and every element is quoted because prose
-   * carries colons, dashes and brackets, all of which make a bare YAML scalar
-   * ambiguous or invalid.
-   */
+  /  
+     `yaml_list`: "PC, Mac" -> ["PC", "Mac"]; empty -> [].
+    
+     Splits on top-level commas ONLY, and every element is quoted because prose
+     carries colons, dashes and brackets, all of which make a bare YAML scalar
+     ambiguous or invalid.
+    /
   const yamlList = (value) => {
     if (value === '') return '[]';
     const out = [];
@@ -799,7 +799,7 @@ export function main(argv) {
   report.push('# Migration report — v1.0 to v1.1');
   report.push('');
   report.push(`Generated by \`${SELF}\`.`);
-  report.push('Legacy files were **not** deleted. Read this report, then run');
+  report.push('Legacy files were   not   deleted. Read this report, then run');
   report.push(`\`node ${SELF} --finalize\` when satisfied.`);
   report.push('');
   report.push('## Source files detected');
@@ -861,7 +861,7 @@ export function main(argv) {
   // it. Call the omission out by name: listing an invented `lean` sourced to a
   // file that does not exist is worse than saying nothing.
   if (review === '') {
-    report.push('`modes.review_mode` is **deliberately not written**: no');
+    report.push('`modes.review_mode` is   deliberately not written  : no');
     report.push(`\`${REVIEW_TXT}\` was found, so you never chose one. It is now supplied by`);
     report.push('`modes.rigor` — writing it here would pin it and shadow that expansion.');
     report.push('');
@@ -888,34 +888,34 @@ export function main(argv) {
   return 0;
 }
 
-/**
- * `awk '{if (NF>1 && $NF ~ /^[0-9]+(\.[0-9]+)*[A-Za-z0-9]*$/) print $NF}'`: the
- * version is the LAST token when it looks like one, and empty otherwise. A fork
- * that wrote `Godot 4.4 (stable)` therefore keeps the whole string as the name
- * and gets `version: null` reported, which is the original behaviour.
- */
+/  
+   `awk '{if (NF>1 && $NF ~ /^[0-9]+(\.[0-9]+) [A-Za-z0-9] $/) print $NF}'`: the
+   version is the LAST token when it looks like one, and empty otherwise. A fork
+   that wrote `Godot 4.4 (stable)` therefore keeps the whole string as the name
+   and gets `version: null` reported, which is the original behaviour.
+  /
 function lastTokenIsVersion(raw) {
   const tokens = raw.split(/\s+/).filter((t) => t !== '');
   if (tokens.length <= 1) return '';
   const last = tokens[tokens.length - 1];
-  return /^[0-9]+(\.[0-9]+)*[A-Za-z0-9]*$/.test(last) ? last : '';
+  return /^[0-9]+(\.[0-9]+) [A-Za-z0-9] $/.test(last) ? last : '';
 }
 
 // ---------------------------------------------------------------------------
 // Root resolution — the port's answer to `REPO="$(cd "$(dirname "$0")/../.." && pwd)"`
 // ---------------------------------------------------------------------------
 
-/**
- * Project root: `--root`, else cwd when cwd holds any of the files this script
- * looks at, else the directory two levels above this script (which is what
- * `dirname $0/../..` did in the original layout). No upward search: a nested
- * project must read itself.
- *
- * The cwd probe exists because this script is normally invoked as
- * `node tools/…/migrate-v1-config.mjs` from the project root, but also lives at
- * `.dsh/scripts/` inside the project it describes. Both candidates are absolute
- * by the time they reach the file operations below.
- */
+/  
+   Project root: `--root`, else cwd when cwd holds any of the files this script
+   looks at, else the directory two levels above this script (which is what
+   `dirname $0/../..` did in the original layout). No upward search: a nested
+   project must read itself.
+  
+   The cwd probe exists because this script is normally invoked as
+   `node tools/…/migrate-v1-config.mjs` from the project root, but also lives at
+   `.dsh/scripts/` inside the project it describes. Both candidates are absolute
+   by the time they reach the file operations below.
+  /
 function resolveRoot(explicit) {
   if (typeof explicit === 'string' && explicit !== '') return resolve(explicit);
   const cwd = process.cwd();
@@ -929,7 +929,7 @@ function resolveRoot(explicit) {
 // ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
-/** True when this module was started as `node <this file>` (not imported). */
+/   True when this module was started as `node <this file>` (not imported).  /
 function isMainModule() {
   const argv1 = process.argv[1];
   if (argv1 === undefined) return false;
@@ -943,4 +943,5 @@ function isMainModule() {
 if (isMainModule()) {
   process.exitCode = main(process.argv.slice(2));
 }
+
 

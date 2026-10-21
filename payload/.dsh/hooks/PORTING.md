@@ -63,7 +63,7 @@
 
 ## 测试
 
-放在 `tools/tests/hooks/<name>.test.mjs`，用 `node:assert`，直接 `node tools/tests/hooks/<name>.test.mjs` 运行。
+放在框架仓库的钩子测试目录（`hooks/<name>.test.mjs`），用 `node:assert`，直接 `node <测试目录>/hooks/<name>.test.mjs` 运行。
 至少覆盖：
 
 - 正常通过路径（exit 0，无阻断输出）；
@@ -85,4 +85,7 @@
 
 不要修改 `.dsh/**`、`.dsh/**`（生成物）、`tools/build-dsh.mjs`、`tools/check-dsh.mjs`、
 `tools/yaml-helper.mjs`、`dsh-src/hooks/runtime.mjs`。你只新增/修改自己负责的
-`dsh-src/hooks/<name>.mjs` 与 `tools/tests/hooks/<name>.test.mjs`。
+`dsh-src/hooks/<name>.mjs`，以及框架仓库里同目录下的测试（`hooks/<name>.test.mjs`）。
+
+
+

@@ -152,9 +152,9 @@ node tools/verify-hooks-mount.mjs
 |---|---|---|
 | GUI 输入框上方做不出状态条 | DSH 前端 roster 只收 `@deepseek-ai/*` 官方包（实测清单 60+ 条、`DSGS` 命中 0）；补 `（见仓库 README 的 Known limits 一节）
 | Plan / Jobs 面板不适合放它 | Plan 由 `todos` 投影驱动（写它会覆盖模型自己的待办）；Jobs 是后台任务语义（借位） | 同上 |
-| 3 个钩子事件无法从 prompt 触发 | `Notification` / `PreCompact` / `PostCompact`：DSH 无对应事件源 → 只做挂载级验证（6/9 活体） | `docs/DSH-SKILL-TEST.md`、插件 README |
+| 3 个钩子事件无法从 prompt 触发 | `Notification` / `PreCompact` / `PostCompact`：DSH 无对应事件源 → 只做挂载级验证（6/9 活体） | 框架仓库的验收手册、插件 README |
 | 交互式跑渲染器无输出 | 它按上游约定从 stdin 读 payload（给 EOF 或 payload 就有输出） | 本文件 §2 |
-| bash↔Node 对照 | 本机 Git Bash 缺真 `python3` → 2 对 SKIP（具名原因），1 对真·逐字节一致 | `tools/tests/parity/bash-vs-node.test.mjs` 输出 |
+| bash↔Node 对照 | 本机 Git Bash 缺真 `python3` → 2 对 SKIP（具名原因），1 对真·逐字节一致 | 框架仓库里 parity 测试的输出 |
 | `dsh plugin add` 新建 profile 会静默挂死 | 因为它建的 profile **没有 app bundle*（见仓库 README 的 Known limits 一节）
 
 
@@ -258,6 +258,7 @@ Phase 1 报告"引擎未配置/无概念/无代码/非 git 仓库" → **中文�
    现在判断条件改为"载荷 + `dsgs-init` + `start` 两个技能都在，且版本一致"，版本推进到 `0.1.1`。
 2. **技能目录按会话装载**：插件在某次启动里写出的技能，**那个会话看不到**（`/start` 曾被当成普通文字丢给模型）。
    所以：装插件/补写技能后**必须重启并新开会话**；壳本身也写明"以后同一会话继续用按文件读的方式转交"。
+
 
 
 

@@ -13,7 +13,8 @@ memory: project
 > - 工具名是 DSH 的：`pwsh` / `read` / `write` / `edit` / `grep` / `glob` / `subagent` / `ask_user_question` / `todo_write` / `web_search`。
 > - 委派子代理：读角色卡 `.dsh/agents/<name>.md`，把卡片正文连同任务作为 `subagent`（一次性/可续）或 `workflow`（批量编排）的 prompt。约定见 `.dsh/agents/README.md`。
 > - 这是代理角色卡，不是可自动加载的代理定义：DSH 里由调用方读本卡片，把它作为 `subagent` 的 prompt（或 `workflow` 里 `agent()` 的 prompt）传给子代理。约定见 `.dsh/agents/README.md`。
-> - `tools`, `model` are upstream fields kept as written but not read here: tool availability is decided by session permissions, a skill cannot pin a model, and a subagent model is chosen at the `subagent` / `workflow` call site.
+> - 工具边界（运行时不会强制，但请把它当作本次角色的边界）：`read, glob, grep, write, edit, pwsh`
+> - frontmatter 里的 `tools`、`model` 是上游字段，DSH 原样保留但不读取：工具可用性由会话权限决定，技能不能固定模型，子代理的模型在 `subagent`/`workflow` 调用处指定。
 <!-- DSGS-GENERATED:END -->
 
 You are a Performance Analyst for an indie game project. You measure, analyze,

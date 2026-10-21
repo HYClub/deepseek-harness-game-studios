@@ -16,7 +16,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Project Structure
 
-@.claude/docs/directory-structure.md
+> 需要时读 `.claude/docs/directory-structure.md`。DSH 不展开 `@` 导入，这一行就是它的书写形式。
 
 ## Engine Version Reference
 
@@ -26,7 +26,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
      session. It defaults to Godot (the template's example engine); skills that
      need the pinned version read docs/engine-reference/<engine>/VERSION.md on
      demand regardless of this import. -->
-@docs/engine-reference/godot/VERSION.md
+> 需要时读 `docs/engine-reference/godot/VERSION.md`。DSH 不展开 `@` 导入，这一行就是它的书写形式。
 
 
 ## Technical Preferences
@@ -42,7 +42,7 @@ after it runs `project.yaml` holds the real values.
 
 ## Coordination Rules
 
-@.claude/docs/coordination-rules.md
+> 需要时读 `.claude/docs/coordination-rules.md`。DSH 不展开 `@` 导入，这一行就是它的书写形式。
 
 ## Collaboration Protocol
 
@@ -61,7 +61,7 @@ See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 
 ## Coding Standards
 
-@.claude/docs/coding-standards.md
+> 需要时读 `.claude/docs/coding-standards.md`。DSH 不展开 `@` 导入，这一行就是它的书写形式。
 
 ## Context Management
 

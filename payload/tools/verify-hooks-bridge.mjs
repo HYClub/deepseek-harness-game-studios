@@ -30,6 +30,29 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(process.argv.slice(2).find((a) => !a.startsWith('--')) ?? join(HERE, '..'));
 
 // ---------------------------------------------------------------- dsh install lookup
+// The bridge (and the protocol package) are usually installed into a **profile**, not into the dsh
+// package itself, so a hard-coded dshRoot path fails for a normal installation. Try the places a real
+// install can put it, then report SKIP rather than a false failure.
+function findPackageLib(pkgName, libRel) {
+  const home = process.env.USERPROFILE || process.env.HOME || '';
+  const candidates = [];
+  const envOverride = process.env.DSH_HOOK_BRIDGE_DIR;
+  if (envOverride) candidates.push(join(envOverride, 'lib', 'index.js'));
+  const dsh = findDshRoot();
+  if (dsh !== undefined) candidates.push(join(dsh, 'node_modules', pkgName, 'lib', libRel));
+  // profiles/<name>/node_modules/@deepseek-ai/<pkg>
+  try {
+    for (const name of readdirSync(join(home, '.dsh', 'profiles'))) {
+      candidates.push(join(home, '.dsh', 'profiles', name, 'node_modules', pkgName, 'lib', libRel));
+    }
+  } catch { /* ENOENT: a machine with no profiles directory has no profile installs to scan */ }
+  // npm global root (Windows and POSIX layouts)
+  candidates.push(join(home, 'AppData', 'Roaming', 'npm', 'node_modules', pkgName, 'lib', libRel));
+  candidates.push('/usr/local/lib/node_modules/' + pkgName + '/lib/' + libRel);
+  candidates.push('/usr/lib/node_modules/' + pkgName + '/lib/' + libRel);
+  return candidates.find((c) => existsSync(c));
+}
+
 function findDshRoot() {
   const candidates = [
     process.env.DSH_CLI_ROOT,
@@ -51,10 +74,10 @@ if (dshRoot === undefined) {
   console.log('SKIP: could not locate the dsh install (set DSH_CLI_ROOT to its package dir).');
   process.exit(0);
 }
-const protocolPath = join(dshRoot, 'node_modules/@deepseek-ai/dsh-hook-protocol/lib/index.js');
-if (!existsSync(protocolPath)) {
-  console.error(`FAIL: hook protocol not found at ${protocolPath}`);
-  process.exit(1);
+const protocolPath = findPackageLib('@deepseek-ai/dsh-hook-protocol', 'index.js');
+if (protocolPath === undefined) {
+  console.log('SKIP: the hook protocol package is not installed (set DSH_HOOK_BRIDGE_DIR to its package dir).');
+  process.exit(0);
 }
 const { runHook, matchesMatcher, mergeHookOutputs } = await import(pathToFileURL(protocolPath).href);
 
@@ -318,4 +341,7 @@ for (const { name, fn } of cases) {
 cleanup();
 console.log(`\n${passed}/${cases.length} bridge cases passed (protocol: ${protocolPath})`);
 process.exit(failures.length === 0 ? 0 : 1);
+
+
+
 

@@ -282,7 +282,7 @@ Pop-Location
 然后在 DSH 里把会话开在 `D:\Work\dsh\.smoke\verify-run`，依次调用：
 `/start` → `/setup-engine`（Godot）→ `/brainstorm` → `/create-stories` → `/dev-story` → `/story-done`。
 
-**期望产出**（`docs/DSH-SMOKE-TEST.md` 记录了第一次完整跑通的清单）：
+**期望产出**（框架仓库的验收台账记录了第一次完整跑通的清单）：
 
 ```
 design/game-brief.md
@@ -330,7 +330,7 @@ production/session-state/active.md
 | `tools/preflight-hooks.mjs` | 挂载前静态条件：patch 条目、`configPath`、命令与 matcher 合法、**桥版本与运行时兼容**、挂载期依赖可从 profile 解析 | 运行时行为 |
 | `tools/check-hooks-live.ps1` | 钩子是否真的在会话里跑过（依据 `production/session-logs/agent-audit.log`） | 单个钩子的正确性 |
 | `tools/verify-port.ps1` | 一条命令跑完上面 6 步并汇总 | 最小闭环（那要跑技能） |
-| `tools/tests/**`（24 套件） | 13 个钩子 + 9 个辅助脚本 + 配置解析器的行为 | 技能层 |
+| 框架仓库的测试套件（24 套） | 13 个钩子 + 9 个辅助脚本 + 配置解析器的行为 | 技能层 |
 | `tools/yaml-helper.test.mjs` | 配置解析器与 bash 原版的逐字节等价（**需要能跑 bash 的机器**） | 其余部分 |
 
 ---
@@ -355,5 +355,6 @@ production/session-state/active.md
 | 14 | 最小闭环 | §3 | 六步产出齐全 | |
 | 15 | **内容保真（不缺件）** | `node tools\verify-fidelity.mjs` | `unexplained 0` + "No content loss"（258 文件 / 42895 行） | |
 | 16 | **插件可分发** | `pwsh -File tools\publish.ps1`（默认 dry run） | 建出 `dist/dsgs-hooks`（1 commit + tag）+ bundle；包自测 3/3；打印推送命令 | |
+
 
 

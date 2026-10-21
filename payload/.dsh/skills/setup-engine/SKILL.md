@@ -14,7 +14,7 @@ model: sonnet
 > - 委派子代理：读角色卡 `.dsh/agents/<name>.md`，把卡片正文连同任务作为 `subagent`（一次性/可续）或 `workflow`（批量编排）的 prompt。约定见 `.dsh/agents/README.md`。
 > - 本技能的基础目录见会话注入的 `Base directory for this skill`；相对路径都相对它解析。
 > - 正文里的「前置命令」块需要你亲自运行（原文的预执行行在 DSH 不生效）。
-> - `argument-hint`, `allowed-tools`, `model` are upstream fields kept as written but not read here: tool availability is decided by session permissions, a skill cannot pin a model, and a subagent model is chosen at the `subagent` / `workflow` call site.
+> - frontmatter 里的 `argument-hint`、`allowed-tools`、`model` 是上游字段，DSH 原样保留但不读取：工具可用性由会话权限决定，技能不能固定模型，子代理的模型在 `subagent`/`workflow` 调用处指定。
 <!-- DSGS-GENERATED:END -->
 
 > **DSH 运行注意（由 `dsh-src/skill-notes/setup-engine.md` 注入）**
@@ -27,7 +27,7 @@ model: sonnet
 >   （`tools/build-dsh.mjs` 从 `.dsh/docs/technical-preferences.md` 复制），手改会在下次生成时被覆盖。
 >   DSH 侧 `project.yaml` 是唯一来源，`/settings` 与 `node tools/yaml-helper.mjs` 都读它；
 >   `technical-preferences.md` 只作为读不到键时的 legacy 回退。
-> - **本注记压过正文第 5 节的"双写"要求**（实测冲突记录：`docs/DSH-SMOKE-CURRENT.md` F1）。
+> - **本注记压过正文第 5 节的"双写"要求**（实测冲突记录见框架仓库的验收台账（F1））。
 >   正文第 5 节让你"创建或更新 `.dsh/docs/technical-preferences.md`"、§5.5.3 又要求读回 `project.yaml`
 >   并核对"四个块与写进 `technical-preferences.md` 的值一致，不一致就报给用户并停止"——**这两句在 DSH 侧
 >   无法同时满足**，因为那个文件是生成物。本移植的等价做法是：

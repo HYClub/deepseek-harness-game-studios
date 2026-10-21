@@ -36,6 +36,16 @@ node tools/check-dsh.mjs     # 结构校验，0 error 才算健康
      DSH 不展开 `@` 导入，所以引擎版本参考的实际加载路径是 .dsh/docs/studio-rules.md（合并版），
      或按需直接读 docs/engine-reference/<engine>/VERSION.md。 -->
 
+## 2.5 文档有三棵树，别乱读
+
+| 路径 | 谁看 | 是什么 |
+|---|---|---|
+| **`docs/`** | **你（AI）和用户** | **项目自己的文档**：引擎版本参考（`docs/engine-reference/`）、模板（`docs/templates/`）、验收手册。技能里说"读 `docs/...`"指的就是这里 |
+| **`.dsh/docs/`** | **你（AI）** | **本运行时的参考文档**：上游文档的 DSH 改写版（品牌、路径、命令已换成本平台），外加 4 份 DSH 专有文档（`studio-rules.md`、`dsh-differences.md`、`hooks-reference/dsh-differences.md`、`local-instructions-template.md`）。技能里说"读 `.dsh/docs/...`"指这里 |
+| **`.claude/docs/`** | **人类编辑者 / Claude Code** | **上游原文**（逐字保留，MIT），是 `.dsh/docs/` 的生成源。同一份内容之所以有两份，是因为两个运行时需要的措辞不同（`.dsh` 版把 "Claude Code" 换成 "DSH"、`.claude/` 换成 `.dsh/`）；**不要试图删一份来"去重"** |
+
+**判据**：你要按本平台执行 → 读 `.dsh/docs/`；要看上游原话 → 读 `.claude/docs/`；要做游戏设计/验收 → 读 `docs/`。
+
 ## 3. 工作室规则怎么加载（DSH 不展开 `@` 导入）
 
 上游风格的项目会在 `CLAUDE.md` 里用 `@path` 拉进共享规则（目录结构、协作规则、编码标准、引擎版本参考）。
@@ -156,3 +166,5 @@ pwsh -NoProfile -File "$env:USERPROFILE\.dsh\dsgs\tools\dsgs-init.ps1" -Target .
 ```
 
 撤销某次初始化：给同一个脚本加 `-Undo`（它只删除自己写过的、且记录在 `.dsgs-installed.json` 里的项）。
+
+

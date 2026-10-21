@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.1.8-orange.svg)
+![Version](https://img.shields.io/badge/version-0.1.9-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-76-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -26,7 +26,7 @@
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.8** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.9** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
@@ -82,27 +82,33 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\skills\dsgs-init","$env:USERP
 | 代理角色卡 | ✅ | 49 个，`.dsh/agents/<name>.md` + 委派约定 |
 | 规则 | ✅ | 13 条，含上游"路径作用域规则引擎"的等价替代：PostToolUse 钩子在每次写入/编辑后注入命中的规则原文 |
 | 钩子 | ✅ | 上游 12 个脚本 → 14 个 Node 重写版，经 `dsh-hooks-claude-code` 桥接；9 个上游事件全覆盖 |
-| 钩子真实执行 | ✅ | 挂载 10/10 · 协议 12/12 · 事件活体 6/9 |
+| 钩子真实执行 | ✅ | 挂载 10/10 · 协议 12/12 · 事件活体 6/9 —— 在装有官方 bridge 包的机器上测得；没有该包的环境会报 SKIP，而不是假失败 |
 | 配置解析 | ✅ | `project.yaml` 单一来源；`resolve_config` / `__call resolve_setting` 的 Node 端口 |
 | 辅助脚本 | ✅ | 上游每个 `.sh` 都有 Node 端口（`.dsh/scripts/*.mjs`），沙箱内可运行 |
 | 内容保真 | ✅ | 258 文件 / 42,895 行：96.0% 逐字、3.1% 已记录改写、0.5% 结构性、0.4% 换写法、**0 行无法解释的丢失** |
-| 机器级安装 | ✅ | 插件自带载荷并在首次加载时安装；空工作区打 `/start` 即初始化（实测 928 项） |
+| 机器级安装 | ✅ | 插件自带载荷并在首次加载时安装；空工作区打 `/start` 即初始化（实测 886 个文件） |
 | `/statusline` | ✅ | 工作室状态行 `阶段 · 姿态 · epic > story · Sprint n/m · 引擎`（+13 单测） |
 | 嵌套委派 | ✅ | `subagent.maxDepth: 2` 实测「父 → 子 → 孙」（DSH 默认 1） |
+| 共享规则真正到达项目 | ✅ | `CLAUDE.md` 里的 `@path` 导入被改写成「需要时读某个文件」——本运行时**不展开** `@`，不这么做的话那些标准文档只是被引用、从未被读 |
+| 角色工具边界 | ✅ | 每张代理角色卡写明"本角色应只用哪些工具"，并统一成本运行时的工具名。**属软约束**：运行时无法按代理限定工具集 |
 | 一键式插件 | ✅ | 一个包 = 钩子桥 + 状态行投影 + 载荷自装 |
 | DSGS 专有技能 | ✅ | `statusline`、`dsgs-install`（上游没有） |
 
-### ❌ 未实现 / 无法等价（附原因与替代）
+### ⚠️ 部分等价 —— 能用，但有一处明确的限制
 
-| 项 | 状态 | 原因 | 替代 |
-|---|---|---|---|
-| 输入框上方的停靠状态条 | ❌ | DSH 的前端插件清单只收 `@deepseek-ai/*`（实测 60+ 条全为官方包，本包即使补 `dsh.client` 声明仍不在其中） | `/statusline` 技能 + `node .dsh/statusline.mjs`；运行时字段（轮次/token/缓存/上下文%）由 DSH 自带状态条覆盖 |
-| PreToolUse 的事前提醒 | ❌ | `tools/pre-execute` 只携带 `allow/deny/cancel/ask`；`additionalContexts` 只从工具最终结果读取；执行中 `agent.inject()` 无效 | `validate-commit` / `validate-push` 同时注册在 **PostToolUse**（提醒在动作之后到达）；要事前阻断可把插件行设为 `advisory: deny` |
-| 3 个钩子事件无法从 prompt 触发 | ⚠️ | `Notification`、`PreCompact`、`PostCompact` 在 DSH 没有事件源 | 映射已实现并单测，仅到挂载级验证（活体 6/9） |
-| 逐代理工具白名单 / 代理自动发现 | ❌ | DSH 的 `subagent` 不接受按代理限定工具集，也没有代理注册中心 | 角色卡 + `toolFilter` / `persona` 约定 |
-| `@path` 导入 | ❌ | DSH 不展开导入 | `.dsh/docs/studio-rules.md`（合并版），按需读取 |
-| `!`cmd`` 预执行行 | ❌ | DSH 没有预执行 | 改写为「前置命令」块，由模型自己运行 |
-| bash ↔ Node 逐字节对照 | ⚠️ | 本机 Git Bash 的 `python3` 是 Store 占位程序 | 2 项具名 SKIP，1 项逐字节一致 |
+| 项 | 能用的部分 | 限制与原因 |
+|---|---|---|
+| 3 个钩子事件 | 映射已实现并单测 | `Notification`、`PreCompact`、`PostCompact` 在 DSH 没有事件源，只能到挂载级验证（活体 6/9） |
+| 逐代理工具白名单 | **每张角色卡正文写明边界**（`工具边界 …：read, glob, grep, …`），委派时模型读得到 | DSH 的 `subagent` 不接受按代理限定工具集，也没有代理注册中心，运行时无法强制 |
+| bash ↔ Node 逐字节对照 | 能跑的每一对都逐字节一致；依赖 YAML 的 2 对是**受控断言**（数量不符即失败；有 `python3` 的环境用 `PARITY_REQUIRE_ALL=1` 禁止 SKIP） | 本机 Git Bash 的 `python3` 是 Store 占位程序，bash 侧读不了 YAML |
+
+### ❌ 无法等价 —— 原因与替代
+
+| 项 | 原因 | 替代 |
+|---|---|---|
+| 输入框上方的停靠状态条 | DSH 的前端插件清单只收 `@deepseek-ai/*`（实测 60+ 条全为官方包，本包即使补 `dsh.client` 声明仍不在其中） | `/statusline` 技能 + `node .dsh/statusline.mjs`；运行时字段（轮次/token/缓存/上下文%）由 DSH 自带状态条覆盖 |
+| PreToolUse 的事前提醒 | `tools/pre-execute` 只携带 `allow/deny/cancel/ask`；`additionalContexts` 只从工具最终结果读取；执行中 `agent.inject()` 无效 | `validate-commit` / `validate-push` 同时注册在 **PostToolUse**（提醒在动作之后到达）；要事前阻断可把插件行设为 `advisory: deny` |
+| `!`cmd`` 预执行行 | DSH 没有预执行 | 改写为「前置命令」块，由模型自己运行 |
 
 ## 项目结构
 
@@ -159,6 +165,11 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
+
+
+
 
 
 

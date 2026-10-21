@@ -122,12 +122,27 @@ function headerFor(kind, rel, meta = {}) {
   if (kind === 'agent') {
     lines.push('> - 这是代理角色卡，不是可自动加载的代理定义：DSH 里由调用方读本卡片，把它作为 `subagent` 的 prompt（或 `workflow` 里 `agent()` 的 prompt）传给子代理。约定见 `.dsh/agents/README.md`。');
   }
+  // DSH ignores a role card's `tools:` field, so the boundary is written into the body instead: the
+  // delegating model reads it, even though the runtime cannot enforce it. The tool names are mapped to
+  // this runtime's names so the line agrees with the frontmatter directly above it.
+  const TOOL_NAMES = {
+    Read: 'read', Glob: 'glob', Grep: 'grep', Write: 'write', Edit: 'edit', Bash: 'pwsh',
+    WebSearch: 'web_search', WebFetch: 'web_fetch', TodoWrite: 'todo_write', Agent: 'subagent', Task: 'subagent',
+  };
+  const toolsValue = (meta.dropped ?? {}).tools ?? (meta.kept ?? {}).tools;
+  const toolsText = Array.isArray(toolsValue) ? toolsValue.join(', ') : String(toolsValue ?? '');
+  const mappedTools = toolsText
+    .replace(/\b(Agent|Task)\s*\(/g, 'subagent(')
+    .replace(/\b(Read|Glob|Grep|Write|Edit|Bash|WebSearch|WebFetch|TodoWrite)\b/g, (name) => TOOL_NAMES[name]);
+  if (String(kind).startsWith('agent') && typeof toolsValue === 'string' && toolsValue.trim() !== '') {
+    lines.push('> - 工具边界（运行时不会强制，但请把它当作本次角色的边界）：`' + mappedTools + '`');
+  }
   const upstreamKeys = Object.entries({ ...(meta.dropped ?? {}), ...(meta.kept ?? {}) });
   if (upstreamKeys.length > 0) {
     // Fidelity: those fields are KEPT in the frontmatter above (DSH ignores keys it does not
     // know), so this note explains rather than replaces them.
-    lines.push(`> - \`${upstreamKeys.map(([key]) => key).join('`, `')}\` ${upstreamKeys.length === 1 ? 'is an upstream field kept as written' : 'are upstream fields kept as written'} but not read here:`
-      + ' tool availability is decided by session permissions, a skill cannot pin a model, and a subagent model is chosen at the `subagent` / `workflow` call site.');
+    lines.push(`> - frontmatter 里的 ${upstreamKeys.map(([key]) => '`' + key + '`').join('、')} 是上游字段，DSH 原样保留但不读取：`
+      + '工具可用性由会话权限决定，技能不能固定模型，子代理的模型在 `subagent`/`workflow` 调用处指定。');
   }
   // No provenance line: PORT-MANIFEST.json already records the source path for every
   // output file, and an end user opening a skill card does not need the port's history.
@@ -846,5 +861,7 @@ async function convert() {
 }
 
 await convert();
+
+
 
 

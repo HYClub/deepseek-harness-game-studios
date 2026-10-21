@@ -1,3 +1,6 @@
+> **本运行时不需要下列工具。** Python 3、jq、Claude Code 是**上游 Claude Code 侧**的要求；
+> 这里的内容保留原文仅供参考。本移植的辅助脚本全部是 Node 端口，配置解析用 `tools/yaml-helper.mjs`。
+
 # Setup Requirements
 
 > **上游机制说明**：本文描述的是上游运行时的做法；DSH 的等价做法见 [`dsh-differences.md`](dsh-differences.md)。
