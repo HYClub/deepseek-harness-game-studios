@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, copyFileSyn
 import { join } from 'node:path';
 
 /** Payload version stamped into `<home>/DSGS/package-version.txt`. */
-export const INSTALL_VERSION = '0.1.9';
+export const INSTALL_VERSION = '0.1.10';
 
 /** Paths never copied out of the framework (build output, scratch, caches). */
 const SKIP = new Set(['node_modules', '.git', 'dist', '.smoke', '_external', '.verify-logs', '.local-backups', 'production/session-logs']);
@@ -181,6 +181,7 @@ export function ensureMachineInstall({ payloadDir, homeDir, log = () => {} }) {
   }
   return report;
 }
+
 
 
 

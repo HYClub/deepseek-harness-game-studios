@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.10 — the repository answers the questions a visitor has
+
+- The published repository now carries a security policy, issue templates and a contributing guide, so GitHub's community checks are satisfied and someone with a problem knows where to report it.
+- Both the README and the contributing guide state that pull requests are disabled on the published repository — it is a build artifact — and that anyone who wants to contribute code can say so in Discussions, where the framework source will be opened for pull requests once there is interest.
+- The package now names the project it belongs to: repository, issue tracker, homepage, keywords and author. The release gate fails if any of those fields go missing.
 ## 0.1.9 — the rules a project inherits are actually read
 
 - A project's `CLAUDE.md` now spells out the `@path` imports it used to carry. This runtime does not expand them, so until now those four documents were referenced but never read; they are now written out as "read this file" instructions, and the release gate fails if an unexpanded import would ship.
@@ -46,6 +51,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 
