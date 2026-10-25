@@ -1,9 +1,9 @@
 # seed-project.ps1 — 把一个空目录变成 DSGS 项目（铺框架 + 可选装插件）。
 #
 # 用法（在空目录里，或在任何地方指定 -Target）：
-#   pwsh -File D:\Work\dsh\tools\seed-project.ps1 -Target D:\Work\mygame            # dry run，只打印
-#   pwsh -File D:\Work\dsh\tools\seed-project.ps1 -Target D:\Work\mygame -Confirm  # 真的铺
-#   pwsh -File D:\Work\dsh\tools\seed-project.ps1 -Target D:\Work\mygame -Confirm -Install   # 再装插件
+#   pwsh -File tools\seed-project.ps1 -Target .\mygame            # dry run，只打印
+#   pwsh -File tools\seed-project.ps1 -Target .\mygame -Confirm  # 真的铺
+#   pwsh -File tools\seed-project.ps1 -Target .\mygame -Confirm -Install   # 再装插件
 #
 # 为什么需要它：DSH 的技能来自「项目里的 .dsh/skills」或「用户级 ~/.dsh/skills」，**插件安装带不来技能**。
 # 所以"空目录 → 能用的 DSGS 项目"这一步，本质是把框架铺进去（上游也是这个用法：clone 模板当项目）。
@@ -79,5 +79,6 @@ Write-Host '下一步：' -ForegroundColor Cyan
 Write-Host "  1) 在 GUI 里把工作区指向 $Target 并新建会话"
 Write-Host '  2) 重启 dsh web（如果装了插件）'
 Write-Host '  3) 会话里依次：/start → /setup-engine → /statusline'
+
 
 

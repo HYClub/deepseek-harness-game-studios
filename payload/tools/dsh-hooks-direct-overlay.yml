@@ -1,9 +1,0 @@
-# 用我们的直接执行插件替换官方桥那一行（不经过沙箱 shell）。
-# 用法：dsh <profile> --patch "D:/Work/dsh/tools/dsh-hooks-direct-overlay.yml"
-- insert:
-    - id: dsgs-hooks
-      name: "file:///D:/Work/dsh/tools/dsh-plugin/index.js"
-      config:
-        configPath: "D:/Work/dsh/.dsh/hooks.json"
-        auditFile: "D:/Work/dsh/.verify-logs/hook-invocations.log"
-

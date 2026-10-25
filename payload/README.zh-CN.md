@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.1.10-orange.svg)
+![Version](https://img.shields.io/badge/version-0.1.11-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-76-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -26,29 +26,28 @@
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.10** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.11** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
 （没有 `bash` 工具、管道捕获子进程被沙箱拒绝、不展开 `@path`）。本项目**不改上游内容**，而是生成
 DSH 可运行的等价物，并验证**内容零丢失**。
 
-> 本仓库根**就是插件包**。它要安装的框架打包在 `payload/` 下 —— 你不需要看它。
+> 插件包把框架打包在 `payload/` 下 —— 使用插件时你不需要看它。
 
 ## 安装
 
-### ① GUI
+### ① 网页版
 
-`插件` → `添加插件` → 填 `https://github.com/HYClub/deepseek-harness-game-studios` → **安装** → **重启 `dsh web`**。
-
-### ② 命令行
+`插件` → `添加插件` → 填 `https://github.com/HYClub/deepseek-harness-game-studios` → **安装** → 重启 `dsh web`。
 
 ```pwsh
 dsh plugin --profile web add https://github.com/HYClub/deepseek-harness-game-studios
 ```
 
-装完**重启 `dsh web`**。
+### ② 桌面版
 
+打开桌面客户端，`插件` → `添加插件` → 填同一个 URL → **安装** → 重启客户端。
 插件首次加载时会自动把框架装到机器级（`~/.dsh/dsgs` 与用户级引导技能）。之后：
 
 ```
@@ -86,7 +85,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\skills\dsgs-init","$env:USERP
 | 配置解析 | ✅ | `project.yaml` 单一来源；`resolve_config` / `__call resolve_setting` 的 Node 端口 |
 | 辅助脚本 | ✅ | 上游每个 `.sh` 都有 Node 端口（`.dsh/scripts/*.mjs`），沙箱内可运行 |
 | 内容保真 | ✅ | 258 文件 / 42,895 行：96.0% 逐字、3.1% 已记录改写、0.5% 结构性、0.4% 换写法、**0 行无法解释的丢失** |
-| 机器级安装 | ✅ | 插件自带载荷并在首次加载时安装；空工作区打 `/start` 即初始化（实测 919 个文件） |
+| 机器级安装 | ✅ | 插件自带载荷（911 个文件）并在首次加载时安装；空工作区打 `/start` 即可用它初始化 |
 | `/statusline` | ✅ | 工作室状态行 `阶段 · 姿态 · epic > story · Sprint n/m · 引擎`（+13 单测） |
 | 嵌套委派 | ✅ | `subagent.maxDepth: 2` 实测「父 → 子 → 孙」（DSH 默认 1） |
 | 共享规则真正到达项目 | ✅ | `CLAUDE.md` 里的 `@path` 导入被改写成「需要时读某个文件」——本运行时**不展开** `@`，不这么做的话那些标准文档只是被引用、从未被读 |
@@ -117,7 +116,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\skills\dsgs-init","$env:USERP
   settings.json              # 钩子、权限、安全规则
   agents/                    # 49 个代理定义
   skills/                    # 74 个技能（每技能一个目录）
-  hooks/                     # 14 个脚本 —— 12 个事件钩子 + yaml-helper.sh
+  hooks/                     # 14 个脚本 —— 13 个事件钩子 + yaml-helper.sh
   rules/                     # 13 条路径作用域编码标准
   statusline.sh              # 上游状态行脚本（作参考保留）
   docs/                      # 工作流目录、39 个模板与写作指南
@@ -165,6 +164,16 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
+
+
+
+
+
+
+
+
 
 
 

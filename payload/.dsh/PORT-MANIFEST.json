@@ -1,6 +1,6 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "generatedAt": "2026-10-22T17:29:23.808Z",
+  "generatedAt": "2026-10-25T16:13:10.297Z",
   "generatedFrom": "content-source",
   "output": ".dsh",
   "fileCount": 325,
@@ -521,7 +521,7 @@
       "source": "skills/setup-engine/references/godot-language-config.md",
       "output": ".dsh/skills/setup-engine/references/godot-language-config.md",
       "sourceSha256": "3285a7584f5a1f74",
-      "outputSha256": "df8648ab86a291e2",
+      "outputSha256": "60ccf56a0d9b89f0",
       "rewritten": true
     },
     {
@@ -530,7 +530,7 @@
       "output": ".dsh/skills/setup-engine/SKILL.md",
       "upstreamFrontmatter": "name: setup-engine\ndescription: \"Configure engine and version. Pins it in CLAUDE.md; WebSearch fills reference docs when the version is beyond LLM training data.\"\nargument-hint: \"[engine] | [engine version] | refresh | upgrade [old-version] [new-version] | no args for guided selection\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/setup-engine/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "e430997ed4c77d04",
-      "outputSha256": "edfacc71f5bcdb55",
+      "outputSha256": "095075234510760d",
       "rewritten": true
     },
     {
@@ -2537,8 +2537,8 @@
       "kind": "overlay",
       "source": "dsh-src/hooks/validate-assets.mjs",
       "output": ".dsh/hooks/validate-assets.mjs",
-      "sourceSha256": "0ded2debf64cfc29",
-      "outputSha256": "51d4d59b10e0de60",
+      "sourceSha256": "3ac822e47f31b599",
+      "outputSha256": "07994602eb0c6a01",
       "rewritten": true
     },
     {
@@ -2713,8 +2713,8 @@
       "kind": "overlay",
       "source": "dsh-src/skill-notes/setup-engine.md",
       "output": ".dsh/skill-notes/setup-engine.md",
-      "sourceSha256": "61feb1db42febe78",
-      "outputSha256": "f6cf3768252c148c",
+      "sourceSha256": "e17e2d1d5b7e9292",
+      "outputSha256": "269242eaa84b2ef0",
       "rewritten": true
     },
     {

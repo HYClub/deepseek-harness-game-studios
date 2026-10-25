@@ -395,7 +395,7 @@ try {
     const work = makeWorktree(base);
     try {
       const out = scope(work);
-      assert.ok(!out.includes('D:/Work/dsh/design'), out);
+      assert.ok(!out.includes('D:/example/dsh/design'), out);
       assert.ok(existsSync(join(work, 'dsh-src', 'scripts', SCRIPT)));
       assert.match(readFileSync(join(work, 'dsh-src', 'scripts', SCRIPT), 'utf8'), /review-scope/);
     } finally {
@@ -406,3 +406,4 @@ try {
   console.error(error);
   process.exitCode = 1;
 }
+

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.11 — install instructions that match the client you use
+
+- The README now spells out two install paths and nothing else: the web client through its plugin dialog or the CLI, and the desktop client through the app's own plugin panel.
+- The payload a project receives no longer carries this repository's own acceptance runbook or the author's drive paths, and the changelog that travels with a project is this project's changelog.
+- A plugin-authoring guide ships in the repository — what a DSH plugin has to declare, what it cannot do, and the mistakes worth avoiding before publishing — while staying out of the payload a game project gets.
 ## 0.1.10 — the repository answers the questions a visitor has
 
 - The published repository now carries a security policy, issue templates and a contributing guide, so GitHub's community checks are satisfied and someone with a problem knows where to report it.
@@ -51,6 +56,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

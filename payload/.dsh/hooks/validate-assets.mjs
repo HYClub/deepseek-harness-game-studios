@@ -92,7 +92,7 @@ run(async () => {
   const root = projectRoot(input);
   const rootFwd = root.replace(/\\/g, '/').replace(/\/+$/, '');
   // bash 74: Git Bash spells the same root two ways (`pwd` -> /d/Work/x,
-  // `pwd -W` -> D:/Work/x). Both are carried here so a POSIX-spelled path inside
+  // `pwd -W` -> D:/example/x). Both are carried here so a POSIX-spelled path inside
   // the project is still recognised instead of being written off as outside it.
   const rootMsys = rootFwd.replace(/^([A-Za-z]):/, (_, drive) => `/${drive.toLowerCase()}`);
 
@@ -162,3 +162,4 @@ run(async () => {
     });
   }
 });
+

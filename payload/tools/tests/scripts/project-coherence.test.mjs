@@ -425,7 +425,7 @@ try {
   check('the fixture root is what was read, not the repository', () => {
     const r = runScript(coherent, SCRIPT, []);
     assert.match(r.stdout, /engine\.rendering \(Forward\+\) agrees with project\.godot \(forward_plus\)/);
-    assert.ok(!r.stdout.includes('D:\\Work\\dsh'), r.stdout);
+    assert.ok(!r.stdout.includes('D:/example/dsh'), r.stdout);
   });
 } finally {
   coherent.cleanup();
@@ -437,3 +437,4 @@ function runScoped(fixture) {
   assert.equal(r.status, 0, r.stderr);
   return r.stdout;
 }
+

@@ -144,7 +144,7 @@ check('non-commit command exits 0 with no output', () => {
 });
 
 check('payload without "tool_input" exits 0 (the "GitHub" cwd guard)', () => {
-  const r = invoke({ hook_event_name: 'PreToolUse', cwd: 'D:/Work/GitHub/digital', tool_name: 'pwsh' });
+  const r = invoke({ hook_event_name: 'PreToolUse', cwd: 'D:/example/project', tool_name: 'pwsh' });
   assert.equal(r.status, 0);
   assert.equal(r.stdout, '');
 });
@@ -526,7 +526,7 @@ check('a tool_input that is not an object cannot be parsed into a command (exit 
 check('"git" in a path but not in tool_input takes the early exit', () => {
   const r = invoke({
     hook_event_name: 'PreToolUse',
-    cwd: 'D:/Work/GitHub/digital',
+    cwd: 'D:/example/project',
     tool_name: 'pwsh',
     tool_input: { command: 'echo hello' },
   });
@@ -545,4 +545,5 @@ for (const dir of created) rmSync(dir, { recursive: true, force: true });
 
 console.log(`\n${passed} passed, ${failed} failed, ${skipped} skipped`);
 if (failed > 0) process.exitCode = 1;
+
 

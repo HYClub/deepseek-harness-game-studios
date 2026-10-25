@@ -124,7 +124,7 @@ export function comparePair(pair, bashCommand) {
     // a mismatch that had nothing to do with either implementation.
     const absolute = (p) => (isAbsolute(p) ? p : join(REPO_ROOT, p));
     // Git Bash does not accept `D:/…` as a command path (exit 127) and `cygpath` is not on the
-    // Windows PATH, so the drive path is translated here: `D:\Work\dsh` → `/d/Work/dsh`.
+    // Windows PATH, so a drive path is translated here: `<drive>:\path` → `/<drive>/path`.
     const posix = (p) => (process.platform === 'win32' && /^[A-Za-z]:[\\/]/.test(p)
       ? `/${p[0].toLowerCase()}${p.slice(2).replace(/\\/g, '/')}`
       : p);
@@ -260,6 +260,7 @@ if (bash === undefined) {
 
 console.log(`\nparity/bash-vs-node.test.mjs: ${passed} passed, ${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);
+
 
 
 

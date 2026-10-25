@@ -1,7 +1,0 @@
-# One-off overlay: load the dsgs-statusline server half directly by file URL, so the boot path can be
-# tested without the package's bundle patch (which was removed while it was unproven).
-- insert:
-    - id: dsgs-statusline
-      name: "file:///D:/Work/dsh/tools/dsgs-statusline/index.js"
-      config: {}
-
