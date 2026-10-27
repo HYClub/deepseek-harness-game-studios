@@ -72,7 +72,19 @@ export function rootFromScript(start = SCRIPTS_DIR) {
 /** Read a file as UTF-8, or null when it is missing/unreadable. */
 export function readText(path) {
   try {
-    return readFileSync(path, 'utf8');
+    const bytes = readFileSync(path);
+    let text = bytes.toString('utf8');
+    // Not everything on a Windows disk is UTF-8. Only when the UTF-8 read is provably broken (replacement
+    // characters) do we try GBK, so a correct file is never re-decoded on a guess.
+    if (text.includes('\uFFFD')) {
+      try {
+        const alternative = new TextDecoder('gbk', { fatal: false }).decode(bytes);
+        if (!alternative.includes('\uFFFD')) text = alternative;
+      } catch { /* no GBK table in this build: keep UTF-8 */ }
+    }
+    // Windows editors happily write a UTF-8 BOM. Left in place it defeats every line-prefix test the
+    // framework does (`> **Status**`, `framework:`), so the mark is dropped here for every reader at once.
+    return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
   } catch {
     return null;
   }
@@ -87,4 +99,6 @@ export function readText(path) {
 export function posixPath(path) {
   return path.replace(/\\/g, '/');
 }
+
+
 

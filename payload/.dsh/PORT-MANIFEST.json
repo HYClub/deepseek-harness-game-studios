@@ -1,9 +1,9 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "generatedAt": "2026-10-25T16:13:10.297Z",
+  "inputsDigest": "e7927afe5ab2f2a9",
   "generatedFrom": "content-source",
   "output": ".dsh",
-  "fileCount": 325,
+  "fileCount": 329,
   "files": [
     {
       "kind": "skill",
@@ -2631,6 +2631,22 @@
     },
     {
       "kind": "overlay",
+      "source": "dsh-src/scripts/project-state.mjs",
+      "output": ".dsh/scripts/project-state.mjs",
+      "sourceSha256": "606ebc7436254903",
+      "outputSha256": "606ebc7436254903",
+      "rewritten": false
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/render-dashboard.mjs",
+      "output": ".dsh/scripts/render-dashboard.mjs",
+      "sourceSha256": "dbe87a247727ea66",
+      "outputSha256": "dbe87a247727ea66",
+      "rewritten": false
+    },
+    {
+      "kind": "overlay",
       "source": "dsh-src/scripts/review-receipts.mjs",
       "output": ".dsh/scripts/review-receipts.mjs",
       "sourceSha256": "9aa0c5bce96a460b",
@@ -2673,8 +2689,8 @@
       "kind": "overlay",
       "source": "dsh-src/scripts/_runner.mjs",
       "output": ".dsh/scripts/_runner.mjs",
-      "sourceSha256": "3cacd63bb0a5327a",
-      "outputSha256": "3cacd63bb0a5327a",
+      "sourceSha256": "830fa241d5ca49ef",
+      "outputSha256": "830fa241d5ca49ef",
       "rewritten": false
     },
     {
@@ -2719,6 +2735,14 @@
     },
     {
       "kind": "overlay",
+      "source": "dsh-src/skills/dashboard/SKILL.md",
+      "output": ".dsh/skills/dashboard/SKILL.md",
+      "sourceSha256": "bbf01ea4bab1d848",
+      "outputSha256": "bbf01ea4bab1d848",
+      "rewritten": false
+    },
+    {
+      "kind": "overlay",
       "source": "dsh-src/skills/dsgs-install/SKILL.md",
       "output": ".dsh/skills/dsgs-install/SKILL.md",
       "sourceSha256": "35c013165df41368",
@@ -2731,6 +2755,14 @@
       "output": ".dsh/skills/statusline/SKILL.md",
       "sourceSha256": "3b8ea6f1cd96bb72",
       "outputSha256": "3b8ea6f1cd96bb72",
+      "rewritten": false
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/skills/today/SKILL.md",
+      "output": ".dsh/skills/today/SKILL.md",
+      "sourceSha256": "b150c4711a74eb10",
+      "outputSha256": "b150c4711a74eb10",
       "rewritten": false
     },
     {

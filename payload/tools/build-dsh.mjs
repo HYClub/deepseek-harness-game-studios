@@ -667,6 +667,34 @@ function kindFor(rel) {
   return 'other';
 }
 
+/** SHA-256 over every generator input (path + content), so the manifest depends on content only. */
+async function inputsDigest() {
+  const hash = createHash('sha256');
+  const visit = async (dir, prefix) => {
+    let entries = [];
+    try {
+      entries = await readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    entries.sort((a, b) => a.name.localeCompare(b.name));
+    for (const entry of entries) {
+      const full = join(dir, entry.name);
+      const rel = prefix + '/' + entry.name;
+      if (entry.isDirectory()) { await visit(full, rel); continue; }
+      let body;
+      try { body = await readFile(full); } catch { continue; }
+      hash.update(rel);
+      hash.update('\0');
+      hash.update(createHash('sha256').update(body).digest('hex'));
+      hash.update('\n');
+    }
+  };
+  for (const dir of MIRRORED_DIRS) await visit(join(ROOT, '.claude', dir), dir);
+  await visit(join(ROOT, OVERLAY_DIR), OVERLAY_DIR);
+  return hash.digest('hex').slice(0, 16);
+}
+
 async function convert() {
   const manifest = [];
   let written = 0;
@@ -834,7 +862,7 @@ async function convert() {
   if (!DRY_RUN) {
     const summary = {
       generatedBy: 'tools/build-dsh.mjs',
-      generatedAt: new Date().toISOString(),
+    inputsDigest: await inputsDigest(),
       // Brand-free on purpose: this manifest ships inside .dsh/, and the content tree it
       // mirrors is documented in AGENTS.md ("目录契约") rather than named 285 times here.
       generatedFrom: 'content-source',
@@ -861,6 +889,9 @@ async function convert() {
 }
 
 await convert();
+
+
+
 
 
 

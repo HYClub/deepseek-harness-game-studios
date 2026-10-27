@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — a daily entry point and a studio dashboard
+
+- `/today` answers "what do I do now" in a few lines: the story to pick up, what is blocked, and the next command.
+- `/dashboard` writes one HTML file with three charts — status pie, stories per epic, lines added and deleted per day — for 7 / 30 / 90 days and all time.
+- The charts are rendered when the file is written, not drawn by the browser, so they open without a network and stay readable with JavaScript disabled; switching charts works in a sandboxed preview too.
+- Story dates come from commit instants in your own time zone; uncommitted work is dated by each file's modification time and marked as pending.
+- A single status draws a full circle and a single day draws a bar, because neither is a pie slice or a line.
+- A story file written with a UTF-8 BOM now parses, a `--root` that points at a file is rejected, and an output that cannot be written says which path failed.
 ## 0.1.11 — install instructions that match the client you use
 
 - The README now spells out two install paths and nothing else: the web client through its plugin dialog or the CLI, and the desktop client through the app's own plugin panel.
@@ -56,6 +64,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

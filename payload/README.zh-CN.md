@@ -1,9 +1,9 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.1.11-orange.svg)
+![Version](https://img.shields.io/badge/version-0.2.0-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
-![Skills](https://img.shields.io/badge/skills-76-green.svg)
+![Skills](https://img.shields.io/badge/skills-78-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
 ![Rules](https://img.shields.io/badge/rules-13-blue.svg)
 ![Port of CCGS](https://img.shields.io/badge/port%20of-CCGS%20v1.1.2-lightgrey.svg)
@@ -13,7 +13,7 @@
 [安装](#安装) · [实现状态](#实现状态) · [项目结构](#项目结构) · [测试你的定制](#测试你自己的定制) · [验证](#验证) · [许可证](#许可证)
 
 把一次 DeepSeek Harness 会话变成一间完整的游戏工作室。
-**49 个代理。76 个技能。一支协调好的 AI 团队。**
+**49 个代理。78 个技能。一支协调好的 AI 团队。**
 
 本仓库是 [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)（CCGS）
 到 DeepSeek Harness（DSH）的**移植**，不是从零自研：技能、代理、规则、文档都来自上游（MIT）；
@@ -26,7 +26,7 @@
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.1.11** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.2.0** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
@@ -48,6 +48,7 @@ dsh plugin --profile web add https://github.com/HYClub/deepseek-harness-game-stu
 ### ② 桌面版
 
 打开桌面客户端，`插件` → `添加插件` → 填同一个 URL → **安装** → 重启客户端。
+
 插件首次加载时会自动把框架装到机器级（`~/.dsh/dsgs` 与用户级引导技能）。之后：
 
 ```
@@ -85,7 +86,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\skills\dsgs-init","$env:USERP
 | 配置解析 | ✅ | `project.yaml` 单一来源；`resolve_config` / `__call resolve_setting` 的 Node 端口 |
 | 辅助脚本 | ✅ | 上游每个 `.sh` 都有 Node 端口（`.dsh/scripts/*.mjs`），沙箱内可运行 |
 | 内容保真 | ✅ | 258 文件 / 42,895 行：96.0% 逐字、3.1% 已记录改写、0.5% 结构性、0.4% 换写法、**0 行无法解释的丢失** |
-| 机器级安装 | ✅ | 插件自带载荷（911 个文件）并在首次加载时安装；空工作区打 `/start` 即可用它初始化 |
+| 机器级安装 | ✅ | 插件自带载荷（920 个文件）并在首次加载时安装；空工作区打 `/start` 即可用它初始化 |
 | `/statusline` | ✅ | 工作室状态行 `阶段 · 姿态 · epic > story · Sprint n/m · 引擎`（+13 单测） |
 | 嵌套委派 | ✅ | `subagent.maxDepth: 2` 实测「父 → 子 → 孙」（DSH 默认 1） |
 | 共享规则真正到达项目 | ✅ | `CLAUDE.md` 里的 `@path` 导入被改写成「需要时读某个文件」——本运行时**不展开** `@`，不这么做的话那些标准文档只是被引用、从未被读 |
@@ -147,7 +148,7 @@ DSGS 是给你改的模板。`DSGS Skill Testing Framework/` 用来验证改过�
 
 ```pwsh
 pwsh -File tools/verify-port.ps1        # 7 步：生成 → 结构 → 引用 → 保真 → 钩子 → 挂载 → 套件
-node tools/check-dsh.mjs                # skills=76 agents=49 rules=13 hooks=14 errors=0 warnings=0
+node tools/check-dsh.mjs                # skills=78 agents=49 rules=13 hooks=14 errors=0 warnings=0
 node tools/verify-fidelity.mjs          # unexplained 0 / 内容零丢失（258 文件，42,895 行）
 node tools/verify-hooks-mount.mjs       # 10/10 挂载用例
 node tools/verify-hooks-bridge.mjs      # 12/12
@@ -164,6 +165,16 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
+
+
+
+
+
+
+
+
 
 
 
