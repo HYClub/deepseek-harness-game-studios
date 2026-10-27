@@ -1,6 +1,6 @@
 {
   "name": "deepseek-harness-game-studios",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "DeepSeek Harness Game Studios (DSGS)——Claude-Code-Game-Studios @b21fa0f (MIT) 的 DSH 移植，一站式装入：钩子桥（上游 9 个事件全覆盖）、状态行、以及自带框架载荷的机器级安装（装入后任意空文件夹打 /start 即可初始化）。已实现 74 技能 + 49 代理 + 13 规则 + 14 Node 钩子，内容零丢失；未实现：GUI 停靠状态条（前端清单只收官方包）与 PreToolUse 事前提醒（DSH 无上下文章通道），替代方案见仓库 README。",
   "type": "module",
   "exports": {

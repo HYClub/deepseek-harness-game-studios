@@ -1,9 +1,9 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "inputsDigest": "e7927afe5ab2f2a9",
+  "inputsDigest": "1451693304119596",
   "generatedFrom": "content-source",
   "output": ".dsh",
-  "fileCount": 329,
+  "fileCount": 331,
   "files": [
     {
       "kind": "skill",
@@ -2623,6 +2623,14 @@
     },
     {
       "kind": "overlay",
+      "source": "dsh-src/scripts/plugin-update.mjs",
+      "output": ".dsh/scripts/plugin-update.mjs",
+      "sourceSha256": "b7df26f8e4f30d90",
+      "outputSha256": "b7df26f8e4f30d90",
+      "rewritten": false
+    },
+    {
+      "kind": "overlay",
       "source": "dsh-src/scripts/project-coherence.mjs",
       "output": ".dsh/scripts/project-coherence.mjs",
       "sourceSha256": "83f034d867f77620",
@@ -2763,6 +2771,14 @@
       "output": ".dsh/skills/today/SKILL.md",
       "sourceSha256": "b150c4711a74eb10",
       "outputSha256": "b150c4711a74eb10",
+      "rewritten": false
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/skills/update/SKILL.md",
+      "output": ".dsh/skills/update/SKILL.md",
+      "sourceSha256": "e20dc3b2bbeb06e2",
+      "outputSha256": "e20dc3b2bbeb06e2",
       "rewritten": false
     },
     {

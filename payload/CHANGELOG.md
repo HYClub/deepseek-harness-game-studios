@@ -1,4 +1,8 @@
 # Changelog
+## 0.2.1 — an update command, and how to use it
+
+- `/update` compares the installed plugin with the newest release from inside an initialised workspace, shows the commands it will run, and runs them only after you confirm.
+- The README now starts with how to update — `/update` in an initialised workspace, how to tell whether a workspace is initialised, and the Plugins-panel route for the desktop app, where the command line cannot install.
 
 ## 0.2.0 — a daily entry point and a studio dashboard
 
@@ -64,6 +68,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 
