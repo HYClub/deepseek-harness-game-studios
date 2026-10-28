@@ -25,7 +25,7 @@ One JSON line:
 |---|---|
 | `profile` | the profile this session runs under (`DSH_PROFILE`) |
 | `managedByApp` | `true` for the desktop profile — the Electron app owns it, the CLI refuses to touch it |
-| `installed` / `latest` | versions, e.g. `0.1.10` and `v0.2.0` |
+| `installed` / `latest` | versions, e.g. `x.y.z` installed and `vx.y.z` newest tag |
 | `status` | `up-to-date` · `update-available` · `unknown` |
 | `commands` | the exact commands for a CLI profile, or a hint for the desktop app |
 | `otherProfiles` | where else the plugin is installed, with versions |
@@ -37,7 +37,8 @@ One JSON line:
 - **`unknown`** — say what could not be read (usually no network for `git ls-remote`) and stop. Do not guess a
   version.
 - **`update-available` + `managedByApp`** — the CLI cannot install into the desktop profile. Say: open `Plugins`,
-  uninstall `deepseek-harness-game-studios`, `Add plugin`, paste the URL, install, restart. Offer the paste for them:
+  uninstall `deepseek-harness-game-studios`, `Add plugin`, paste the URL, install, restart; after the restart,
+  read `node .dsh/scripts/plugin-update.mjs` once more and confirm `installed` changed. Offer the paste for them:
 
   ```pwsh
   Set-Clipboard -Value 'https://github.com/HYClub/deepseek-harness-game-studios'
@@ -68,5 +69,6 @@ Only after an explicit yes:
 - **Never** upgrade a profile this session is not running under (the other entries in `otherProfiles`) unless the
   user names that profile.
 - No version guessing: if `latest` is `null`, say the check failed.
+
 
 

@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.2.1-orange.svg)
+![Version](https://img.shields.io/badge/version-0.2.2-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-79-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -26,7 +26,7 @@
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.2.1** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.2.2** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
@@ -59,7 +59,7 @@ dsh plugin --profile web add https://github.com/HYClub/deepseek-harness-game-stu
 
 ## 升级
 
-在**初始化过的工作区**里输入：
+在**初始化过的工作区**里输入（0.2.1 及以上版本才有 `/update`）：
 
 ```
 /update
@@ -70,7 +70,18 @@ dsh plugin --profile web add https://github.com/HYClub/deepseek-harness-game-stu
 **这个工作区初始化了吗？** 项目根目录下有 `.dsh/skills/start/SKILL.md` 或 `.dsgs-installed.json` 就算初始化过。
 两个都没有的话：在 DSH 里打开这个项目，新开一个会话打 `/start` —— 初始化一次即可，以后在这个项目里随时可以 `/update`。
 
-**桌面版**：插件 profile 由应用独占，命令行改不了它。打开 `插件` → 卸载 `deepseek-harness-game-studios` → `添加插件` 粘贴 `https://github.com/HYClub/deepseek-harness-game-studios` → 安装 → 重启。`/update` 照样会帮你查版本，并告诉什么时候需要这么做。
+**从 0.2.0 或更早版本过来？** `/update` 从 0.2.1 才有，所以第一次升级要手动：
+
+```pwsh
+dsh plugin --profile web remove deepseek-harness-game-studios
+dsh plugin --profile web add https://github.com/HYClub/deepseek-harness-game-studios
+```
+
+桌面版用户走 `插件` 面板（见下）。之后每次升级都是一条 `/update`。
+
+**桌面版**：插件 profile 由应用独占，命令行改不了它。打开 `插件` → 卸载 `deepseek-harness-game-studios` →
+`添加插件` 粘贴 `https://github.com/HYClub/deepseek-harness-game-studios` → 安装 → 重启。
+`/update` 照样会帮你查版本，并告诉什么时候需要这么做。
 
 ## 插件会往你机器上写什么（与撤销）
 
@@ -180,6 +191,9 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
+
 
 
 

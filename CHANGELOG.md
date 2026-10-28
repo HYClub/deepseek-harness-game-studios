@@ -1,4 +1,8 @@
 # Changelog
+## 0.2.2 — the first update is a manual one
+
+- The upgrade notes now say that `/update` arrives with 0.2.1: anyone on an older release reinstalls once, with the two commands or through the desktop `Plugins` panel, and every update after that is `/update`.
+- The same section marks the version where `/update` exists, so a reader on 0.2.0 is not sent to a command they do not have.
 ## 0.2.1 — an update command, and how to use it
 
 - `/update` compares the installed plugin with the newest release from inside an initialised workspace, shows the commands it will run, and runs them only after you confirm.
@@ -68,6 +72,7 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

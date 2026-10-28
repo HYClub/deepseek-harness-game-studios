@@ -1,6 +1,6 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "inputsDigest": "1451693304119596",
+  "inputsDigest": "c72aa0b032d5a693",
   "generatedFrom": "content-source",
   "output": ".dsh",
   "fileCount": 331,
@@ -2777,8 +2777,8 @@
       "kind": "overlay",
       "source": "dsh-src/skills/update/SKILL.md",
       "output": ".dsh/skills/update/SKILL.md",
-      "sourceSha256": "e20dc3b2bbeb06e2",
-      "outputSha256": "e20dc3b2bbeb06e2",
+      "sourceSha256": "fb4d0fc8c3eeb1c2",
+      "outputSha256": "fb4d0fc8c3eeb1c2",
       "rewritten": false
     },
     {
