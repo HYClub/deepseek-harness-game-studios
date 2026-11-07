@@ -1,6 +1,6 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "inputsDigest": "c72aa0b032d5a693",
+  "inputsDigest": "05f59ab17224cb27",
   "generatedFrom": "content-source",
   "output": ".dsh",
   "fileCount": 331,
@@ -2641,16 +2641,16 @@
       "kind": "overlay",
       "source": "dsh-src/scripts/project-state.mjs",
       "output": ".dsh/scripts/project-state.mjs",
-      "sourceSha256": "606ebc7436254903",
-      "outputSha256": "606ebc7436254903",
+      "sourceSha256": "abc8146511879e4d",
+      "outputSha256": "abc8146511879e4d",
       "rewritten": false
     },
     {
       "kind": "overlay",
       "source": "dsh-src/scripts/render-dashboard.mjs",
       "output": ".dsh/scripts/render-dashboard.mjs",
-      "sourceSha256": "dbe87a247727ea66",
-      "outputSha256": "dbe87a247727ea66",
+      "sourceSha256": "fc7937e17811a334",
+      "outputSha256": "fc7937e17811a334",
       "rewritten": false
     },
     {
@@ -2745,8 +2745,8 @@
       "kind": "overlay",
       "source": "dsh-src/skills/dashboard/SKILL.md",
       "output": ".dsh/skills/dashboard/SKILL.md",
-      "sourceSha256": "bbf01ea4bab1d848",
-      "outputSha256": "bbf01ea4bab1d848",
+      "sourceSha256": "4b91caeb632fea4c",
+      "outputSha256": "4b91caeb632fea4c",
       "rewritten": false
     },
     {

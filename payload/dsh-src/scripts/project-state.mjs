@@ -248,6 +248,43 @@ function readStage(root) {
  * @param {string} root absolute project root
  * @returns {object} the documented JSON shape
  */
+/** Paths a project is expected to have, and the roster the framework ships — the board's left column. */
+const BOARD_PATHS = [
+  'project.yaml',
+  'docs/gdd',
+  'docs/architecture/adr',
+  'design/registry/systems-index.md',
+  'design/registry/entities.yaml',
+  'production/sprints',
+  'docs/qa/evidence',
+  'production/session-state/active.md',
+];
+
+/** What the board needs beyond story counts: which expected paths exist, and who is on the roster. */
+function collectBoard(root) {
+  const paths = BOARD_PATHS.map((path) => ({ path, exists: existsSync(join(root, path)) }));
+  const roster = { agents: [], skills: 0, rules: 0, rulesFiles: [] };
+  const readNames = (dir, keep) => {
+    try {
+      return readdirSync(join(dir), { withFileTypes: true })
+        .filter((entry) => keep(entry))
+        .map((entry) => entry.name.replace(/\.md$/, ''))
+        .sort();
+    } catch { return []; }
+  };
+  roster.agents = readNames(join(root, '.dsh', 'agents'), (e) => e.isFile() && e.name.endsWith('.md') && !/^(readme|index)\.md$/i.test(e.name));
+  roster.rulesFiles = readNames(join(root, '.dsh', 'rules'), (e) => e.isFile() && e.name.endsWith('.md') && !/^index\.md$/i.test(e.name));
+  roster.rules = roster.rulesFiles.length;
+  try {
+    roster.skills = readdirSync(join(root, '.dsh', 'skills'), { withFileTypes: true }).filter((e) => e.isDirectory()).length;
+  } catch { roster.skills = 0; }
+  const checkpoint = join(root, 'production', 'session-state', 'active.md');
+  let checkpointDate = null;
+  if (existsSync(checkpoint)) {
+    try { checkpointDate = new Date(statSync(checkpoint).mtimeMs).toISOString().slice(0, 10); } catch { /* unreadable */ }
+  }
+  return { paths, roster, checkpoint: { exists: existsSync(checkpoint), date: checkpointDate } };
+}
 export function collectState(root) {
   const warnings = [];
 
@@ -467,6 +504,7 @@ const churnSource = churn.size > 0 ? 'git' : (gitFailure ?? 'mtime-bytes');
         sessionLogs,
       },
     },
+    board: collectBoard(root),
     warnings,
   };
 }
@@ -486,6 +524,7 @@ if (invokedDirectly) {
   }
   process.stdout.write(JSON.stringify(collectState(root)) + '\n');
 }
+
 
 
 

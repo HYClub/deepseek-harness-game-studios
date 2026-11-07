@@ -1,6 +1,6 @@
 ---
 name: dashboard
-description: "Render the studio state as one offline HTML file (stage, sprint, story progress, blockers) and open it with present. Reads project files; writes only production/dashboard.html. DSGS-only."
+description: "Render the studio state as one offline HTML file — a left-nav board (overview, gaps, expected paths, roster, charts, commands) plus the three charts — and open it with present. Reads project files; writes only production/dashboard.html. DSGS-only."
 argument-hint: ""
 user-invocable: true
 ---
@@ -35,8 +35,8 @@ Do not paste the HTML or restate every card.
 
 ## What the page contains
 
-Every number on the page comes from `stories.items`, `stories.activity` and `stories.docs` — do not recount
-anything yourself.
+Every number on the page comes from `stories.items`, `stories.activity`, `stories.docs`, `board.*` and
+`warnings` — the script reads them from disk, so do not recount anything yourself.
 
 - **Charts are pre-rendered, not drawn at run time**: the script computes every chart for every range and
   writes static SVG into the file, so the gate can check the same markup a browser shows. The default view is
@@ -49,13 +49,33 @@ anything yourself.
   last week appears last week, not under today. Those days are marked pending in the JSON and drawn as hollow
   points.
 - **Narrow screens** get tables instead of charts (范围汇总 / 每个 epic / 最近 10 天), so nothing is clipped.
+- **Two themes.** Without a stored choice the page follows the system preference (`prefers-color-scheme`: dark
+  or light); the `◐` button in the header flips it and remembers the choice in `localStorage`, which works with
+  JavaScript disabled only as far as the system preference goes, and the button itself starts hidden so there is
+  no dead control. Light is not a filter over the dark page — both
+  palettes are defined with the same variables (charts included), so contrast holds in each.
+- **Printing.** Print styles force the light palette and drop the left navigation, so Ctrl+P gives dark ink on
+  white paper instead of a dark slab.
 - **Honest fallback**: when the directory has no git history (or every file landed on one day) the line chart
   says so and shows a status breakdown instead of inventing a trend.
 
-- **Engine**, **Stage**, **Sprint**, **Stories done** (with a progress bar)
-- **Next** — the story `project-state.mjs` ranked first, with its status as written
-- **Blocked** — every story whose status starts with `blocked`
-- **Warnings** — missing `project.yaml`, missing `production/sprint-status.yaml`, no story files
+The page is a board with a left navigation — every link is a plain `#anchor`, so the navigation works with
+JavaScript disabled:
+
+- **概览 (overview)** — sprint, stories done in the selected range, `next`, blocked, the data-source table and the
+  session checkpoint (`production/session-state/active.md`, with its date when present).
+- **缺口 (gaps)** — every warning `project-state.mjs` produced, verbatim: missing `project.yaml`, missing
+  `production/sprint-status.yaml`, no story files, unreadable git history.
+- **目录 (paths)** — the eight paths a project is expected to have (`project.yaml`, `docs/gdd`,
+  `docs/architecture/adr`, `design/registry/systems-index.md`, `design/registry/entities.yaml`,
+  `production/sprints`, `docs/qa/evidence`, `production/session-state/active.md`), each marked present or missing.
+  The list comes from `board.paths`, so the page cannot claim a directory exists when it does not.
+- **名册 (roster)** — `board.roster`: agents grouped by the role suffix in their file name (`*-director`,
+  `*-programmer`, `*-specialist`, …), plus the skills and rules counts. The grouping is a naming convention, and
+  the page says so — the framework records no role field.
+- **图表 (charts)** — the three pre-rendered charts described below.
+- **命令 (commands)** — `/start`, `/project-stage-detect`, `/gate-check`, `/sprint-status`, `/setup-engine`,
+  `/dashboard` as **text**, not buttons: a static file cannot run a skill, and the page says that in one line.
 
 ## Constraints the rendering holds
 
@@ -69,6 +89,12 @@ anything yourself.
 When the render prints `1 warning(s)` (or more), name the most important one after the summary — usually
 "no `production/sprint-status.yaml`" (run `/sprint-plan update`) or "no story files" (run `/map-systems`).
 One line, not a list.
+
+
+
+
+
+
 
 
 

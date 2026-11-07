@@ -15,9 +15,10 @@ import { fileURLToPath } from 'node:url';
 import { rootFromScript } from './_runner.mjs';
 import { collectState } from './project-state.mjs';
 
+// Chart colours are CSS variables so the light theme gets its own, darker hues without a second palette.
 const COLORS = {
-  done: '#3fb950', inProgress: '#58a6ff', inReview: '#a371f7',
-  ready: '#d29922', blocked: '#f85149', other: '#8b949e', noStatus: '#6e7681',
+  done: 'var(--green)', inProgress: 'var(--blue)', inReview: 'var(--purple)',
+  ready: 'var(--amber)', blocked: 'var(--red)', other: 'var(--muted)', noStatus: 'var(--dim2)',
 };
 const LABELS = {
   done: '已完成', inProgress: '进行中', inReview: '评审中',
@@ -32,6 +33,28 @@ const localDate = (ms) => {
 };
 const spanFor = (days, now) => (days === 0 ? '全部' : localDate(now - days * 864e5) + ' → ' + localDate(now));
 
+/** Group the roster by the role suffix in the agent file name. Names are all this tree records, so the
+ *  grouping is a readable convention, not a claim about the framework's own taxonomy — the board says so. */
+function groupRoster(names) {
+  const roleOf = (name) => {
+    if (/-director$/.test(name)) return 'Director';
+    if (/-programmer$/.test(name)) return 'Programmer';
+    if (/-specialist$/.test(name)) return 'Specialist';
+    if (/-designer$/.test(name)) return 'Designer';
+    if (/-engineer$/.test(name)) return 'Engineer';
+    if (/-manager$/.test(name) || /-lead$/.test(name)) return 'Lead';
+    if (/-artist$/.test(name) || /-writer$/.test(name) || /-builder$/.test(name)) return 'Craft';
+    return 'Other';
+  };
+  const order = ['Lead', 'Director', 'Programmer', 'Specialist', 'Designer', 'Engineer', 'Craft', 'Other'];
+  const map = new Map();
+  for (const name of names) {
+    const role = roleOf(name);
+    if (!map.has(role)) map.set(role, []);
+    map.get(role).push(name);
+  }
+  return order.filter((role) => map.has(role)).map((role) => [role, map.get(role).sort()]);
+}
 const churnLabel = (source) => ({
   git: 'git 提交历史',
   'mtime-bytes': '文件行数（无 git）',
@@ -80,7 +103,7 @@ function axisTicks(max) {
   const out = [];
   for (let value = 0; value <= topValue; value += step) {
     const y = BOTTOM - (value / topValue) * (BOTTOM - TOP);
-    out.push(`<line x1="${LEFT}" y1="${y.toFixed(1)}" x2="${RIGHT}" y2="${y.toFixed(1)}" stroke="#21262d"/>`
+    out.push(`<line x1="${LEFT}" y1="${y.toFixed(1)}" x2="${RIGHT}" y2="${y.toFixed(1)}" style="stroke:var(--line)"/>`
       + `<text x="${LEFT - 10}" y="${(y + 4).toFixed(1)}" text-anchor="end">${value}</text>`);
   }
   return { markup: out.join(''), topValue };
@@ -95,7 +118,7 @@ function pieView(rows) {
     const [row] = rows;
     const colour = COLORS[row.key] || '#888';
     return {
-      svg: `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${colour}" opacity="0.92" class="dot">`
+      svg: `<circle cx="${cx}" cy="${cy}" r="${r}" style="fill:${colour}" opacity="0.92" class="dot">`
         + `<title>${esc((LABELS[row.key] || row.key) + ' ' + row.n + ' 条（100%）')}</title></circle>`
         + `<text x="${cx}" y="${cy + 4}" text-anchor="middle" dominant-baseline="middle" class="lbl">100%</text>`,
       legend: legendItem(colour, (LABELS[row.key] || row.key) + ' ' + row.n),
@@ -112,7 +135,7 @@ function pieView(rows) {
     const share = Math.round((row.n / total) * 100);
     const colour = COLORS[row.key] || '#888';
     parts.push(`<path class="wedge" d="M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${ringR} ${ringR} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}"`
-      + ` stroke="${colour}" stroke-width="${r}" fill="none" stroke-linecap="butt"`
+      + ` style="stroke:${colour}" stroke-width="${r}" fill="none" stroke-linecap="butt"`
       + ` style="--len:${len.toFixed(1)}">`
       + `<title>${esc((LABELS[row.key] || row.key) + ' ' + row.n + ' 条（' + share + '%）')}</title></path>`);
     if (row.n / total >= 0.03) {
@@ -140,16 +163,16 @@ function barView(rows) {
     const x = LEFT + slot * index + slot / 2 - barW;
     const hAll = (row.total / topValue) * (BOTTOM - TOP);
     const hDone = (row.done / topValue) * (BOTTOM - TOP);
-    const out = [`<rect class="cbar" x="${x.toFixed(1)}" y="${(BOTTOM - hAll).toFixed(1)}" width="${barW.toFixed(1)}" height="${hAll.toFixed(1)}" rx="3" fill="#30363d"/>`];
+    const out = [`<rect class="cbar" x="${x.toFixed(1)}" y="${(BOTTOM - hAll).toFixed(1)}" width="${barW.toFixed(1)}" height="${hAll.toFixed(1)}" rx="3" style="fill:var(--neutral)"/>`];
     if (hDone > 0) {
-      out.push(`<rect class="cbar" x="${(x + barW + 3).toFixed(1)}" y="${(BOTTOM - hDone).toFixed(1)}" width="${barW.toFixed(1)}" height="${hDone.toFixed(1)}" rx="3" fill="${COLORS.done}"/>`);
+      out.push(`<rect class="cbar" x="${(x + barW + 3).toFixed(1)}" y="${(BOTTOM - hDone).toFixed(1)}" width="${barW.toFixed(1)}" height="${hDone.toFixed(1)}" rx="3" style="fill:${COLORS.done}"/>`);
     }
     if (slot >= 64 || rows.length <= 4 || index % 2 === 0) {
       out.push(`<text x="${(x + barW).toFixed(1)}" y="${BOTTOM + 16}" text-anchor="middle">${esc(row.epic.slice(0, Math.max(6, Math.floor(slot / 7))))}</text>`);
     }
     return out.join('');
   }).join('');
-  return { svg: markup + bars, legend: legendItem('#30363d', '全部 story') + legendItem(COLORS.done, '已完成') };
+  return { svg: markup + bars, legend: legendItem('var(--neutral)', '全部 story') + legendItem(COLORS.done, '已完成') };
 }
 
 /** One day inside the range: a bar, because one day is not a line. */
@@ -161,11 +184,11 @@ function singleDayView(row) {
   const parts = [markup];
   const addedH = ((row.added || 0) / topValue) * height;
   const deletedH = ((row.deleted || 0) / topValue) * height;
-  if (addedH > 0) parts.push(`<rect class="cbar" x="${centre - barW - 3}" y="${(BOTTOM - addedH).toFixed(1)}" width="${barW}" height="${addedH.toFixed(1)}" rx="3" fill="${COLORS.done}"/>`);
-  if (deletedH > 0) parts.push(`<rect class="cbar" x="${centre + 3}" y="${(BOTTOM - deletedH).toFixed(1)}" width="${barW}" height="${deletedH.toFixed(1)}" rx="3" fill="${COLORS.blocked}"/>`);
+  if (addedH > 0) parts.push(`<rect class="cbar" x="${centre - barW - 3}" y="${(BOTTOM - addedH).toFixed(1)}" width="${barW}" height="${addedH.toFixed(1)}" rx="3" style="fill:${COLORS.done}"/>`);
+  if (deletedH > 0) parts.push(`<rect class="cbar" x="${centre + 3}" y="${(BOTTOM - deletedH).toFixed(1)}" width="${barW}" height="${deletedH.toFixed(1)}" rx="3" style="fill:${COLORS.blocked}"/>`);
   // A day with activity but no line churn still gets a baseline stub: drawing nothing read as a bug.
   if (addedH === 0 && deletedH === 0) {
-    parts.push(`<rect x="${centre - barW - 3}" y="${BOTTOM - 2}" width="${barW * 2 + 6}" height="2" fill="#30363d"/>`);
+    parts.push(`<rect x="${centre - barW - 3}" y="${BOTTOM - 2}" width="${barW * 2 + 6}" height="2" style="fill:var(--neutral)"/>`);
   }
   parts.push(`<text x="${centre}" y="${BOTTOM + 18}" text-anchor="middle">${esc(row.date)}</text>`);
   const stories = row.stories ? ' · 当日 ' + row.stories + ' 个 story 变动' : '';
@@ -195,12 +218,12 @@ function lineView(activity) {
     if (totals[s.key] === 0) continue;
     const pts = values.map((value, i) => [LEFT + step * i, BOTTOM - (value / topValue) * (BOTTOM - TOP)]);
     const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
-    parts.push(`<path class="line" d="${d}" stroke="${s.colour}" stroke-width="2.5" fill="none"/>`);
+    parts.push(`<path class="line" d="${d}" style="stroke:${s.colour}" stroke-width="2.5" fill="none"/>`);
     pts.forEach((p, i) => {
       const row = activity[i];
       const style = row.pending
-        ? `r="4" fill="none" stroke="${s.colour}" stroke-width="2"`
-        : `r="2.8" fill="${s.colour}"`;
+        ? `r="4" style="fill:none;stroke:${s.colour}" stroke-width="2"`
+        : `r="2.8" style="fill:${s.colour}"`;
       parts.push(`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" ${style} class="dot">`
         + `<title>${esc(row.date + ' · ' + s.name + ' ' + (row[s.key] || 0) + ' 行'
           + (row.stories ? ' · ' + row.stories + ' 个 story 变动' : '') + (row.pending ? ' · 未提交' : ''))}</title></circle>`);
@@ -230,7 +253,7 @@ function noDatesView(counts) {
     const y = TOP + 12 + index * 34;
     const w = ((right - left) * n) / max;
     return `<text x="${left - 12}" y="${y + 13}" text-anchor="end">${esc(LABELS[key] || key)}</text>`
-      + `<rect class="cbar" x="${left}" y="${y}" width="${Math.max(2, w).toFixed(1)}" height="18" rx="4" fill="${COLORS[key] || '#888'}"/>`
+      + `<rect class="cbar" x="${left}" y="${y}" width="${Math.max(2, w).toFixed(1)}" height="18" rx="4" style="fill:${COLORS[key] || 'var(--muted)'}"/>`
       + `<text x="${(left + w + 8).toFixed(1)}" y="${y + 13}" text-anchor="start">${n}</text>`;
   }).join('');
   const note = `<text x="${left}" y="${TOP + 12 + rows.length * 34 + 16}" text-anchor="start" class="note">日期不可用：此目录没有 git 历史，或所有文件同一天落地</text>`;
@@ -320,33 +343,86 @@ export function renderDashboard(state, root) {
     .map((row) => `<tr><td>${esc(row.date)}</td><td>${row.added || 0}</td><td>${row.deleted || 0}</td><td>${row.stories || 0}</td></tr>`)
     .join('');
 
+  // The board's left column and its four lists. Everything here is derived from the state file plus the
+  // framework tree on disk, so the page and the JSON cannot disagree.
+  const board = state.board ?? { paths: [], roster: { agents: [], skills: 0, rules: 0 }, checkpoint: { exists: false, date: null } };
+  const pathLabels = {
+    'project.yaml': '项目配置',
+    'docs/gdd': 'GDD 设计文档',
+    'docs/architecture/adr': '架构决策记录',
+    'design/registry/systems-index.md': '系统索引',
+    'design/registry/entities.yaml': '实体注册表',
+    'production/sprints': '冲刺档案',
+    'docs/qa/evidence': 'QA 证据',
+    'production/session-state/active.md': '会话检查点',
+  };
+  const pathRows = board.paths.map((entry) => `<li class="${entry.exists ? 'ok' : 'miss'}">
+      <span class="mark">${entry.exists ? '✓' : '✗'}</span>
+      <span class="plabel">${esc(pathLabels[entry.path] ?? entry.path)}</span>
+      <code class="ppath">${esc(entry.path)}</code>
+    </li>`).join('');
+  const rosterGroups = groupRoster(board.roster.agents ?? []);
+  const rosterHtml = rosterGroups.map(([group, names]) => `<div class="rgroup">
+      <div class="rhead">${esc(group)} · ${names.length}</div>
+      ${names.map((name) => `<div class="rname">${esc(name)}</div>`).join('')}
+    </div>`).join('');
+  const sideItems = [
+    ['overview', '概览'],
+    ['gaps', `缺口 ${state.warnings.length}`],
+    ['paths', '目录'],
+    ['roster', '名册'],
+    ['charts', '图表'],
+    ['commands', '命令'],
+  ];
+  const sideLinks = sideItems.map(([id, label], index) => `<a href="#${id}"${index === 0 ? ' class="on"' : ''}>${esc(label)}</a>`).join('');
+
   return `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studio dashboard</title>
 <style>
   :root{color-scheme:dark;--bg:#0d1117;--panel:#161b22;--line:#30363d;--ink:#e6edf3;--muted:#8b949e;
-        --green:#3fb950;--blue:#58a6ff;--amber:#d29922;--red:#f85149}
+    --green:#3fb950;--blue:#58a6ff;--amber:#d29922;--red:#f85149;--purple:#a371f7;--dim2:#6e7681;--neutral:#30363d;--lbl:#f0f6fc;--warn:#e3b341;--bad:#ff9d95;--ok:#7ee787;--chipbg:#1f1f23;
+    --tagbg:#21262d;--codebg:#111;--track:#21262d;--selbg:#1f6feb33;--selink:#79c0ff;--hover:#26262a}
+  :root[data-theme="light"]{color-scheme:light;--bg:#ffffff;--panel:#f6f8fa;--line:#d0d7de;--ink:#1f2328;
+    --muted:#57606a;--green:#1a7f37;--blue:#0969da;--amber:#9a6700;--red:#cf222e;--purple:#8250df;--dim2:#6e7781;--neutral:#afb8c1;--lbl:#1f2328;--warn:#7d4e00;--bad:#a40e26;--ok:#1a7f37;
+    --chipbg:#f6f8fa;--tagbg:#eaeef2;--codebg:#f6f8fa;--track:#eaeef2;--selbg:#0969da1f;--selink:#0a3069;--hover:#eaeef2}
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){color-scheme:light;--bg:#ffffff;--panel:#f6f8fa;--line:#d0d7de;--ink:#1f2328;
+      --muted:#57606a;--green:#1a7f37;--blue:#0969da;--amber:#9a6700;--red:#cf222e;--lbl:#1f2328;
+      --chipbg:#f6f8fa;--tagbg:#eaeef2;--codebg:#f6f8fa;--track:#eaeef2;--selbg:#0969da1f;--selink:#0a3069;--hover:#eaeef2}
+  }
+  @media print{
+    :root{color-scheme:light;--bg:#fff;--panel:#fff;--line:#bbb;--ink:#111;--muted:#444;--lbl:#111;
+      --chipbg:#fff;--tagbg:#f0f0f0;--codebg:#f4f4f4;--track:#e5e5e5;--selbg:#eee;--selink:#111;--hover:#eee;--warn:#7d4e00;--bad:#a40e26;--ok:#1a7f37}
+    .side,.theme-toggle{display:none}
+    .layout{display:block;padding:0}
+    .panel,.card{break-inside:avoid}
+  }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font:14px/1.55 -apple-system,"Segoe UI","Noto Sans SC",sans-serif}
   .wrap{max-width:900px;margin:0 auto;padding:26px 20px 56px}
   header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
   h1{font-size:20px;margin:0}
   .sub{color:var(--muted);font-size:12.5px;margin-top:4px;font-variant-numeric:tabular-nums}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:12px;margin-bottom:18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px;margin-bottom:18px}
+  @media (max-width:560px){.grid{grid-template-columns:1fr}}
+  .v,.kv .v,ul.kv2 li b{overflow-wrap:anywhere}
+  .row{min-width:0}
   @media (max-width:640px){.grid{grid-template-columns:1fr}.wrap{padding:20px 14px 40px}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px;min-width:0}
+  .card code,.card .v{overflow-wrap:anywhere;word-break:break-word}
   .k{color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
   .v{font-size:17px;margin-top:5px}
-  .bar{height:7px;border-radius:4px;background:#21262d;overflow:hidden;margin-top:9px}
-  .fill{height:100%;background:linear-gradient(90deg,var(--green),#56d364);transform-origin:left;animation:fillin .9s cubic-bezier(.2,.7,.3,1)}
+  .bar{height:7px;border-radius:4px;background:var(--track);overflow:hidden;margin-top:9px}
+  .fill{height:100%;background:var(--green);background:linear-gradient(90deg,var(--green),color-mix(in srgb,var(--green) 62%,#fff));transform-origin:left;animation:fillin .9s cubic-bezier(.2,.7,.3,1)}
   @keyframes fillin{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
   .panel h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:600}
   .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .seg a{display:inline-block;text-decoration:none;color:var(--muted);padding:6px 12px;font-size:12.5px;transition:background .2s,color .2s}
-  .seg a[aria-pressed="true"]{background:#1f6feb33;color:#79c0ff}
+  .seg a[aria-pressed="true"]{background:var(--selbg);color:var(--selink)}
   .seg a:hover{color:var(--ink)}
   .hint{color:var(--muted);font-size:12px;margin-left:4px}
   .view{display:none;scroll-margin-top:12px}
@@ -357,7 +433,7 @@ export function renderDashboard(state, root) {
   .caption{color:var(--muted);font-size:12px;margin:2px 0 6px}
   .chart{width:100%;height:auto;display:block}
   .chart text{fill:var(--muted);font-size:11px;font-family:inherit}
-  .chart .lbl{fill:#f0f6fc;font-weight:600}
+  .chart .lbl{fill:var(--lbl);font-weight:600}
   .view .cbar{transform-box:fill-box;transform-origin:bottom;animation:grow .8s cubic-bezier(.2,.7,.3,1)}
   @keyframes grow{from{transform:scaleY(.05);opacity:.2}to{transform:scaleY(1);opacity:1}}
   .view .line{animation:fade .7s ease}
@@ -371,7 +447,7 @@ export function renderDashboard(state, root) {
   .legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
   ul{margin:8px 0 0;padding-left:18px}
   li{margin:4px 0}
-  code{background:#6e768166;padding:.1em .4em;border-radius:4px;font-size:12.5px}
+  code{background:var(--codebg);border:1px solid var(--line);padding:.1em .4em;border-radius:4px;font-size:12.5px}
   .tag{color:var(--muted);font-size:12px}
   .empty{color:var(--muted);margin:8px 0 0}
   .warn{color:var(--amber);font-size:12.5px;margin:6px 0;border-left:3px solid var(--amber);padding-left:10px}
@@ -379,83 +455,202 @@ export function renderDashboard(state, root) {
   table.m th,table.m td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left}
   .mobile{display:none}
   @media (max-width:640px){.charts{display:none}.mobile{display:block}}
+  .layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:20px;max-width:1180px;margin:0 auto;padding:22px 20px 40px}
+  .side{position:sticky;top:16px;align-self:start;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px}
+  .side .brand{color:var(--muted);font-size:10.5px;letter-spacing:.14em;padding:4px 10px 8px}
+  .side a{display:block;padding:6px 10px;border-radius:6px;color:var(--ink);font-size:12.5px;text-decoration:none}
+  .side a:hover{background:var(--hover);color:var(--ink)}
+  .side a.on{background:var(--tagbg);color:var(--ink);font-weight:600}
+  .side .sidenote{color:var(--muted);font-size:11px;padding:10px 10px 2px;border-top:1px solid var(--line);margin-top:8px}
+  main{min-width:0}
+  section.panel{scroll-margin-top:14px}
+  .mh{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+  ul.plain{list-style:none;margin:0;padding:0}
+  ul.plain li{padding:3px 0}
+  ul.kv2 li{display:flex;justify-content:space-between;font-size:12.5px}
+  ul.kv2 li span{color:var(--muted)}
+  ul.paths li{display:grid;grid-template-columns:16px 1fr auto;gap:8px;align-items:center;font-size:12.5px}
+  ul.paths .mark{text-align:center}
+  ul.paths li.ok .mark{color:var(--green)}
+  ul.paths li.miss .mark{color:var(--red)}
+  ul.paths li.miss .plabel{color:var(--red)}
+  ul.paths .ppath{color:var(--muted);font-size:11.5px}
+  .rgrid{columns:4;column-gap:16px}
+  .rgroup{break-inside:avoid;margin-bottom:14px}
+  .rhead{color:var(--muted);font-size:11px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+  .rname{background:var(--tagbg);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:11.5px;margin-bottom:4px;overflow-wrap:anywhere}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:11.5px;color:var(--ink);background:var(--chipbg);white-space:nowrap}
+  .theme-toggle{cursor:pointer;background:var(--chipbg);border:1px solid var(--line);border-radius:999px;color:var(--ink);font-size:14px;line-height:1;padding:4px 9px}
+  .theme-toggle:hover{background:var(--hover)}
+  .chip.warn{border-color:color-mix(in srgb,var(--warn) 45%,transparent);color:var(--warn)}
+  .chip.bad{border-color:color-mix(in srgb,var(--bad) 45%,transparent);color:var(--bad)}
+  .chip.ok{border-color:color-mix(in srgb,var(--ok) 45%,transparent);color:var(--ok)}
+  code.cmd{display:inline-block;background:var(--codebg);border:1px solid var(--line);border-radius:6px;padding:4px 9px;font-size:12px;color:var(--ink)}
+.foot{color:var(--muted);font-size:11.5px;margin:18px 0 0;border-top:1px solid var(--line);padding-top:12px}
+  a:focus-visible, .side a:focus-visible{outline:2px solid var(--blue,#4493f8);outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){
+    .view .cbar,.view .line,.view .dot,.view.play .wedge,.fill{animation:none !important}
+  }
+  
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;padding:16px 14px 32px}
+    .side{position:static;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+    .side .brand,.side .sidenote{display:none}
+    .rgrid{columns:2}
+  }
   .two{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
   @media (max-width:760px){.two{grid-template-columns:1fr}}
-</style></head><body><div class="wrap">
+  /* Narrow-screen overrides go last: the component rules above would otherwise win on source order. */
+  @media (max-width:560px){
+    .grid{grid-template-columns:1fr}
+    ul.paths li{display:flex;flex-wrap:wrap;gap:2px 8px}
+    ul.paths .ppath{flex:1 1 100%;margin-left:24px}
+    .kv{grid-template-columns:minmax(0,1fr)}
+    .kv .v{text-align:left}
+    .rgrid{columns:1}
+  }
+</style></head><body>
+<div class="layout">
+  <nav class="side" aria-label="看板导航">
+    <div class="brand">STUDIO</div>
+    ${sideLinks}
+    <div class="sidenote">离线单文件 · 无脚本也能看</div>
+  </nav>
+  <main>
   <header>
     <div>
       <h1>Studio dashboard</h1>
       <div class="sub">${esc(root)} · ${esc(stories.generatedOn || state.generatedAt.slice(0, 10))}</div>
     </div>
-    <div class="sub">框架 ${esc(state.framework.version ?? '—')} · ${esc(state.timeZone || 'local time')} · 可离线打开</div>
+    <div class="row">
+      <span class="chip ${stage ? '' : 'warn'}">阶段 ${esc(stage ?? '未配置')}</span>
+      <span class="chip ${state.engine.name ? '' : 'warn'}">引擎 ${esc(state.engine.name ?? '未配置')}</span>
+      <span class="chip">框架 ${state.framework.version ? 'v' + esc(state.framework.version) : '—'}</span>
+      <span class="chip ${state.warnings.length ? 'bad' : 'ok'}">缺口 ${esc(state.warnings.length)}</span>
+      <button type="button" id="themeToggle" class="theme-toggle" hidden aria-label="切换亮/暗主题" title="切换亮/暗主题" aria-pressed="false">◐</button>
+    </div>
   </header>
 
-  <div class="grid">
-    <div class="card"><div class="k">Engine</div><div class="v">${esc(engineLine)}</div></div>
-    <div class="card"><div class="k">Stage</div><div class="v">${esc(stage ?? 'not recorded')}</div></div>
-    <div class="card"><div class="k">Sprint</div><div class="v">${esc(sprintLine)}</div></div>
-    <div class="card"><div class="k">Stories done · 范围内</div>
-      <div class="v"><span id="doneRange">${summaries[90].done} / ${summaries[90].total}</span> <span class="tag" id="donePct">(${summaries[90].share}%)</span></div>
-      <div class="bar"><div class="fill" id="doneFill" style="width:${summaries[90].share}%"></div></div>
-      <div class="tag" id="doneAll" style="margin-top:6px">全部 ${stories.done} / ${stories.total}${esc(pendingNote)}</div>
+  <section id="overview" class="panel">
+    <h2>概览</h2>
+    <div class="grid">
+      <div class="card"><div class="k">Sprint</div><div class="v">${esc(sprintLine)}</div></div>
+      <div class="card"><div class="k">Stories done · 范围内</div>
+        <div class="v"><span id="doneRange">${summaries[90].done} / ${summaries[90].total}</span> <span class="tag" id="donePct">(${summaries[90].share}%)</span></div>
+        <div class="bar"><div class="fill" id="doneFill" style="width:${summaries[90].share}%"></div></div>
+        <div class="tag" id="doneAll" style="margin-top:6px">全部 ${stories.done} / ${stories.total}${esc(pendingNote)}</div>
+      </div>
+      <div class="card"><div class="k">Next</div><div class="v" style="font-size:13.5px">${stories.next ? `<code>${esc(stories.next.file)}</code>` : '<span class="tag">暂无 story</span>'}</div>
+        <div class="tag" style="margin-top:5px">${stories.next ? esc(stories.next.status ?? 'no status line') : '先跑 /map-systems → /create-epics → /create-stories'}</div>
+      </div>
+      <div class="card"><div class="k">Blocked</div><div class="v">${esc(stories.blocked)}</div>
+        ${stories.blockedList.length
+          ? stories.blockedList.slice(0, 3).map((s) => `<div class="tag" style="margin-top:5px"><code>${esc(s.file)}</code> · ${esc(s.status ?? '')}</div>`).join('')
+          : '<div class="tag" style="margin-top:5px">无</div>'}
+      </div>
     </div>
-  </div>
 
-  <div class="panel charts">
-    <h2>图表 <span class="hint" id="hint">三张图都按所选范围统计 · 范围以生成时间为准</span></h2>
-    <div class="controls">
-      <div class="seg" id="type">
-        <a href="#v-pie-90" data-type="pie" aria-pressed="true">饼图 · 状态分布</a>
-        <a href="#v-bar-90" data-type="bar" aria-pressed="false">柱图 · 每个 epic</a>
-        <a href="#v-line-90" data-type="line" aria-pressed="false">折线图 · 活动趋势</a>
+    <div class="two">
+      <div>
+        <h3 class="mh">数据来源</h3>
+        <ul class="plain kv2">
+          <li><span>story 文件</span><b>${esc(stories.total)}</b></li>
+          <li><span>session 日志</span><b>${esc(stories.docs.sessionLogs)}</b></li>
+          <li><span>GDD 文档</span><b>${esc(stories.docs.gdd)}</b></li>
+          <li><span>ADR 文档</span><b>${esc(stories.docs.adr)}</b></li>
+          <li><span>有活动的日期</span><b>${esc(stories.activity.length)}</b></li>
+          <li><span>行数来源</span><b>${esc(churnLabel(stories.churnSource))}</b></li>
+        </ul>
       </div>
-      <div class="seg" id="range">
-        <a href="#v-pie-7" data-days="7" aria-pressed="false">7 天</a>
-        <a href="#v-pie-30" data-days="30" aria-pressed="false">30 天</a>
-        <a href="#v-pie-90" data-days="90" aria-pressed="true">90 天</a>
-        <a href="#v-pie-0" data-days="0" aria-pressed="false">全部</a>
+      <div>
+        <h3 class="mh">会话检查点</h3>
+        <p class="empty">${board.checkpoint.exists ? `已存在 active.md${board.checkpoint.date ? '（' + esc(board.checkpoint.date) + '）' : ''}` : '尚无检查点。门禁完成时写入 production/session-state/active.md。'}</p>
       </div>
     </div>
+  </section>
+
+  <section id="gaps" class="panel">
+    <h2>缺口 <span class="tag">${esc(state.warnings.length)}</span></h2>
+    ${state.warnings.length ? state.warnings.map((w) => `<div class="warn">${esc(w)}</div>`).join('') : '<p class="empty">没有缺口。</p>'}
+  </section>
+
+  <section id="paths" class="panel">
+    <h2>目录 <span class="tag">${board.paths.filter((p) => p.exists).length} / ${board.paths.length}</span></h2>
+    <ul class="plain paths">${pathRows}</ul>
+    <p class="empty">缺的项就是要补的动作。</p>
+  </section>
+
+  <section id="roster" class="panel">
+    ${(board.roster.agents?.length ?? 0) + (board.roster.skills ?? 0) + (board.roster.rules ?? 0) === 0
+        ? '<h2>名册</h2><p class="empty">这个目录里没有 .dsh/（框架未安装到这里）。先跑 <code>/start</code> 或 <code>dsgs-init</code>。</p>'
+        : `<h2>名册 · 代理 ${esc(board.roster.agents.length)} · 技能 ${esc(board.roster.skills)} · 规则 ${esc(board.roster.rules)}</h2>`}
+    <div class="rgrid">${rosterHtml}</div>
+    <p class="empty">按名称后缀归类（*-director / *-programmer / *-specialist …），框架本身不记录角色字段。</p>
+  </section>
+
+  <section id="charts" class="panel">
+    <h2>图表 <span class="hint">三张图都按所选范围统计 · 范围以生成时间为准</span></h2>
+    <div class="charts">
+      <div class="controls">
+        <div class="seg" id="type">
+          <a href="#v-pie-90" data-type="pie" aria-pressed="true">饼图 · 状态分布</a>
+          <a href="#v-bar-90" data-type="bar" aria-pressed="false">柱图 · 每个 epic</a>
+          <a href="#v-line-90" data-type="line" aria-pressed="false">折线图 · 活动趋势</a>
+        </div>
+        <div class="seg" id="range">
+          <a href="#v-pie-7" data-days="7" aria-pressed="false">7 天</a>
+          <a href="#v-pie-30" data-days="30" aria-pressed="false">30 天</a>
+          <a href="#v-pie-90" data-days="90" aria-pressed="true">90 天</a>
+          <a href="#v-pie-0" data-days="0" aria-pressed="false">全部</a>
+        </div>
+      </div>
 ${views.join('\n')}
-  </div>
-
-  <div class="panel mobile">
-    <h2>范围汇总</h2>
-    <table class="m"><tr><th>范围</th><th>完成 / 总数（占比）</th></tr>${mobileRows}</table>
-    <h2 style="margin-top:16px">每个 epic</h2>
-    <table class="m"><tr><th>epic</th><th>story</th><th>完成</th></tr>${epicRows || '<tr><td colspan="3">暂无 story</td></tr>'}</table>
-    <h2 style="margin-top:16px">最近 10 个有记录的日子</h2>
-    <table class="m"><tr><th>日期</th><th>新增</th><th>删除</th><th>story</th></tr>${dayRows || '<tr><td colspan="4">暂无记录</td></tr>'}</table>
-  </div>
-
-  <div class="two">
-    <div class="panel">
-      <h2>Next</h2>
-      ${stories.next
-        ? `<p><code>${esc(stories.next.file)}</code> <span class="tag">${esc(stories.next.status ?? 'no status line')}</span></p>`
-        : '<p class="empty">No story files yet. Run /map-systems, then /create-epics and /create-stories.</p>'}
-      <h2 style="margin-top:18px">Blocked (${esc(stories.blocked)})</h2>
-      ${stories.blocked > 0
-        ? `<ul>${stories.blockedList.map((s) => `<li><code>${esc(s.file)}</code> <span class="tag">${esc(s.status)}</span></li>`).join('')}</ul>`
-        : '<p class="empty">Nothing blocked.</p>'}
     </div>
-    <div class="panel">
-      <h2>数据来源</h2>
-      <ul>
-        <li>story 文件 <span class="tag">${esc(stories.total)}</span></li>
-        <li>session 日志 <span class="tag">${esc(stories.docs.sessionLogs)}</span></li>
-        <li>GDD 文档 <span class="tag">${esc(stories.docs.gdd)}</span></li>
-        <li>叙事 / 关卡 / 数值 <span class="tag">${esc(stories.docs.narrative)} / ${esc(stories.docs.levels)} / ${esc(stories.docs.balance)}</span></li>
-        <li>ADR 文档 <span class="tag">${esc(stories.docs.adr)}</span></li>
-        <li>有活动的日期 <span class="tag">${esc(stories.activity.length)}</span></li>
-        <li>行数来源 <span class="tag">${esc(churnLabel(stories.churnSource))}</span></li>
-      </ul>
-      <h2 style="margin-top:18px">Warnings</h2>
-      ${state.warnings.length ? state.warnings.map((w) => `<div class="warn">${esc(w)}</div>`).join('') : '<p class="empty">None.</p>'}
+    <div class="mobile">
+      <h3 class="mh">范围汇总</h3>
+      <table class="m"><tr><th>范围</th><th>完成 / 总数（占比）</th></tr>${mobileRows}</table>
+      <h3 class="mh" style="margin-top:16px">每个 epic</h3>
+      <table class="m"><tr><th>epic</th><th>story</th><th>完成</th></tr>${epicRows || '<tr><td colspan="3">暂无 story</td></tr>'}</table>
+      <h3 class="mh" style="margin-top:16px">最近 10 个有记录的日子</h3>
+      <table class="m"><tr><th>日期</th><th>新增</th><th>删除</th><th>story</th></tr>${dayRows || '<tr><td colspan="4">暂无记录</td></tr>'}</table>
     </div>
-  </div>
+  </section>
+
+  <section id="commands" class="panel">
+    <h2>命令</h2>
+    <div class="row">
+      ${['/start', '/project-stage-detect', '/gate-check', '/sprint-status', '/setup-engine', '/dashboard'].map((cmd) => `<code class="cmd">${esc(cmd)}</code>`).join('')}
+    </div>
+    <p class="empty">这些是文本：复制到会话里执行。页面没有脚本，不会自己运行任何命令。</p>
+  </section>
+
+  <p class="foot">数据来自 .dsh/scripts/project-state.mjs（${esc((state.generatedAt ?? state.stories.generatedOn ?? "").slice(0, 19).replace("T", " "))}，${esc(state.timeZone || 'local time')}）· 离线可打开</p>
+  </main>
 </div>
-<script id="state" type="application/json">${JSON.stringify({ summaries }).replace(/</g, '\\u003c')}</script>
+<script>
+// Theme: honour a stored choice, otherwise follow the system, and let one button flip it. Without this
+// script the page still picks the right palette from prefers-color-scheme.
+(() => {
+  const KEY = 'dsgs-dashboard-theme';
+  const root = document.documentElement;
+  const button = document.getElementById('themeToggle');
+  try {
+    const stored = localStorage.getItem(KEY);
+    if (stored === 'light' || stored === 'dark') root.dataset.theme = stored;
+  } catch { /* storage disabled: keep the system preference */ }
+  button.hidden = false; // a button that cannot work (no script) stays hidden
+  const current = () => root.dataset.theme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const paint = () => button.setAttribute('aria-pressed', String(current() === 'light'));
+  button.addEventListener('click', () => {
+    const next = current() === 'light' ? 'dark' : 'light';
+    root.dataset.theme = next;
+    try { localStorage.setItem(KEY, next); } catch { /* ignore */ }
+    paint();
+  });
+  paint();
+})();
+</script><script id="state" type="application/json">${JSON.stringify({ summaries }).replace(/</g, '\\u003c')}</script>
 <script>
 (() => {
   const data = JSON.parse(document.getElementById('state').textContent);
@@ -551,6 +746,29 @@ const out = join(root, 'production', 'dashboard.html');
   }
   process.stdout.write(`wrote ${out} (${state.stories.done}/${state.stories.total} stories, ${state.warnings.length} warning(s))\n`);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

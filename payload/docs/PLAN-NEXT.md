@@ -44,16 +44,18 @@
 - 用户看到：**3–5 行**——今天做哪个 story、卡在哪、下一条该跑什么命令。
 - 文件：`dsh-src/skills/today/SKILL.md`（约 70 行，参考 `statusline` 的 91 行）
 - 不做：不写文件、不改状态、不派代理。
+- 边界：命令只以**文本**给出（静态页无法执行技能），页面里写明；名册按文件后缀归类，页面注明这是命名约定。`board.paths` / `board.roster` / `board.checkpoint` 由 `project-state.mjs` 从磁盘读出。
 - 验收：
   - 有 sprint 数据 → 输出含 story 编号、状态、下一个命令；
   - **空项目**（无 epics、无 sprint）→ 输出"还没有故事，先跑 `/map-systems`"，**退出码 0**。
 
 ### ② `/dashboard`
 
-- 用户看到：**单文件 HTML**（阶段 / 姿态 / Sprint / story 进度 / 饼·柱·折线三图 / 阻塞 / 警告），用 `present` 打开；范围 7/30/90/全部对三张图同时生效。
+- 用户看到：**单文件 HTML 看板** —— 左侧导航六段（概览 / 缺口 / 应有目录 / 名册 / 图表 / 命令）+ 饼·柱·折线三图；范围 7/30/90/全部对三张图同时生效；导航是纯锚点，无脚本也能用。**已交付（0.2.3）**。
 - 文件：`dsh-src/skills/dashboard/SKILL.md` + `dsh-src/scripts/render-dashboard.mjs`
 - HTML 约束：**无外链、无 CDN、无 JS 依赖**（离线可看）；样式内联。
 - 输出位置：`.dsh/dashboard.html`？→ **改为** `production/dashboard.html`（用户项目里可见、可提交），并加入 `.gitignore` 建议？——**决定**：写到 `production/dashboard.html`，因为它是项目产物；不自动改 `.gitignore`，在技能里提示。
+- 边界：命令只以**文本**给出（静态页无法执行技能），页面里写明；名册按文件后缀归类，页面注明这是命名约定。`board.paths` / `board.roster` / `board.checkpoint` 由 `project-state.mjs` 从磁盘读出。
 - 验收：
   - 生成的文件在浏览器打开无空白页；`grep '<script src'` 为空；
   - 空项目 → 生成"未初始化"页而不是报错。
@@ -93,6 +95,7 @@
 - 实现：`dsh-src/skills/studio-review/SKILL.md` + `dsh-src/scripts/studio-review.workflow.mjs`
   - 脚本用 `workflow` 工具（并行 fan-out）：每个视角一个 subagent，输入同一份变更范围；
   - 合并规则：任一 `FAIL` → 总结论 `FAIL`；有 `CONCERNS` 无 `FAIL` → `CONCERNS`；视角跑不动 → `NOT ASSESSED` 并说明原因（**不得静默降级**）。
+- 边界：命令只以**文本**给出（静态页无法执行技能），页面里写明；名册按文件后缀归类，页面注明这是命名约定。`board.paths` / `board.roster` / `board.checkpoint` 由 `project-state.mjs` 从磁盘读出。
 - 验收：
   - 故意留一个安全问题（例如硬编码密钥）→ 报告必须 `FAIL` 且指出文件行；
   - 视角数少于 5 时，报告必须写明哪几个没跑、为什么。
@@ -122,8 +125,8 @@
 
 | 批次 | 版本 | 回滚方式 |
 |---|---|---|
-| 第一 | 0.2.0 | 新技能是独立目录，删目录即回滚；`project-state.mjs` 不影响既有技能 |
-| 第二 | 0.3.0 | 同上；导出物在 `production/exports/`，不影响源文档 |
+| 第一 | 0.2.0 → 0.2.1 → 0.2.2（补丁）→ 0.2.3（看板，补丁） | 新技能是独立目录，删目录即回滚；`project-state.mjs` 不影响既有技能 |
+| 第二 | 0.3.0（尚未发布） | 同上；导出物在 `production/exports/`，不影响源文档 |
 | 第三 | 0.4.0 | 删 `studio-review` 目录即可，无钩子改动 |
 
 **不新增钩子**——三批都不改 `.dsh/hooks.json`，把风险限制在"新增技能"范围内。
@@ -142,8 +145,10 @@
 
 ## 待你确认的三点
 
-1. `/dashboard` 输出放 **`production/dashboard.html`**（项目可见）还是放临时目录（看完即弃）？
+1. ~~`/dashboard` 输出位置~~ —— **已决定**：`production/dashboard.html`（已交付）。
 2. `/balance-sheet` 的数值源：用 `docs/gdd/*.md` 的 `## Formulas` 表，还是新增 `production/tuning/*.csv` 作为权威源？
 3. `/studio-review` 默认跑**全部五个视角**，还是按项目规模裁（小项目只跑 3 个）？
+
+
 
 

@@ -1,4 +1,13 @@
 # Changelog
+
+## 0.2.3 — a board you can scan, not a page you scroll
+
+- `/dashboard` now opens on a board: a left navigation (概览 · 缺口 · 目录 · 名册 · 图表 · 命令) with plain anchors, so the navigation works with JavaScript disabled.
+- 缺口 lists every warning verbatim; 目录 marks the eight paths a project is expected to have as present or missing; 名册 shows the agents grouped by role suffix plus the skills and rules counts — all read from disk, so the page cannot claim a directory exists when it does not.
+- The three charts are unchanged and sit below the board; narrow screens still get tables.
+- Commands are printed as text, not buttons, and the page says so: a static file cannot run a skill.
+- The page now has a light theme alongside the dark one. The system preference decides until you press the `◐` button in the header, which flips it and remembers the choice; with JavaScript off the button is hidden and the system preference still applies. Chart colours follow the theme, not just the page chrome. Printing uses the light palette and hides the sidebar and the button, so Ctrl+P gives readable ink on white paper.
+
 ## 0.2.2 — the first update is a manual one
 
 - The upgrade notes now say that `/update` arrives with 0.2.1: anyone on an older release reinstalls once, with the two commands or through the desktop `Plugins` panel, and every update after that is `/update`.
@@ -72,6 +81,13 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
+
+
+
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.2.2-orange.svg)
+![Version](https://img.shields.io/badge/version-0.2.3-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-79-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-14-orange.svg)
@@ -26,7 +26,7 @@
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.2.2** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.2.3** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
@@ -118,7 +118,10 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\skills\dsgs-init","$env:USERP
 | 共享规则真正到达项目 | ✅ | `CLAUDE.md` 里的 `@path` 导入被改写成「需要时读某个文件」——本运行时**不展开** `@`，不这么做的话那些标准文档只是被引用、从未被读 |
 | 角色工具边界 | ✅ | 每张代理角色卡写明"本角色应只用哪些工具"，并统一成本运行时的工具名。**属软约束**：运行时无法按代理限定工具集 |
 | 一键式插件 | ✅ | 一个包 = 钩子桥 + 状态行投影 + 载荷自装 |
-| DSGS 专有技能 | ✅ | `statusline`、`dsgs-install`（上游没有） |
+| `/today` | ✅ | 三到五行：下一个 story、被什么卡住、下一条命令 |
+| `/dashboard` | ✅ | 一个离线 HTML 看板 —— 概览 · 缺口 · 应有目录 · 名册 · 图表 · 命令 —— 三张图覆盖 7 / 30 / 90 天与全部时间；左侧导航无脚本也能用，亮/暗主题跟随系统或记住你的选择，打印出来也能读 |
+| `/update` | ✅ | 对比已安装版本与最新版本，**你确认之后**才执行那两条命令 |
+| DSGS 专有技能 | ✅ | `statusline`、`dsgs-install`、`today`、`dashboard`、`update`（上游没有） |
 
 ### ⚠️ 部分等价 —— 能用，但有一处明确的限制
 
@@ -191,6 +194,10 @@ DSGS 是移植：原始工作 —— 74 个技能、49 个代理、13 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
+
+
 
 
 
