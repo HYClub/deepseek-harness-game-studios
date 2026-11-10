@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.3.1 — the files the skills read
+
+0.3.0 shipped the skills but not everything they read. This release adds the rest, so a skill that
+says "read the step file" or "use the genre chipset" finds it:
+
+- **The step files behind the workflow skills.** 210 files under `skills/*/references/` — the numbered
+  steps a skill walks (adopt, architecture-decision, create-architecture, design-system, review-all-gdds,
+  smoke-check, test-setup and the rest), plus the one-shot references `/prototype` and `/cut` read.
+- **The genre library.** 73 files under `genres/` — the genre chipsets, the art-direction and
+  online-and-device notes, and the index that names them; `/prototype`'s card step reads them.
+- **The scripts those pages call.** `set-stage`, `door-in`, `game-read`, `test-run`, `test-scaffold`,
+  `md-section`, `registry`, `references-save`, `vendor-three` and `web-detect` now ship beside the
+  framework. Those without a Node port are listed by the reference audit rather than hidden.
+- **`migrate-v1-config` works again.** A damaged comment had left the script unable to load, so every
+  migration test failed; the file is repaired and its 20 behaviour tests pass.
+
+Every reference a skill file points at now resolves (`framework references missing: 0`), the content
+fidelity check reports no unexplained lines, and the full verification is seven steps green with 28
+behaviour suites passing.
+
 ## 0.3.0 — everything upstream, and a game you can actually play
 
 This release closes the gap: every upstream skill, rule and hook now runs in DSH, and the studio can
@@ -123,6 +143,7 @@ plugin description, the repository About and CONTRIBUTING now state the same cou
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

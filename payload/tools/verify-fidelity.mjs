@@ -83,6 +83,14 @@ function isStructural(line) {
 }
 
 /** One application of every documented rewrite. */
+// Scripts that have a Node port, computed the way the builder computes it.
+const PORT_BASES = new Set(
+  existsSync(join(ROOT, 'dsh-src', 'scripts'))
+    ? readdirSync(join(ROOT, 'dsh-src', 'scripts')).filter((n) => n.endsWith('.mjs')).map((n) => n.replace(/\.mjs$/, ''))
+    : [],
+);
+const BASH = process.platform === 'win32' ? '"C:/Program Files/Git/bin/bash.exe"' : 'bash';
+
 const REWRITES = [
   [/Claude Code Game Studios/g, 'DeepSeek Game Studios'],
   [/\bCCGS\b/g, 'DSGS'],
@@ -117,7 +125,10 @@ const REWRITES = [
   // become `pwsh`, and a script invocation becomes a `node` call on the port.
   [/\bBash:/g, 'pwsh:'],
   [/```bash/g, '```pwsh'],
-  [/bash (?:\.claude|\.dsh)?\/?(?:\.\.\/)?(scripts|hooks)\/([\w-]+)\.sh/g, 'node ".dsh/$1/$2.mjs"'],
+  [/bash (?:\.claude|\.dsh)?\/?(?:\.\.\/)?(scripts|hooks)\/([\w-]+)\.sh/g,
+    (_m, dir, name) => (dir === 'scripts' && PORT_BASES.has(name)
+      ? `node ".dsh/scripts/${name}.mjs"`
+      : `${BASH} ".dsh/${dir}/${name}.sh"`)],
 ];
 
 /**

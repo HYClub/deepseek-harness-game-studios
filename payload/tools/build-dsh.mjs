@@ -36,7 +36,7 @@ const OUT_ROOT = join(ROOT, '.dsh');
 const TEXT_EXT = new Set(['.md', '.sh', '.json', '.yaml', '.yml', '.txt', '.py', '.mjs', '.js', '.ts']);
 
 /** Directories mirrored from `.claude/<name>` to `.dsh/<name>`. */
-const MIRRORED_DIRS = ['skills', 'agents', 'rules', 'hooks', 'scripts', 'docs', 'engines'];
+const MIRRORED_DIRS = ['skills', 'agents', 'rules', 'hooks', 'scripts', 'docs', 'engines', 'genres'];
 
 /**
  * Output-name overrides: a generated filename is user-visible, so one that names the other
@@ -889,6 +889,7 @@ async function convert() {
 }
 
 await convert();
+
 
 
 

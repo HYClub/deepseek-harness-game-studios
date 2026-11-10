@@ -1,10 +1,66 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "inputsDigest": "4f4653c85c747aaf",
+  "inputsDigest": "bb48c74c6597143d",
   "generatedFrom": "content-source",
   "output": ".dsh",
-  "fileCount": 403,
+  "fileCount": 601,
   "files": [
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/1-detect.md",
+      "output": ".dsh/skills/adopt/references/1-detect.md",
+      "sourceSha256": "d5dd0f50b52f1600",
+      "outputSha256": "6ac8d561b6830013",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/2-format-audit.md",
+      "output": ".dsh/skills/adopt/references/2-format-audit.md",
+      "sourceSha256": "b9dca7c03ef0dcbb",
+      "outputSha256": "fa6bca6383916973",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/3-classify.md",
+      "output": ".dsh/skills/adopt/references/3-classify.md",
+      "sourceSha256": "ba708873c7a72055",
+      "outputSha256": "ba708873c7a72055",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/4-migration-plan.md",
+      "output": ".dsh/skills/adopt/references/4-migration-plan.md",
+      "sourceSha256": "27386c73a5fde716",
+      "outputSha256": "27386c73a5fde716",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/5-summary.md",
+      "output": ".dsh/skills/adopt/references/5-summary.md",
+      "sourceSha256": "0661b1c4feb24d63",
+      "outputSha256": "fb2285724ab1dc17",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/6-write.md",
+      "output": ".dsh/skills/adopt/references/6-write.md",
+      "sourceSha256": "41237efc5d0dc90e",
+      "outputSha256": "41237efc5d0dc90e",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/adopt/references/7-first-action.md",
+      "output": ".dsh/skills/adopt/references/7-first-action.md",
+      "sourceSha256": "290607da90ceea57",
+      "outputSha256": "2646ea21cdaeec10",
+      "rewritten": true
+    },
     {
       "kind": "skill",
       "source": "skills/adopt/SKILL.md",
@@ -23,6 +79,54 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/architecture-decision/references/0-accept.md",
+      "output": ".dsh/skills/architecture-decision/references/0-accept.md",
+      "sourceSha256": "abc2ab957854d947",
+      "outputSha256": "730093a27c39cd39",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-decision/references/0-retrofit.md",
+      "output": ".dsh/skills/architecture-decision/references/0-retrofit.md",
+      "sourceSha256": "f41ba65eda577623",
+      "outputSha256": "e8be44b2a1e86831",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-decision/references/1-engine-context.md",
+      "output": ".dsh/skills/architecture-decision/references/1-engine-context.md",
+      "sourceSha256": "0e0e4e96781ee752",
+      "outputSha256": "0e0e4e96781ee752",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-decision/references/3-gather-context.md",
+      "output": ".dsh/skills/architecture-decision/references/3-gather-context.md",
+      "sourceSha256": "f226269d8c23f6d9",
+      "outputSha256": "b75fe901bd49b5bc",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-decision/references/4-decide.md",
+      "output": ".dsh/skills/architecture-decision/references/4-decide.md",
+      "sourceSha256": "14a595f2efc8c0fd",
+      "outputSha256": "fc258b5f91b22acb",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-decision/references/5-generate.md",
+      "output": ".dsh/skills/architecture-decision/references/5-generate.md",
+      "sourceSha256": "eb42f7b288c3adf8",
+      "outputSha256": "db4fae70599906f7",
+      "rewritten": true
+    },
+    {
       "kind": "skill",
       "source": "skills/architecture-decision/SKILL.md",
       "output": ".dsh/skills/architecture-decision/SKILL.md",
@@ -32,6 +136,86 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/1-load.md",
+      "output": ".dsh/skills/architecture-review/references/1-load.md",
+      "sourceSha256": "d866809875b0d649",
+      "outputSha256": "d74538d41682cf97",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/2-extract-requirements.md",
+      "output": ".dsh/skills/architecture-review/references/2-extract-requirements.md",
+      "sourceSha256": "c34e4466059db1c7",
+      "outputSha256": "c34e4466059db1c7",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/3-traceability.md",
+      "output": ".dsh/skills/architecture-review/references/3-traceability.md",
+      "sourceSha256": "dd90c9669632cb84",
+      "outputSha256": "bc42499de8a6b716",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/4-conflicts.md",
+      "output": ".dsh/skills/architecture-review/references/4-conflicts.md",
+      "sourceSha256": "b20b53754a690649",
+      "outputSha256": "99137cbc50481f1d",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/5-engine.md",
+      "output": ".dsh/skills/architecture-review/references/5-engine.md",
+      "sourceSha256": "e286c87c840b412f",
+      "outputSha256": "42714c77101951cd",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/6-document-coverage.md",
+      "output": ".dsh/skills/architecture-review/references/6-document-coverage.md",
+      "sourceSha256": "f902dc64c01721ce",
+      "outputSha256": "f902dc64c01721ce",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/7-report.md",
+      "output": ".dsh/skills/architecture-review/references/7-report.md",
+      "sourceSha256": "9e94874eaf3fc625",
+      "outputSha256": "9e94874eaf3fc625",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/8-write.md",
+      "output": ".dsh/skills/architecture-review/references/8-write.md",
+      "sourceSha256": "f7c34fad51988747",
+      "outputSha256": "e791257d3c22a697",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/9-handoff.md",
+      "output": ".dsh/skills/architecture-review/references/9-handoff.md",
+      "sourceSha256": "d2e5a7e1395faeb6",
+      "outputSha256": "09ff1bd8d639c1bf",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/architecture-review/references/lens-engine.md",
+      "output": ".dsh/skills/architecture-review/references/lens-engine.md",
+      "sourceSha256": "86fae08efe3f2392",
+      "outputSha256": "86fae08efe3f2392",
+      "rewritten": false
+    },
+    {
       "kind": "skill",
       "source": "skills/architecture-review/SKILL.md",
       "output": ".dsh/skills/architecture-review/SKILL.md",
@@ -39,6 +223,30 @@
       "sourceSha256": "a08fbede25d5f2cb",
       "outputSha256": "668c36fa1283daf5",
       "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/art-bible/references/lens-art-director.md",
+      "output": ".dsh/skills/art-bible/references/lens-art-director.md",
+      "sourceSha256": "db431cde424bd1dd",
+      "outputSha256": "2a0cff86fe2fcfdd",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/art-bible/references/lens-technical-artist.md",
+      "output": ".dsh/skills/art-bible/references/lens-technical-artist.md",
+      "sourceSha256": "478e248dfd2cd587",
+      "outputSha256": "e36526b5a4012ad0",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/art-bible/references/lens-ux-designer.md",
+      "output": ".dsh/skills/art-bible/references/lens-ux-designer.md",
+      "sourceSha256": "a7381144df5014eb",
+      "outputSha256": "a7381144df5014eb",
+      "rewritten": false
     },
     {
       "kind": "skill",
@@ -74,6 +282,14 @@
       "upstreamFrontmatter": "name: balance-check\ndescription: \"Find balance outliers, broken progressions, degenerate strategies, economy imbalances in formulas and data. 'Check game balance'.\"\nargument-hint: \"[system-name|path-to-data-file]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/balance-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "37cad855a7f47c85",
       "outputSha256": "b3ec973fbc0e9823",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/brainstorm/references/full-concept.md",
+      "output": ".dsh/skills/brainstorm/references/full-concept.md",
+      "sourceSha256": "614ea764eb466d77",
+      "outputSha256": "39f29641114f3661",
       "rewritten": true
     },
     {
@@ -113,6 +329,14 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/code-review/references/lens-engine.md",
+      "output": ".dsh/skills/code-review/references/lens-engine.md",
+      "sourceSha256": "5fb9b0bb370c62db",
+      "outputSha256": "cade037c5e3db4f7",
+      "rewritten": true
+    },
+    {
       "kind": "skill",
       "source": "skills/code-review/SKILL.md",
       "output": ".dsh/skills/code-review/SKILL.md",
@@ -138,6 +362,78 @@
       "sourceSha256": "bc5e242b46fd05e0",
       "outputSha256": "6e2d2f868eb6b41e",
       "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/0-load-context.md",
+      "output": ".dsh/skills/create-architecture/references/0-load-context.md",
+      "sourceSha256": "2083798d7784c597",
+      "outputSha256": "1199972df0af033a",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/1-layers.md",
+      "output": ".dsh/skills/create-architecture/references/1-layers.md",
+      "sourceSha256": "889231d49bd42e96",
+      "outputSha256": "889231d49bd42e96",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/2-module-ownership.md",
+      "output": ".dsh/skills/create-architecture/references/2-module-ownership.md",
+      "sourceSha256": "1c373de52748ed49",
+      "outputSha256": "1c373de52748ed49",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/3-data-flow.md",
+      "output": ".dsh/skills/create-architecture/references/3-data-flow.md",
+      "sourceSha256": "33664f68c24c7511",
+      "outputSha256": "33664f68c24c7511",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/4-api-boundaries.md",
+      "output": ".dsh/skills/create-architecture/references/4-api-boundaries.md",
+      "sourceSha256": "dc914d8fa14cb7e8",
+      "outputSha256": "dc914d8fa14cb7e8",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/5-adr-audit.md",
+      "output": ".dsh/skills/create-architecture/references/5-adr-audit.md",
+      "sourceSha256": "f2dffe08fe962b55",
+      "outputSha256": "f2dffe08fe962b55",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/6-missing-adrs.md",
+      "output": ".dsh/skills/create-architecture/references/6-missing-adrs.md",
+      "sourceSha256": "d88aa82cabb0803e",
+      "outputSha256": "d88aa82cabb0803e",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/7-write.md",
+      "output": ".dsh/skills/create-architecture/references/7-write.md",
+      "sourceSha256": "e10e9fb89a6b09bd",
+      "outputSha256": "1f6e13f548873f63",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-architecture/references/8-handoff.md",
+      "output": ".dsh/skills/create-architecture/references/8-handoff.md",
+      "sourceSha256": "dd6f3eb676c4497c",
+      "outputSha256": "dd6f3eb676c4497c",
+      "rewritten": false
     },
     {
       "kind": "skill",
@@ -166,6 +462,14 @@
       "rewritten": false
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/create-epics/references/pr-epic-gate.md",
+      "output": ".dsh/skills/create-epics/references/pr-epic-gate.md",
+      "sourceSha256": "990efdfb2d6955ac",
+      "outputSha256": "990efdfb2d6955ac",
+      "rewritten": false
+    },
+    {
       "kind": "skill",
       "source": "skills/create-epics/SKILL.md",
       "output": ".dsh/skills/create-epics/SKILL.md",
@@ -180,6 +484,14 @@
       "output": ".dsh/skills/create-stories/CONTRACT.md",
       "sourceSha256": "0957b1d243a6139b",
       "outputSha256": "0957b1d243a6139b",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/create-stories/references/qa-lead-gate.md",
+      "output": ".dsh/skills/create-stories/references/qa-lead-gate.md",
+      "sourceSha256": "752d3bc7d4d5de0f",
+      "outputSha256": "752d3bc7d4d5de0f",
       "rewritten": false
     },
     {
@@ -219,6 +531,78 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/1-parse-arguments.md",
+      "output": ".dsh/skills/design-system/references/1-parse-arguments.md",
+      "sourceSha256": "7fa53f3742a5a21f",
+      "outputSha256": "2cef5cce250b0389",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/2-gather-context.md",
+      "output": ".dsh/skills/design-system/references/2-gather-context.md",
+      "sourceSha256": "149f349250ed5c49",
+      "outputSha256": "94273ff30c6199b7",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/3-file-skeleton.md",
+      "output": ".dsh/skills/design-system/references/3-file-skeleton.md",
+      "sourceSha256": "95dc956f90e443d1",
+      "outputSha256": "9e37a3f67f597a05",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/4-section-design.md",
+      "output": ".dsh/skills/design-system/references/4-section-design.md",
+      "sourceSha256": "20e2a4c04d52a8a3",
+      "outputSha256": "112e0fa9ea0f159d",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/5-post-design.md",
+      "output": ".dsh/skills/design-system/references/5-post-design.md",
+      "sourceSha256": "a220b1ab6528e31d",
+      "outputSha256": "134f1e450f7f5b1b",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/lens-creative-director.md",
+      "output": ".dsh/skills/design-system/references/lens-creative-director.md",
+      "sourceSha256": "783ae4cb2a19bc79",
+      "outputSha256": "783ae4cb2a19bc79",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/lens-qa-lead.md",
+      "output": ".dsh/skills/design-system/references/lens-qa-lead.md",
+      "sourceSha256": "7a6a6e93a1d20303",
+      "outputSha256": "7a6a6e93a1d20303",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/lens-specialists.md",
+      "output": ".dsh/skills/design-system/references/lens-specialists.md",
+      "sourceSha256": "b48c95abe63f8d63",
+      "outputSha256": "fd7ecf3ece06ea9c",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/design-system/references/lens-systems-designer.md",
+      "output": ".dsh/skills/design-system/references/lens-systems-designer.md",
+      "sourceSha256": "0a779d324fa54981",
+      "outputSha256": "0a779d324fa54981",
+      "rewritten": false
+    },
+    {
       "kind": "skill",
       "source": "skills/design-system/SKILL.md",
       "output": ".dsh/skills/design-system/SKILL.md",
@@ -233,6 +617,22 @@
       "output": ".dsh/skills/dev-story/CONTRACT.md",
       "sourceSha256": "4d2ae82e2e21a8ce",
       "outputSha256": "16701b3609814588",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/dev-story/references/engine-checks.md",
+      "output": ".dsh/skills/dev-story/references/engine-checks.md",
+      "sourceSha256": "c3ec789cc1c42436",
+      "outputSha256": "2b3ecf6709d5bada",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/dev-story/references/version-mismatch.md",
+      "output": ".dsh/skills/dev-story/references/version-mismatch.md",
+      "sourceSha256": "2f38c7964569cba3",
+      "outputSha256": "3a96e5abd0744eee",
       "rewritten": true
     },
     {
@@ -259,6 +659,54 @@
       "output": ".dsh/skills/gate-check/CONTRACT.md",
       "sourceSha256": "d0049c77e7edd803",
       "outputSha256": "aef6fa6cf7eeed1b",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/gate-check/references/2b-workflow-tier.md",
+      "output": ".dsh/skills/gate-check/references/2b-workflow-tier.md",
+      "sourceSha256": "3daee07be4df4801",
+      "outputSha256": "35f6d76fd1a5fc83",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/gate-check/references/3-run-gate-check.md",
+      "output": ".dsh/skills/gate-check/references/3-run-gate-check.md",
+      "sourceSha256": "7bf00524fd8b3c84",
+      "outputSha256": "1a5f2566d07553ee",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/gate-check/references/4-assessment.md",
+      "output": ".dsh/skills/gate-check/references/4-assessment.md",
+      "sourceSha256": "1a9f903ad984ff6d",
+      "outputSha256": "bb5cdd2e11c7f536",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/gate-check/references/5-verdict.md",
+      "output": ".dsh/skills/gate-check/references/5-verdict.md",
+      "sourceSha256": "d23968436c962f98",
+      "outputSha256": "b517cffee8f609c2",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/gate-check/references/6-update-stage.md",
+      "output": ".dsh/skills/gate-check/references/6-update-stage.md",
+      "sourceSha256": "1e85a5785c7cdf8f",
+      "outputSha256": "6f32319ea6ff9215",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/gate-check/references/7-next-steps.md",
+      "output": ".dsh/skills/gate-check/references/7-next-steps.md",
+      "sourceSha256": "ef245f448a24ba5c",
+      "outputSha256": "d4430fd5d97eb8ed",
       "rewritten": true
     },
     {
@@ -445,6 +893,150 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/1-question.md",
+      "output": ".dsh/skills/prototype/references/1-question.md",
+      "sourceSha256": "f18b6fcf27c13a36",
+      "outputSha256": "f18b6fcf27c13a36",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/2-load-context.md",
+      "output": ".dsh/skills/prototype/references/2-load-context.md",
+      "sourceSha256": "88b28b8d0dc3132c",
+      "outputSha256": "17644f63861f6bb0",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/3-choose-path.md",
+      "output": ".dsh/skills/prototype/references/3-choose-path.md",
+      "sourceSha256": "ff29a05f7fef9491",
+      "outputSha256": "ff29a05f7fef9491",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/4-plan.md",
+      "output": ".dsh/skills/prototype/references/4-plan.md",
+      "sourceSha256": "8e2c9901b370d385",
+      "outputSha256": "8e2c9901b370d385",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/5-implement.md",
+      "output": ".dsh/skills/prototype/references/5-implement.md",
+      "sourceSha256": "4800a122afc9e647",
+      "outputSha256": "4800a122afc9e647",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/6-debrief.md",
+      "output": ".dsh/skills/prototype/references/6-debrief.md",
+      "sourceSha256": "d43732bfbcc0d4f5",
+      "outputSha256": "d43732bfbcc0d4f5",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/7-report.md",
+      "output": ".dsh/skills/prototype/references/7-report.md",
+      "sourceSha256": "a2cc11c358bc59fd",
+      "outputSha256": "a2cc11c358bc59fd",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/8-cd-review.md",
+      "output": ".dsh/skills/prototype/references/8-cd-review.md",
+      "sourceSha256": "a3b2da073a0407e9",
+      "outputSha256": "a79fea64bcf0f550",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/9-summary.md",
+      "output": ".dsh/skills/prototype/references/9-summary.md",
+      "sourceSha256": "f503d0283f84a27b",
+      "outputSha256": "f503d0283f84a27b",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-0-door.md",
+      "output": ".dsh/skills/prototype/references/one-shot-0-door.md",
+      "sourceSha256": "c0c62fde52f1db92",
+      "outputSha256": "ce360b440437322e",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-1-card.md",
+      "output": ".dsh/skills/prototype/references/one-shot-1-card.md",
+      "sourceSha256": "974ca2b4ae2b4b8a",
+      "outputSha256": "f37b0f67c841867b",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-2-build.md",
+      "output": ".dsh/skills/prototype/references/one-shot-2-build.md",
+      "sourceSha256": "b2f3ec40e52d25b8",
+      "outputSha256": "c694a0b249e4c1db",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-2c-self-check.md",
+      "output": ".dsh/skills/prototype/references/one-shot-2c-self-check.md",
+      "sourceSha256": "29c5bf2dd6cb6874",
+      "outputSha256": "dc60b10123ef422d",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-3-handover.md",
+      "output": ".dsh/skills/prototype/references/one-shot-3-handover.md",
+      "sourceSha256": "c53a0b91052be73e",
+      "outputSha256": "c53a0b91052be73e",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-4-change.md",
+      "output": ".dsh/skills/prototype/references/one-shot-4-change.md",
+      "sourceSha256": "3153068f503b216a",
+      "outputSha256": "a3fab8b3fbfeb01d",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-5-grow.md",
+      "output": ".dsh/skills/prototype/references/one-shot-5-grow.md",
+      "sourceSha256": "eb270c3a8b0cdcd4",
+      "outputSha256": "c52841753676d643",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/one-shot-files.md",
+      "output": ".dsh/skills/prototype/references/one-shot-files.md",
+      "sourceSha256": "2f9694230f1387a0",
+      "outputSha256": "825ffbf8e19eab06",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/prototype/references/spike-mode.md",
+      "output": ".dsh/skills/prototype/references/spike-mode.md",
+      "sourceSha256": "16d03a37e1ae3a08",
+      "outputSha256": "16d03a37e1ae3a08",
+      "rewritten": false
+    },
+    {
       "kind": "skill",
       "source": "skills/prototype/SKILL.md",
       "output": ".dsh/skills/prototype/SKILL.md",
@@ -499,12 +1091,76 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/reverse-document/references/from-a-game.md",
+      "output": ".dsh/skills/reverse-document/references/from-a-game.md",
+      "sourceSha256": "d34e6e479323c387",
+      "outputSha256": "6fdb16f95aab18a8",
+      "rewritten": true
+    },
+    {
       "kind": "skill",
       "source": "skills/reverse-document/SKILL.md",
       "output": ".dsh/skills/reverse-document/SKILL.md",
       "upstreamFrontmatter": "name: reverse-document\ndescription: \"Generate missing design or architecture docs from existing implementation — works backwards from code and prototypes.\"\nargument-hint: \"<type> <path> (e.g., 'design src/gameplay/combat' or 'architecture Assets/Scripts/Core')\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash(bash \"*/.claude/skills/reverse-document/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet\n# Read-only diagnostic skill — no specialist agent delegation needed",
       "sourceSha256": "74245b18a937b50b",
       "outputSha256": "a22974d710790333",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/1-load.md",
+      "output": ".dsh/skills/review-all-gdds/references/1-load.md",
+      "sourceSha256": "db1b6e59f09522e6",
+      "outputSha256": "4c4a4adbac0b93c8",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/2-consistency.md",
+      "output": ".dsh/skills/review-all-gdds/references/2-consistency.md",
+      "sourceSha256": "38596caeb557efbc",
+      "outputSha256": "38596caeb557efbc",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/3-design-holism.md",
+      "output": ".dsh/skills/review-all-gdds/references/3-design-holism.md",
+      "sourceSha256": "8855ba326fc36a24",
+      "outputSha256": "8855ba326fc36a24",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/4-scenarios.md",
+      "output": ".dsh/skills/review-all-gdds/references/4-scenarios.md",
+      "sourceSha256": "6cbabdb03c253ab2",
+      "outputSha256": "6cbabdb03c253ab2",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/5-report.md",
+      "output": ".dsh/skills/review-all-gdds/references/5-report.md",
+      "sourceSha256": "ae51d4b943c57dbe",
+      "outputSha256": "ae51d4b943c57dbe",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/6-write.md",
+      "output": ".dsh/skills/review-all-gdds/references/6-write.md",
+      "sourceSha256": "e4f3a48fd218f010",
+      "outputSha256": "85a2d2f9b25bf5eb",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/review-all-gdds/references/7-handoff.md",
+      "output": ".dsh/skills/review-all-gdds/references/7-handoff.md",
+      "sourceSha256": "76a11e26daef7568",
+      "outputSha256": "cd68a30bd844f5a9",
       "rewritten": true
     },
     {
@@ -545,10 +1201,106 @@
     },
     {
       "kind": "skill-reference",
+      "source": "skills/setup-engine/references/11-upgrade.md",
+      "output": ".dsh/skills/setup-engine/references/11-upgrade.md",
+      "sourceSha256": "317bc0eb662673c6",
+      "outputSha256": "6329e579ba8a3580",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/12-output-summary.md",
+      "output": ".dsh/skills/setup-engine/references/12-output-summary.md",
+      "sourceSha256": "cb997943c00a9e2d",
+      "outputSha256": "c640198e0c2ddbdf",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/2-guided-mode.md",
+      "output": ".dsh/skills/setup-engine/references/2-guided-mode.md",
+      "sourceSha256": "a8c29bef998bad2f",
+      "outputSha256": "814710484e6cb83c",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/3-version.md",
+      "output": ".dsh/skills/setup-engine/references/3-version.md",
+      "sourceSha256": "3d8017fc0c919891",
+      "outputSha256": "077f58f6fa1d6bc3",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/4-claude-md-stack.md",
+      "output": ".dsh/skills/setup-engine/references/4-claude-md-stack.md",
+      "sourceSha256": "8783e2b0bf80201f",
+      "outputSha256": "03a88c687c137bdd",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/5-technical-preferences.md",
+      "output": ".dsh/skills/setup-engine/references/5-technical-preferences.md",
+      "sourceSha256": "2bb1744c5bf557a5",
+      "outputSha256": "dc86dc496aba0f60",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/5.5-project-yaml.md",
+      "output": ".dsh/skills/setup-engine/references/5.5-project-yaml.md",
+      "sourceSha256": "869d8fe7fced78b1",
+      "outputSha256": "6acb4d57afefca4a",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/6-knowledge-gap.md",
+      "output": ".dsh/skills/setup-engine/references/6-knowledge-gap.md",
+      "sourceSha256": "1c274bcfe1a98621",
+      "outputSha256": "a9e48dccb02f9f63",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/7-reference-docs.md",
+      "output": ".dsh/skills/setup-engine/references/7-reference-docs.md",
+      "sourceSha256": "8e4642bcc0e043d0",
+      "outputSha256": "efe3e4a642563f2a",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/7.5-scaffold.md",
+      "output": ".dsh/skills/setup-engine/references/7.5-scaffold.md",
+      "sourceSha256": "f27167c5c630b3e2",
+      "outputSha256": "d868373535c4f0e2",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/8-verify.md",
+      "output": ".dsh/skills/setup-engine/references/8-verify.md",
+      "sourceSha256": "cc0d97051177e32d",
+      "outputSha256": "c79075bcb90fc23f",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
       "source": "skills/setup-engine/references/godot-language-config.md",
       "output": ".dsh/skills/setup-engine/references/godot-language-config.md",
       "sourceSha256": "3285a7584f5a1f74",
       "outputSha256": "60ccf56a0d9b89f0",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/setup-engine/references/web.md",
+      "output": ".dsh/skills/setup-engine/references/web.md",
+      "sourceSha256": "785d42767f422530",
+      "outputSha256": "ec68acca86957299",
       "rewritten": true
     },
     {
@@ -576,6 +1328,54 @@
       "upstreamFrontmatter": "name: skill-test\ndescription: \"Validate skill files for structural compliance and behavioral correctness. Four modes: static linter, spec, category rubric, audit.\"\nargument-hint: \"static [skill-name | all] | spec [skill-or-agent-name] | category [skill-or-agent-name | all] | audit\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/skill-test/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d927ccbd6f7ff0e3",
       "outputSha256": "1541897c4821c9f2",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/smoke-check/references/1-detect-setup.md",
+      "output": ".dsh/skills/smoke-check/references/1-detect-setup.md",
+      "sourceSha256": "07af6a1dc13f17fd",
+      "outputSha256": "142a39a825fbacc9",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/smoke-check/references/2-run-tests.md",
+      "output": ".dsh/skills/smoke-check/references/2-run-tests.md",
+      "sourceSha256": "c3cec04703f7a757",
+      "outputSha256": "d56456bee25b5ca3",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/smoke-check/references/3-coverage.md",
+      "output": ".dsh/skills/smoke-check/references/3-coverage.md",
+      "sourceSha256": "34cee3af8199169e",
+      "outputSha256": "34cee3af8199169e",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/smoke-check/references/4-manual-checks.md",
+      "output": ".dsh/skills/smoke-check/references/4-manual-checks.md",
+      "sourceSha256": "160d773ed338bf51",
+      "outputSha256": "160d773ed338bf51",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/smoke-check/references/5-report.md",
+      "output": ".dsh/skills/smoke-check/references/5-report.md",
+      "sourceSha256": "8db03263162f860f",
+      "outputSha256": "8db03263162f860f",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/smoke-check/references/6-write-gate.md",
+      "output": ".dsh/skills/smoke-check/references/6-write-gate.md",
+      "sourceSha256": "35510aaea59e8333",
+      "outputSha256": "304d2ddd3a1ae62c",
       "rewritten": true
     },
     {
@@ -632,6 +1432,30 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/story-done/references/review-gates.md",
+      "output": ".dsh/skills/story-done/references/review-gates.md",
+      "sourceSha256": "49618b4e574a5db5",
+      "outputSha256": "49618b4e574a5db5",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/story-done/references/sprint-next.md",
+      "output": ".dsh/skills/story-done/references/sprint-next.md",
+      "sourceSha256": "d18331c32a0e15ac",
+      "outputSha256": "d18331c32a0e15ac",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/story-done/references/tech-debt-row.md",
+      "output": ".dsh/skills/story-done/references/tech-debt-row.md",
+      "sourceSha256": "9bc9090f96ee6b1e",
+      "outputSha256": "9bc9090f96ee6b1e",
+      "rewritten": false
+    },
+    {
       "kind": "skill",
       "source": "skills/story-done/SKILL.md",
       "output": ".dsh/skills/story-done/SKILL.md",
@@ -647,6 +1471,14 @@
       "sourceSha256": "cedc8f301c28bad4",
       "outputSha256": "138d87efc8e5fa09",
       "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/story-readiness/references/qa-lead-gate.md",
+      "output": ".dsh/skills/story-readiness/references/qa-lead-gate.md",
+      "sourceSha256": "f919c5e0cfc94d1c",
+      "outputSha256": "f919c5e0cfc94d1c",
+      "rewritten": false
     },
     {
       "kind": "skill",
@@ -775,12 +1607,92 @@
       "rewritten": true
     },
     {
+      "kind": "skill-reference",
+      "source": "skills/test-setup/references/1-detect.md",
+      "output": ".dsh/skills/test-setup/references/1-detect.md",
+      "sourceSha256": "db091629bad368d4",
+      "outputSha256": "f2a3a758cc0a1314",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/test-setup/references/2-plan.md",
+      "output": ".dsh/skills/test-setup/references/2-plan.md",
+      "sourceSha256": "75554e9eba090bb8",
+      "outputSha256": "75554e9eba090bb8",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/test-setup/references/3-directories.md",
+      "output": ".dsh/skills/test-setup/references/3-directories.md",
+      "sourceSha256": "2c097fdc41cabdd4",
+      "outputSha256": "34cb5a0891681339",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/test-setup/references/4-ci.md",
+      "output": ".dsh/skills/test-setup/references/4-ci.md",
+      "sourceSha256": "504a26128cde3c2d",
+      "outputSha256": "04bb0fc970e9c9fa",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/test-setup/references/5-smoke-seed.md",
+      "output": ".dsh/skills/test-setup/references/5-smoke-seed.md",
+      "sourceSha256": "c2c4dabcf16bca70",
+      "outputSha256": "c2c4dabcf16bca70",
+      "rewritten": false
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/test-setup/references/6-summary.md",
+      "output": ".dsh/skills/test-setup/references/6-summary.md",
+      "sourceSha256": "68024b370fff5659",
+      "outputSha256": "68024b370fff5659",
+      "rewritten": false
+    },
+    {
       "kind": "skill",
       "source": "skills/test-setup/SKILL.md",
       "output": ".dsh/skills/test-setup/SKILL.md",
       "upstreamFrontmatter": "name: test-setup\ndescription: \"Scaffold the test framework and CI — tests/ directory, engine test runner, GitHub Actions workflow. Once, before the first sprint.\"\nargument-hint: \"[force]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Bash(bash \"*/.claude/skills/test-setup/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "9fcd81170855dd61",
       "outputSha256": "55b938dfb57ad05b",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/ux-design/references/2-gather-context.md",
+      "output": ".dsh/skills/ux-design/references/2-gather-context.md",
+      "sourceSha256": "b8c7dac24f6ea2fd",
+      "outputSha256": "e83be73a51b15867",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/ux-design/references/3-file-skeleton.md",
+      "output": ".dsh/skills/ux-design/references/3-file-skeleton.md",
+      "sourceSha256": "ec58c4982148229b",
+      "outputSha256": "bbb20214daeacb7c",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/ux-design/references/4-authoring.md",
+      "output": ".dsh/skills/ux-design/references/4-authoring.md",
+      "sourceSha256": "c0df1eb0c791565c",
+      "outputSha256": "2054817351f54b78",
+      "rewritten": true
+    },
+    {
+      "kind": "skill-reference",
+      "source": "skills/ux-design/references/5-crossref-handoff.md",
+      "output": ".dsh/skills/ux-design/references/5-crossref-handoff.md",
+      "sourceSha256": "b1785beef772c209",
+      "outputSha256": "5b0bc6af94d3f267",
       "rewritten": true
     },
     {
@@ -1604,6 +2516,22 @@
     },
     {
       "kind": "other",
+      "source": "scripts/door-in.sh",
+      "output": ".dsh/scripts/door-in.sh",
+      "sourceSha256": "0a5e26de3756129e",
+      "outputSha256": "592b3a165ef0bb2b",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/game-read.sh",
+      "output": ".dsh/scripts/game-read.sh",
+      "sourceSha256": "9532e66f30040f62",
+      "outputSha256": "3ba5a3d79a0720b9",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
       "source": "scripts/gdd-structure-check.sh",
       "output": ".dsh/scripts/gdd-structure-check.sh",
       "sourceSha256": "95f2a075e8272a7a",
@@ -1624,6 +2552,14 @@
       "output": ".dsh/scripts/itch-zip.sh",
       "sourceSha256": "6dc5505f2aa0125c",
       "outputSha256": "0aecf253c16ab101",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/md-section.sh",
+      "output": ".dsh/scripts/md-section.sh",
+      "sourceSha256": "0ffa55a3f7215fda",
+      "outputSha256": "86ad8449270fe54c",
       "rewritten": true
     },
     {
@@ -1708,6 +2644,22 @@
     },
     {
       "kind": "other",
+      "source": "scripts/references-save.sh",
+      "output": ".dsh/scripts/references-save.sh",
+      "sourceSha256": "a0f1051e5c679444",
+      "outputSha256": "7d60b478396137d5",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/registry.sh",
+      "output": ".dsh/scripts/registry.sh",
+      "sourceSha256": "4b698b1af5ec413d",
+      "outputSha256": "2cb2f4aaa229ba97",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
       "source": "scripts/review-receipts.sh",
       "output": ".dsh/scripts/review-receipts.sh",
       "sourceSha256": "966edb06ff691b68",
@@ -1732,10 +2684,50 @@
     },
     {
       "kind": "other",
+      "source": "scripts/set-stage.sh",
+      "output": ".dsh/scripts/set-stage.sh",
+      "sourceSha256": "717aae86e7fa76f8",
+      "outputSha256": "5db2adc7dc26dd93",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
       "source": "scripts/story-status.sh",
       "output": ".dsh/scripts/story-status.sh",
       "sourceSha256": "8ecb9c1db3bdb96c",
       "outputSha256": "931f13129db6acb5",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/test-run.sh",
+      "output": ".dsh/scripts/test-run.sh",
+      "sourceSha256": "2f49919381d2c045",
+      "outputSha256": "3449a31cb8e998e0",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/test-scaffold.sh",
+      "output": ".dsh/scripts/test-scaffold.sh",
+      "sourceSha256": "18545e527fafde3c",
+      "outputSha256": "b8b501a28e4698fd",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/vendor-three.sh",
+      "output": ".dsh/scripts/vendor-three.sh",
+      "sourceSha256": "1cb27b9b522cf9d0",
+      "outputSha256": "af34f91cbb2009b6",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/web-detect.sh",
+      "output": ".dsh/scripts/web-detect.sh",
+      "sourceSha256": "e638e014193ec00f",
+      "outputSha256": "a3873695142d35fd",
       "rewritten": true
     },
     {
@@ -2835,6 +3827,598 @@
       "rewritten": false
     },
     {
+      "kind": "other",
+      "source": "genres/art-direction.md",
+      "output": ".dsh/genres/art-direction.md",
+      "sourceSha256": "47352216483c19ba",
+      "outputSha256": "47352216483c19ba",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/action-adventure.md",
+      "output": ".dsh/genres/chipsets/action-adventure.md",
+      "sourceSha256": "767e358fc98f5efd",
+      "outputSha256": "767e358fc98f5efd",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/action-roguelite.md",
+      "output": ".dsh/genres/chipsets/action-roguelite.md",
+      "sourceSha256": "16d1407902a20e0a",
+      "outputSha256": "16d1407902a20e0a",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/action-rpg.md",
+      "output": ".dsh/genres/chipsets/action-rpg.md",
+      "sourceSha256": "42efbdb86a4c4aa6",
+      "outputSha256": "42efbdb86a4c4aa6",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/arcade-classic.md",
+      "output": ".dsh/genres/chipsets/arcade-classic.md",
+      "sourceSha256": "ecc1905036b28be1",
+      "outputSha256": "ecc1905036b28be1",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/arcade-sports.md",
+      "output": ".dsh/genres/chipsets/arcade-sports.md",
+      "sourceSha256": "34ae0976cf09347c",
+      "outputSha256": "34ae0976cf09347c",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/async-multiplayer.md",
+      "output": ".dsh/genres/chipsets/async-multiplayer.md",
+      "sourceSha256": "49a06b9752133bff",
+      "outputSha256": "49a06b9752133bff",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/auto-battler.md",
+      "output": ".dsh/genres/chipsets/auto-battler.md",
+      "sourceSha256": "739a36dd84c29263",
+      "outputSha256": "739a36dd84c29263",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/battle-royale.md",
+      "output": ".dsh/genres/chipsets/battle-royale.md",
+      "sourceSha256": "76009545551b4e61",
+      "outputSha256": "76009545551b4e61",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/beat-em-up.md",
+      "output": ".dsh/genres/chipsets/beat-em-up.md",
+      "sourceSha256": "cf107e1c98a78dd5",
+      "outputSha256": "cf107e1c98a78dd5",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/board-and-abstract.md",
+      "output": ".dsh/genres/chipsets/board-and-abstract.md",
+      "sourceSha256": "bbeece75ce604ff8",
+      "outputSha256": "bbeece75ce604ff8",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/card-battler.md",
+      "output": ".dsh/genres/chipsets/card-battler.md",
+      "sourceSha256": "6185f5e2dae3f6b3",
+      "outputSha256": "6185f5e2dae3f6b3",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/character-action.md",
+      "output": ".dsh/genres/chipsets/character-action.md",
+      "sourceSha256": "f78d6c133f581ca3",
+      "outputSha256": "f78d6c133f581ca3",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/city-builder.md",
+      "output": ".dsh/genres/chipsets/city-builder.md",
+      "sourceSha256": "0261f2e82bac981b",
+      "outputSha256": "0261f2e82bac981b",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/co-op.md",
+      "output": ".dsh/genres/chipsets/co-op.md",
+      "sourceSha256": "3096ec0c0f358fc8",
+      "outputSha256": "3096ec0c0f358fc8",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/colony-sim.md",
+      "output": ".dsh/genres/chipsets/colony-sim.md",
+      "sourceSha256": "8f1f190eb0f0ead7",
+      "outputSha256": "8f1f190eb0f0ead7",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/competitive-multiplayer.md",
+      "output": ".dsh/genres/chipsets/competitive-multiplayer.md",
+      "sourceSha256": "1e67518bb5cb7d6a",
+      "outputSha256": "1e67518bb5cb7d6a",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/cozy-cleanup.md",
+      "output": ".dsh/genres/chipsets/cozy-cleanup.md",
+      "sourceSha256": "28c63a1cad4e86c9",
+      "outputSha256": "28c63a1cad4e86c9",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/creature-collector.md",
+      "output": ".dsh/genres/chipsets/creature-collector.md",
+      "sourceSha256": "9e7e3af6ae534013",
+      "outputSha256": "9e7e3af6ae534013",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/detective.md",
+      "output": ".dsh/genres/chipsets/detective.md",
+      "sourceSha256": "32b3ed9f968b1bf2",
+      "outputSha256": "32b3ed9f968b1bf2",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/dungeon-crawler.md",
+      "output": ".dsh/genres/chipsets/dungeon-crawler.md",
+      "sourceSha256": "71792e7f81cf183e",
+      "outputSha256": "71792e7f81cf183e",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/endless-runner.md",
+      "output": ".dsh/genres/chipsets/endless-runner.md",
+      "sourceSha256": "02a64ddff6791312",
+      "outputSha256": "02a64ddff6791312",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/extraction.md",
+      "output": ".dsh/genres/chipsets/extraction.md",
+      "sourceSha256": "a571b96789bbe717",
+      "outputSha256": "a571b96789bbe717",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/factory-automation.md",
+      "output": ".dsh/genres/chipsets/factory-automation.md",
+      "sourceSha256": "f4f9f8e4b763aca2",
+      "outputSha256": "f4f9f8e4b763aca2",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/falling-block-puzzle.md",
+      "output": ".dsh/genres/chipsets/falling-block-puzzle.md",
+      "sourceSha256": "ef220818d1128c3b",
+      "outputSha256": "ef220818d1128c3b",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/farming-life-sim.md",
+      "output": ".dsh/genres/chipsets/farming-life-sim.md",
+      "sourceSha256": "6a3500a2f35e4b08",
+      "outputSha256": "6a3500a2f35e4b08",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/fighting.md",
+      "output": ".dsh/genres/chipsets/fighting.md",
+      "sourceSha256": "e4746d77858f1a3c",
+      "outputSha256": "e4746d77858f1a3c",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/first-person-shooter.md",
+      "output": ".dsh/genres/chipsets/first-person-shooter.md",
+      "sourceSha256": "043b98a878427ae3",
+      "outputSha256": "043b98a878427ae3",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/fishing.md",
+      "output": ".dsh/genres/chipsets/fishing.md",
+      "sourceSha256": "5280555485947ec4",
+      "outputSha256": "5280555485947ec4",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/flight.md",
+      "output": ".dsh/genres/chipsets/flight.md",
+      "sourceSha256": "25ab104a04673c0d",
+      "outputSha256": "25ab104a04673c0d",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/grid-puzzle.md",
+      "output": ".dsh/genres/chipsets/grid-puzzle.md",
+      "sourceSha256": "a7e40d4b35698d58",
+      "outputSha256": "a7e40d4b35698d58",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/hidden-object.md",
+      "output": ".dsh/genres/chipsets/hidden-object.md",
+      "sourceSha256": "8c38d199a1494f13",
+      "outputSha256": "8c38d199a1494f13",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/idle-incremental.md",
+      "output": ".dsh/genres/chipsets/idle-incremental.md",
+      "sourceSha256": "1241f3da5b969d9b",
+      "outputSha256": "1241f3da5b969d9b",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/level-maker.md",
+      "output": ".dsh/genres/chipsets/level-maker.md",
+      "sourceSha256": "18f715fcd0ea7da4",
+      "outputSha256": "18f715fcd0ea7da4",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/logic-puzzle.md",
+      "output": ".dsh/genres/chipsets/logic-puzzle.md",
+      "sourceSha256": "32a6865594812783",
+      "outputSha256": "32a6865594812783",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/management-tycoon.md",
+      "output": ".dsh/genres/chipsets/management-tycoon.md",
+      "sourceSha256": "9e2f348ab496e9b0",
+      "outputSha256": "9e2f348ab496e9b0",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/metroidvania.md",
+      "output": ".dsh/genres/chipsets/metroidvania.md",
+      "sourceSha256": "302e63459463af7b",
+      "outputSha256": "302e63459463af7b",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/mining.md",
+      "output": ".dsh/genres/chipsets/mining.md",
+      "sourceSha256": "d0df05709a85e155",
+      "outputSha256": "d0df05709a85e155",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/mmo.md",
+      "output": ".dsh/genres/chipsets/mmo.md",
+      "sourceSha256": "efdcf745afab30b9",
+      "outputSha256": "efdcf745afab30b9",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/moba.md",
+      "output": ".dsh/genres/chipsets/moba.md",
+      "sourceSha256": "92df5e41f379f518",
+      "outputSha256": "92df5e41f379f518",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/parkour.md",
+      "output": ".dsh/genres/chipsets/parkour.md",
+      "sourceSha256": "5d5e840434a3dae1",
+      "outputSha256": "5d5e840434a3dae1",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/party-game.md",
+      "output": ".dsh/genres/chipsets/party-game.md",
+      "sourceSha256": "3f78aa289d68f7d4",
+      "outputSha256": "3f78aa289d68f7d4",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/pet-raising.md",
+      "output": ".dsh/genres/chipsets/pet-raising.md",
+      "sourceSha256": "2e46977d95623251",
+      "outputSha256": "2e46977d95623251",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/physics-puzzle.md",
+      "output": ".dsh/genres/chipsets/physics-puzzle.md",
+      "sourceSha256": "3a4d1899bdccfdb9",
+      "outputSha256": "3a4d1899bdccfdb9",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/platformer.md",
+      "output": ".dsh/genres/chipsets/platformer.md",
+      "sourceSha256": "ba415c89dd02da08",
+      "outputSha256": "ba415c89dd02da08",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/point-and-click.md",
+      "output": ".dsh/genres/chipsets/point-and-click.md",
+      "sourceSha256": "2f21ee5c3d403108",
+      "outputSha256": "2f21ee5c3d403108",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/puzzle-platformer.md",
+      "output": ".dsh/genres/chipsets/puzzle-platformer.md",
+      "sourceSha256": "7e92325b71a9e3f5",
+      "outputSha256": "7e92325b71a9e3f5",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/racing.md",
+      "output": ".dsh/genres/chipsets/racing.md",
+      "sourceSha256": "cc4322eb31e913a0",
+      "outputSha256": "cc4322eb31e913a0",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/real-time-strategy.md",
+      "output": ".dsh/genres/chipsets/real-time-strategy.md",
+      "sourceSha256": "634abdeda4ad1d06",
+      "outputSha256": "634abdeda4ad1d06",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/rhythm.md",
+      "output": ".dsh/genres/chipsets/rhythm.md",
+      "sourceSha256": "faa16faab6217096",
+      "outputSha256": "faa16faab6217096",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/roguelike-deckbuilder.md",
+      "output": ".dsh/genres/chipsets/roguelike-deckbuilder.md",
+      "sourceSha256": "b049426e03b3529e",
+      "outputSha256": "b049426e03b3529e",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/sailing.md",
+      "output": ".dsh/genres/chipsets/sailing.md",
+      "sourceSha256": "582c53b67e475930",
+      "outputSha256": "582c53b67e475930",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/sandbox.md",
+      "output": ".dsh/genres/chipsets/sandbox.md",
+      "sourceSha256": "17326bacb47f196d",
+      "outputSha256": "17326bacb47f196d",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/shoot-em-up.md",
+      "output": ".dsh/genres/chipsets/shoot-em-up.md",
+      "sourceSha256": "197ea131b659a959",
+      "outputSha256": "197ea131b659a959",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/skate-and-surf.md",
+      "output": ".dsh/genres/chipsets/skate-and-surf.md",
+      "sourceSha256": "09710b9db2d392a6",
+      "outputSha256": "09710b9db2d392a6",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/soulslike.md",
+      "output": ".dsh/genres/chipsets/soulslike.md",
+      "sourceSha256": "3a7fb901243f4112",
+      "outputSha256": "3a7fb901243f4112",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/stealth.md",
+      "output": ".dsh/genres/chipsets/stealth.md",
+      "sourceSha256": "95d5bc90be1bc807",
+      "outputSha256": "95d5bc90be1bc807",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/survival-crafting.md",
+      "output": ".dsh/genres/chipsets/survival-crafting.md",
+      "sourceSha256": "e3547728aae45c6f",
+      "outputSha256": "e3547728aae45c6f",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/survival-horror.md",
+      "output": ".dsh/genres/chipsets/survival-horror.md",
+      "sourceSha256": "a484a8aa1c31969b",
+      "outputSha256": "a484a8aa1c31969b",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/survivors-like.md",
+      "output": ".dsh/genres/chipsets/survivors-like.md",
+      "sourceSha256": "727ee12caf8f58ba",
+      "outputSha256": "727ee12caf8f58ba",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/tactical-rpg.md",
+      "output": ".dsh/genres/chipsets/tactical-rpg.md",
+      "sourceSha256": "88359427346e7b7f",
+      "outputSha256": "88359427346e7b7f",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/tower-defense.md",
+      "output": ".dsh/genres/chipsets/tower-defense.md",
+      "sourceSha256": "00a7f31e4f41ded6",
+      "outputSha256": "00a7f31e4f41ded6",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/traditional-roguelike.md",
+      "output": ".dsh/genres/chipsets/traditional-roguelike.md",
+      "sourceSha256": "797cb484d8f70d30",
+      "outputSha256": "797cb484d8f70d30",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/trivia-quiz.md",
+      "output": ".dsh/genres/chipsets/trivia-quiz.md",
+      "sourceSha256": "0cc4ae601e8eef50",
+      "outputSha256": "0cc4ae601e8eef50",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/turn-based-jrpg.md",
+      "output": ".dsh/genres/chipsets/turn-based-jrpg.md",
+      "sourceSha256": "da87a90cb4f52e76",
+      "outputSha256": "da87a90cb4f52e76",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/turn-based-strategy.md",
+      "output": ".dsh/genres/chipsets/turn-based-strategy.md",
+      "sourceSha256": "6444601992afe727",
+      "outputSha256": "6444601992afe727",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/twin-stick-shooter.md",
+      "output": ".dsh/genres/chipsets/twin-stick-shooter.md",
+      "sourceSha256": "5607aaa148ed8a1f",
+      "outputSha256": "5607aaa148ed8a1f",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/visual-novel.md",
+      "output": ".dsh/genres/chipsets/visual-novel.md",
+      "sourceSha256": "ad1d82b4b087190e",
+      "outputSha256": "ad1d82b4b087190e",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/walking-sim.md",
+      "output": ".dsh/genres/chipsets/walking-sim.md",
+      "sourceSha256": "9518043ce27db4a3",
+      "outputSha256": "9518043ce27db4a3",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets/word-game.md",
+      "output": ".dsh/genres/chipsets/word-game.md",
+      "sourceSha256": "198e7f66f0a44e6d",
+      "outputSha256": "198e7f66f0a44e6d",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/chipsets.yaml",
+      "output": ".dsh/genres/chipsets.yaml",
+      "sourceSha256": "c1563e75bfbf7f4a",
+      "outputSha256": "c1563e75bfbf7f4a",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/mashups.md",
+      "output": ".dsh/genres/mashups.md",
+      "sourceSha256": "23eb81de24e854c6",
+      "outputSha256": "23eb81de24e854c6",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "genres/online-and-devices.md",
+      "output": ".dsh/genres/online-and-devices.md",
+      "sourceSha256": "758f467fcde85193",
+      "outputSha256": "bad8a34c06fcfea8",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "genres/sources.md",
+      "output": ".dsh/genres/sources.md",
+      "sourceSha256": "bb2a20d9d6a32a77",
+      "outputSha256": "bb2a20d9d6a32a77",
+      "rewritten": false
+    },
+    {
       "kind": "script",
       "source": "statusline.sh",
       "output": ".dsh/statusline.sh",
@@ -3118,8 +4702,8 @@
       "kind": "overlay",
       "source": "dsh-src/scripts/migrate-v1-config.mjs",
       "output": ".dsh/scripts/migrate-v1-config.mjs",
-      "sourceSha256": "90138fa7d499fb13",
-      "outputSha256": "21a0a9d5ddf970d6",
+      "sourceSha256": "4ba0f75f5e73e561",
+      "outputSha256": "15e86d0ff8082cab",
       "rewritten": true
     },
     {
