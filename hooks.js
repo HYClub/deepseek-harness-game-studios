@@ -62,7 +62,7 @@ export const name = 'dsgs-hooks'
  * is read while handling subagent tool calls: without it Cordis throws
  * `cannot get property "sessionProjections" without inject` and the spawn fails.
  */
-export const inject = ['shell', 'sessionProjections']
+export const inject = ['shell', 'sessionProjections', 'workingDirectory']
 
 const BRIDGE_PACKAGE = '@deepseek-ai/dsh-hooks-claude-code'
 
@@ -515,6 +515,7 @@ export function apply(ctx, config = {}) {
     // diagnostics only
   }
 }
+
 
 
 

@@ -1,62 +1,34 @@
 # Changelog
 
-## 0.3.3 — the hook checks run against the real bridge
+## 0.3.4 — a plugin that runs in a real session
 
-The two hook suites now measure the plugin against the published bridge instead of skipping, and the
-numbers in the README are the ones they print: **mount 10/10 · protocol 12/12**, reproduced by
-`npm install` at the repository root (the bridge and protocol are devDependencies there).
+Everything since 0.3.0, in one release.
 
-Five things had to be fixed to get there — four were the checks' own bugs, one was a wrong expectation:
+**The plugin now works in a live session.** The hook bridge asks the session for a working directory,
+and the plugin never declared that service: in a session with the hooks mounted, every tool call failed
+before it ran (`cannot get property "workingDirectory" without inject`). It is declared now, and a real
+headless session runs the hooks — SessionStart 4, PreToolUse 9, PostToolUse 10, Stop 1, SubagentStart 1,
+SubagentStop 2, all exiting 0. Only a live session could show this; the static suites were green.
 
-- The protocol lookup accepted the bridge's own `lib/index.js` as the protocol package, so it called
-  `matchesMatcher` on a module that has none. With `DSH_HOOK_BRIDGE_DIR` set it now resolves the other
-  half of the pair beside it.
-- The stand-in context had no `workingDirectory`; the bridge asks it for a session's directory and for
-  the project's committed one, so every hook ran in the repository instead of the fixture. Tools that
-  look at staged files then allowed what should have been denied.
-- `SubagentStop` runs two hooks now (the audit log and the artifact check); the case expected one.
-- `Notification` has a matcher (`permission_prompt|idle_prompt`), so firing it with an empty subject
-  selected nothing.
-- `PostCompact` is not a Claude Code event: the bridge's config parser drops it, and hooks.js registers
-  that group itself. The case asserted the bridge would run it.
+**The files the skills read are shipped.** 210 step files under `skills/*/references/`, the 73-file genre
+library (chipsets, art direction, online and devices, and the index that names them), and the ten helper
+scripts those pages call — `set-stage`, `door-in`, `game-read`, `test-run`, `test-scaffold`,
+`md-section`, `registry`, `references-save`, `vendor-three`, `web-detect`. Every reference a skill file
+points at resolves (1278 references, none missing), and the audit lists the few shell-only scripts
+instead of hiding them.
 
-The live-event probe still needs `DEEPSEEK_API_KEY`; without one it says so and the release gate reports
-the whole assertion as SKIP rather than a pass.
+**Migration works again.** A damaged comment had left `migrate-v1-config` unable to load, which is why
+all 20 of its behaviour tests failed. Repaired, and the tests pass.
 
-## 0.3.2 — the hook bridge is declared, and found
+**The hook bridge is a declared dependency.** The plugin loads `@deepseek-ai/dsh-hooks-claude-code` and
+calls its `apply()`, so it is a runtime dependency at the version this port is tested against
+(0.2.1-rc.2). The loader still prefers the copy the running dsh provides — a newer dsh keeps its own —
+and falls back to the declared one when the installation keeps it out of reach.
 
-The plugin's hooks.js loads the official `@deepseek-ai/dsh-hooks-claude-code` package and calls its
-`apply()` — that made the bridge a runtime dependency, but the package declared none. It does now:
-
-- `dependencies: { "@deepseek-ai/dsh-hooks-claude-code": "0.2.1-rc.2" }`, the version this port is
-  tested against. Installing the plugin installs a bridge the plugin can use even when the dsh
-  installation keeps its own copy out of reach (a desktop build packs it inside `app.asar`).
-- The loader still prefers the copy the running dsh provides, so a newer dsh keeps its own bridge; the
-  declared one is the fallback. If neither is reachable the error names both attempts.
-
-The hook checks say which of the two failed and what to do — point `DSH_HOOK_BRIDGE_DIR` at a copy,
-install it at the version your dsh expects, or read it from a dsh checkout — and a skipped check can no
-longer pass by accident.
-
-## 0.3.1 — the files the skills read
-
-0.3.0 shipped the skills but not everything they read. This release adds the rest, so a skill that
-says "read the step file" or "use the genre chipset" finds it:
-
-- **The step files behind the workflow skills.** 210 files under `skills/*/references/` — the numbered
-  steps a skill walks (adopt, architecture-decision, create-architecture, design-system, review-all-gdds,
-  smoke-check, test-setup and the rest), plus the one-shot references `/prototype` and `/cut` read.
-- **The genre library.** 73 files under `genres/` — the genre chipsets, the art-direction and
-  online-and-device notes, and the index that names them; `/prototype`'s card step reads them.
-- **The scripts those pages call.** `set-stage`, `door-in`, `game-read`, `test-run`, `test-scaffold`,
-  `md-section`, `registry`, `references-save`, `vendor-three` and `web-detect` now ship beside the
-  framework. Those without a Node port are listed by the reference audit rather than hidden.
-- **`migrate-v1-config` works again.** A damaged comment had left the script unable to load, so every
-  migration test failed; the file is repaired and its 20 behaviour tests pass.
-
-Every reference a skill file points at now resolves (`framework references missing: 0`), the content
-fidelity check reports no unexplained lines, and the full verification is seven steps green with 28
-behaviour suites passing.
+**The hook checks measure the real bridge.** Mount 10/10 and protocol 12/12 with the published packages,
+and the live probe fires 6 of the 8 events a session can cause (the other three have no trigger). The
+probe reads the model key from DSH's own credential store, so a machine that is already signed in needs
+no setup; without a credential it reports SKIP instead of quoting a number from another machine.
 
 ## 0.3.0 — everything upstream, and a game you can actually play
 

@@ -34,13 +34,35 @@ const PROFILE_DIR = join(process.env.USERPROFILE ?? '', '.dsh', 'profiles', PROF
 const KEEP = process.argv.includes('--keep');
 
 /** The prompt that makes one live session exercise as many events as it can. */
+/**
+ * The model key the rest of this machine already uses. DSH stores it in its credential store — the file
+ * the Models page writes — so a signed-in machine needs no setup for the live probe. Nothing here is
+ * logged: the value goes straight into the child's environment.
+ * @returns {string | undefined} the key, or undefined when the store has none
+ */
+function storedApiKey() {
+  if (typeof process.env.DEEPSEEK_API_KEY === 'string' && process.env.DEEPSEEK_API_KEY.length > 0) {
+    return process.env.DEEPSEEK_API_KEY;
+  }
+  const store = join(process.env.USERPROFILE ?? process.env.HOME ?? '', '.dsh', '.credentials.yaml');
+  if (!existsSync(store)) return undefined;
+  let inRefs = false;
+  for (const line of readFileSync(store, 'utf8').split('\n')) {
+    if (/^refs:\s*$/.test(line)) { inRefs = true; continue; }
+    if (inRefs && /^\S/.test(line)) { inRefs = false; }
+    if (!inRefs) continue;
+    const hit = /^\s+DEEPSEEK_API_KEY:\s*(.+?)\s*$/.exec(line);
+    if (hit !== null) return hit[1].replace(/^["']|["']$/g, '');
+  }
+  return undefined;
+}
+
 const PROBE_PROMPT = [
-  'Execute these three steps now, in order, without asking anything:',
-  '1. Call the pwsh tool with exactly this command: echo event-probe',
-  '2. Call the write tool to create .verify-logs/event-probe.txt containing the single word probe',
-  '3. Call the subagent tool once, delegating the single word ping to one child',
-  'Then reply with the single word: done',
-].join('\n');
+  'Call the pwsh tool with exactly this command: echo event-probe',
+  'Then call the write tool to create .verify-logs/event-probe.txt containing just: probe',
+  'Then call the subagent tool once, asking it to reply with the single word ping.',
+  'Do not explain, do not ask: make the three calls, then reply done.',
+].join(' ') + '\n' + 'Steps in order: pwsh, write, subagent.';
 
 /** Every event the generated config registers, with the commands it runs. */
 function configuredEvents() {
@@ -125,6 +147,10 @@ function main() {
   const events = configuredEvents();
   writeFileSync(INVOCATION_LOG, '', 'utf8');
   if (existsSync(PROFILE_DIR)) rmSync(PROFILE_DIR, { recursive: true, force: true });
+
+  const apiKey = storedApiKey();
+  if (apiKey !== undefined) process.env.DEEPSEEK_API_KEY = apiKey;
+  else console.log('  no model credential found: the live half of this check will report SKIP');
 
   console.log(`verify-hooks-events: booting a throwaway headless session (profile "${PROFILE}")`);
   const run = spawnSync(
