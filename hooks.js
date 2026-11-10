@@ -86,16 +86,24 @@ function loadBridge() {
     (value) => typeof value === 'string' && value.length > 0,
   )
   const failures = []
+  // The running dsh first, so the bridge always matches the dsh version that will emit the events.
   for (const base of bases) {
     try {
       const require = createRequire(base)
-      // Resolve the package entry (honouring its exports map) and load it from the
-      // installation, so the bridge always matches the running dsh version.
       const entry = require.resolve(BRIDGE_PACKAGE)
       return require(entry)
     } catch (error) {
       failures.push(`${base}: ${error.code ?? error.message}`)
     }
+  }
+  // Then the copy this package declares as a dependency: a dsh install that ships without the bridge
+  // (a desktop build keeps it inside app.asar) would otherwise leave every hook unmounted.
+  try {
+    const require = createRequire(import.meta.url)
+    const entry = require.resolve(BRIDGE_PACKAGE)
+    return require(entry)
+  } catch (error) {
+    failures.push(`package: ${error.code ?? error.message}`)
   }
   throw new Error(
     `dsgs-hooks: cannot resolve ${BRIDGE_PACKAGE} from the dsh installation (${failures.join('; ')})`,

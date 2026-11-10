@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.2 — the hook bridge is declared, and found
+
+The plugin's hooks.js loads the official `@deepseek-ai/dsh-hooks-claude-code` package and calls its
+`apply()` — that made the bridge a runtime dependency, but the package declared none. It does now:
+
+- `dependencies: { "@deepseek-ai/dsh-hooks-claude-code": "0.2.1-rc.2" }`, the version this port is
+  tested against. Installing the plugin installs a bridge the plugin can use even when the dsh
+  installation keeps its own copy out of reach (a desktop build packs it inside `app.asar`).
+- The loader still prefers the copy the running dsh provides, so a newer dsh keeps its own bridge; the
+  declared one is the fallback. If neither is reachable the error names both attempts.
+
+The hook checks say which of the two failed and what to do — point `DSH_HOOK_BRIDGE_DIR` at a copy,
+install it at the version your dsh expects, or read it from a dsh checkout — and a skipped check can no
+longer pass by accident.
+
 ## 0.3.1 — the files the skills read
 
 0.3.0 shipped the skills but not everything they read. This release adds the rest, so a skill that
@@ -143,6 +158,7 @@ plugin description, the repository About and CONTRIBUTING now state the same cou
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

@@ -42,6 +42,7 @@ function findPackageLib(pkgName, libRel) {
   if (dsh !== undefined) candidates.push(join(dsh, 'node_modules', pkgName, 'lib', libRel));
   // profiles/<name>/node_modules/@deepseek-ai/<pkg>
   try {
+    candidates.push(join(home, '.dsh', 'profiles', 'node_modules', pkgName, 'lib', libRel));
     for (const name of readdirSync(join(home, '.dsh', 'profiles'))) {
       candidates.push(join(home, '.dsh', 'profiles', name, 'node_modules', pkgName, 'lib', libRel));
     }
@@ -71,7 +72,11 @@ if (dshRoot === undefined) {
 }
 const bridgePath = findPackageLib('@deepseek-ai/dsh-hooks-claude-code', 'index.js');
 if (bridgePath === undefined) {
-  console.log('SKIP: the hook bridge is not installed (set DSH_HOOK_BRIDGE_DIR to its package dir).');
+  console.log('SKIP: the hook bridge is not reachable (set DSH_HOOK_BRIDGE_DIR to its package dir).');
+console.log('      the bridge is the official @deepseek-ai/dsh-hooks-claude-code package, shipped with DSH:');
+console.log('      - found one? point DSH_HOOK_BRIDGE_DIR at its package directory (the one holding lib/index.js)');
+console.log('      - installing it yourself: npm i -g @deepseek-ai/dsh-hooks-claude-code (keep it the version your DSH expects)');
+console.log('      - a desktop install keeps it inside app.asar; run these checks from a DSH checkout to read it');
   process.exit(0);
 }
 const bridge = await import(pathToFileURL(bridgePath).href);
