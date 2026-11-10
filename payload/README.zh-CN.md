@@ -1,7 +1,7 @@
 # DeepSeek Harness Game Studios
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Version](https://img.shields.io/badge/version-0.3.4-orange.svg)
+![Version](https://img.shields.io/badge/version-0.3.5-orange.svg)
 ![Agents](https://img.shields.io/badge/agents-49-purple.svg)
 ![Skills](https://img.shields.io/badge/skills-83-green.svg)
 ![Hooks](https://img.shields.io/badge/hooks-19-orange.svg)
@@ -83,7 +83,7 @@ accept                     → accepted.tsv + accepted.png
 | 上游项目 | [`Donchitos/Claude-Code-Game-Studios`](https://github.com/Donchitos/Claude-Code-Game-Studios) |
 | 本移植锁定的上游版本 | **v1.1.2**（commit `b21fa0f`，2026-09-29） |
 | 上游许可证 | **MIT**（Copyright © 2026 Donchitos），本仓库沿用 |
-| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.3.4** |
+| 本仓库 | `deepseek-harness-game-studios`（DSGS）**v0.3.5** |
 | 移植方式 | 双栈同源：`.claude/` 是内容源（上游原文，逐字保留）；`.dsh/**` 由 `tools/build-dsh.mjs` 生成 |
 
 上游面向 Claude Code（`.claude/`、`.sh` 钩子、`bash` 一行流、`@path` 导入）。这些在 DSH 下**无法直接运行**
@@ -165,7 +165,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\skills\dsgs-init","$env:USERP
 | 代理角色卡 | ✅ | 49 个，`.dsh/agents/<name>.md` + 委派约定 |
 | 规则 | ✅ | 14 条，含上游"路径作用域规则引擎"的等价替代：PostToolUse 钩子在每次写入/编辑后注入命中的规则原文 |
 | 钩子 | ✅ | 上游 18 个脚本 → 19 个 Node 重写版，**0 个待移植**：读、写、两张注册表、提交与推送都有检查 |
-| 钩子真实执行 | ✅ | 装好官方 bridge 包后：挂载 10/10 · 协议 12/12（`npm install` 在仓库根装 devDependencies 即可复现）；事件活体需要 `DEEPSEEK_API_KEY`，没有就报 SKIP 而不是假通过 |
+| 钩子真实执行 | ✅ | 装好官方 bridge 包后：挂载 10/10 · 协议 12/12（`npm install` 在仓库根装 devDependencies 即可复现）；事件活体在能连到模型的会话里跑，否则报 SKIP —— 框架本身不需要任何 API key |
 | 配置解析 | ✅ | `project.yaml` 单一来源；`resolve_config` / `__call resolve_setting` 的 Node 端口 |
 | 辅助脚本 | ✅ | 上游每个 `.sh` 都有 Node 端口（`.dsh/scripts/*.mjs`），沙箱内可运行，含 `page-shot`、`write-guard`、`registry`、`cut-read`/`cut-apply`、`web-scaffold` 与整套 one-shot |
 | 内容保真 | ✅ | 377 文件 / 53,459 行：96.2% 逐字、3.0% 已记录改写、0.4% 结构性、0.4% 换写法、**0 行无法解释的丢失** |
@@ -252,6 +252,9 @@ DSGS 是移植：原始工作 —— 78 个技能、49 个代理、14 条规则�
 
 MIT License —— 见 [LICENSE](LICENSE)。上游版权 © 2026 Donchitos；移植层（生成器、Node 钩子、插件、
 安装器、DSGS 专有技能）以同一许可证发布。
+
+
+
 
 
 

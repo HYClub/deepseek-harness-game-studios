@@ -92,6 +92,24 @@ console.log('      - installing it yourself: npm i -g @deepseek-ai/dsh-hooks-cla
 console.log('      - a desktop install keeps it inside app.asar; run these checks from a DSH checkout to read it');
   process.exit(0);
 }
+// --- static guard: every service the bridge touches must be declared by the plugin's `inject` -------
+// This is the class of bug a live session caught once: the plugin omitted `workingDirectory`, and in a
+// mounted session every tool call threw `cannot get property "workingDirectory" without inject`.
+// A static assertion catches it with no model, no key and no session.
+const SERVICE_ACCESS = ['workingDirectory', 'sessionProjections', 'shell'];
+const pluginSource = readFileSync(join(ROOT, 'tools', 'dsh-plugin', 'index.js'), 'utf8');
+const injectLine = /export const inject = \[([^\]]*)\]/.exec(pluginSource);
+if (injectLine === null) {
+  console.error('FAIL: tools/dsh-plugin/index.js declares no inject list');
+  process.exit(1);
+}
+const declared = injectLine[1].split(',').map((item) => item.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+const undeclared = SERVICE_ACCESS.filter((service) => !declared.includes(service));
+if (undeclared.length > 0) {
+  console.error(`FAIL: inject is missing ${undeclared.join(', ')} — in a mounted session the bridge would throw "cannot get property … without inject" and every tool call would fail before it ran.`);
+  process.exit(1);
+}
+console.log(`  ok   inject declares every service the bridge touches (${declared.join(', ')})`);
 const bridge = await import(pathToFileURL(bridgePath).href);
 
 // ---------------------------------------------------------------------- fixture
@@ -356,6 +374,7 @@ rmSync(fixture, { recursive: true, force: true });
 const total = cases.length + 1;
 console.log(`\n${passed}/${total} mount cases passed (bridge: ${bridgePath})`);
 process.exit(failures.length === 0 ? 0 : 1);
+
 
 
 

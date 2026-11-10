@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.5 — nothing here needs an API key
+
+The previous notes said the live hook probe reads a model key from DSH's credential store. It does not,
+and the framework never did: hooks, scripts, skills and the plugin run on the session you already have.
+The probe now simply runs when a session can reach a model and reports SKIP when it cannot — no key, no
+credential file, no setup step — and its skip text says which suite already covers the wiring.
+
+What caught the class of bug that started this: a static guard in the mount suite now asserts that the
+plugin declares every service the hook bridge touches (`shell`, `sessionProjections`,
+`workingDirectory`). The missing `workingDirectory` shipped in 0.3.0–0.3.3 and made every tool call
+fail in a session with hooks mounted; the guard finds that without a model, a network call or a key.
+
 ## 0.3.4 — a plugin that runs in a real session
 
 Everything since 0.3.0, in one release.
@@ -26,9 +38,8 @@ calls its `apply()`, so it is a runtime dependency at the version this port is t
 and falls back to the declared one when the installation keeps it out of reach.
 
 **The hook checks measure the real bridge.** Mount 10/10 and protocol 12/12 with the published packages,
-and the live probe fires 6 of the 8 events a session can cause (the other three have no trigger). The
-probe reads the model key from DSH's own credential store, so a machine that is already signed in needs
-no setup; without a credential it reports SKIP instead of quoting a number from another machine.
+and the live probe fires 6 of the 8 events a session can cause (the other three have no trigger).
+Nothing in the framework needs an API key.
 
 ## 0.3.0 — everything upstream, and a game you can actually play
 

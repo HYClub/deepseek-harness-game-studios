@@ -1,6 +1,6 @@
 {
   "name": "deepseek-harness-game-studios",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "DeepSeek Harness port of Claude Code Game Studios (CCGS v1.1.2, MIT): 83 skills, 49 agents, 14 rules, 19 hooks, a studio status line, and a self-installing framework payload — install once, then any folder can start a studio with /start.",
   "type": "module",
   "dependencies": {
