@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.3.0 — everything upstream, and a game you can actually play
+
+This release closes the gap: every upstream skill, rule and hook now runs in DSH, and the studio can
+play the game it makes.
+
+**Upstream parity, finished.** Five skills arrived (`/next-step`, `/write-changelog`, `/project-settings`,
+`/cut`, plus the scene-file rule), each with the helper it needs — `config-set` writes one setting with its
+enum, whitelist and dry-run checks; `cut-read` and `cut-apply` propose cuts and write the ones you pick,
+moving a feature to "Out of scope" and blocking the story traced to it. All 19 upstream hooks now have a
+Node implementation and are registered: a read that would swallow a 40 KB design doc is refused with the
+document's headings; a write is checked against the never-overwrite list, the config enums, the local
+whitelist, the localization freeze, the prototype boundary and the subagent write exception; a registry
+write that would drop an entry says so. Session start ends with one line when a newer release is out.
+
+**Four engine references, including the web.** Godot moves to 4.7 and the Web target arrives with its
+Vite/TypeScript scaffold and three starters, so a grown game has somewhere to grow into.
+
+**A game you can play.** The one-shot pipeline runs end to end: make the folder, play it in a headless
+Chrome (Chrome, Edge, Chromium or Playwright's shell; the driver ships as browser JavaScript), record the
+check with its evidence rules, put a tuned number back, share a build without its debug panel, then grow
+it into a web project and compare the grown game with the original row by row. Verified here: `npm ci`,
+`npm run build:single`, `replay --as reference` exact, `--as copy` match, `accept`, `--as story` against
+the accepted run.
+
+**Fixes found while proving it.** The parity harness asked bash for `python3` only — on Windows that is
+often the Store stub, which exists, exits 0 and prints nothing — so it skipped the two pairs that read
+YAML on a machine where `python` works. It now asks for the interpreters the helper asks for, and all
+seven pairs match with no skips. Running them found two real bugs: a project with no `project.yaml` was
+reported as on the minimal workflow, and the status line resolved `.` against the framework instead of the
+directory it runs in.
+
+**Everything a reader sees is consistent.** The README was rewritten around what the plugin does; the
+plugin description, the repository About and CONTRIBUTING now state the same counts (83 skills, 49 agents,
+14 rules, 19 hooks); SELF-INSTALL names what the installer really writes and how to undo it.
+
+
+- `/dashboard` now opens on a board: a left navigation (概览 · 缺口 · 目录 · 名册 · 图表 · 命令) with plain anchors, so the navigation works with JavaScript disabled.
+- 缺口 lists every warning verbatim; 目录 marks the eight paths a project is expected to have as present or missing; 名册 shows the agents grouped by role suffix plus the skills and rules counts — all read from disk, so the page cannot claim a directory exists when it does not.
+- The three charts are unchanged and sit below the board; narrow screens still get tables.
+- Commands are printed as text, not buttons, and the page says so: a static file cannot run a skill.
+- The page now has a light theme alongside the dark one. The system preference decides until you press the `◐` button in the header, which flips it and remembers the choice; with JavaScript off the button is hidden and the system preference still applies. Chart colours follow the theme, not just the page chrome. Printing uses the light palette and hides the sidebar and the button, so Ctrl+P gives readable ink on white paper.
+
 ## 0.2.3 — a board you can scan, not a page you scroll
 
 - `/dashboard` now opens on a board: a left navigation (概览 · 缺口 · 目录 · 名册 · 图表 · 命令) with plain anchors, so the navigation works with JavaScript disabled.
@@ -81,6 +123,8 @@
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
+
 
 
 

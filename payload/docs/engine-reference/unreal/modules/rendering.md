@@ -1,16 +1,29 @@
-# Unreal Engine 5.7 — Rendering Module Reference
+# Unreal Engine 5.8 — Rendering Module Reference
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 has Megalights, production-ready Substrate, and Lumen improvements
+**Last verified:** 2026-10-18 (MegaLights tooltip against the 5.8 notes and source); 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
+**Knowledge Gap:** UE 5.8 has production-ready MegaLights, production-ready Substrate (5.7), Lumen Lite, and Lumen improvements
+
+> **UE 5.8 changes:** MegaLights is production-ready (enable it in Project
+> Settings > Engine > Rendering > Direct Lighting > MegaLights,
+> `r.MegaLights.EnableForProject`, default 0). Lumen Lite (Beta) is a
+> medium-quality GI setting, about twice as fast as Lumen high quality and the
+> default for current-generation handheld consoles. Mobile: multi-pass deferred
+> is the default path (forward is opt-in), with SSAO, SSR, deferred decals and
+> contact shadows. Lumen applies height fog to reflection ray hits by default
+> (`r.Lumen.HeightFog 1`). Substrate has been on for new projects since 5.7
+> (`r.Substrate`); Substrate NPR (toon) shading and Fog Screen Space Scattering
+> are Experimental. Sources: UE 5.8 release notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8 ;
+> `Engine/Source/Runtime/Engine/Classes/Engine/RendererSettings.h` and
+> `Engine/Source/Runtime/RenderCore/Private/RenderUtils.cpp` (5.8.1 install).
 
 ---
 
 ## Overview
 
-UE 5.7 rendering stack:
+UE 5.8 rendering stack:
 - **Lumen**: Real-time global illumination (default)
 - **Nanite**: Virtualized geometry for millions of triangles
-- **Megalights**: Support for millions of dynamic lights (NEW in 5.5+)
+- **MegaLights**: Many shadow-casting dynamic lights (NEW in 5.5+, production-ready in 5.8)
 - **Substrate**: Production-ready modular material system (NEW in 5.7)
 
 ---
@@ -65,16 +78,41 @@ MeshComp->SetStaticMesh(NaniteMesh); // Automatically uses Nanite if enabled
 
 ---
 
-## Megalights (UE 5.5+)
+## MegaLights (UE 5.5+, production-ready in 5.8)
 
-### Enable Megalights
+### Enable MegaLights
 
 ```cpp
-// Project Settings > Engine > Rendering > Megalights = Enabled
-// Supports millions of dynamic lights with minimal performance cost
+// Project Settings > Engine > Rendering > Direct Lighting > MegaLights
+//   (r.MegaLights.EnableForProject, default 0; a Post Process Volume can
+//   override it, and it can be disabled per light)
+// Many shadow-casting lights at a consistent, low GPU cost
 ```
 
-### Megalights Usage
+### The editor tooltip is older than the 5.8 release notes
+
+In a 5.8.1 install, this setting's tooltip (`RendererSettings.h`) and the
+`r.MegaLights.EnableForProject` help text (`MegaLights.cpp`) still end
+"Experimental feature." and say MegaLights "requires Hardware Ray Tracing, and
+does not support Directional Lights". Follow the release notes and the engine
+code instead:
+
+- **Status:** "Megalights is now entering Production Ready status with Unreal
+  Engine 5.8" (5.8 release notes, Rendering > Megalights).
+- **Ray tracing:** the renderer accepts hardware or software ray tracing support
+  (`HasRequiredTracingData` in `MegaLights.cpp`). Shadow rays use hardware ray
+  tracing while `r.MegaLights.HardwareRayTracing` is 1, the default. Shadows
+  come from ray tracing (the default) or Virtual Shadow Maps:
+  `r.MegaLights.DefaultShadowMethod` 0 or 1.
+- **Directional lights:** supported behind `r.MegaLights.DirectionalLights`,
+  default 0 (off). The 5.7 release notes list Directional Light support.
+
+Sources, read 2026-10-18: the 5.8 and 5.7 release notes (§ Sources); in a UE
+5.8.1 install (CL 56057345), `Engine/Source/Runtime/Engine/Classes/Engine/RendererSettings.h`,
+`Engine/Source/Runtime/Renderer/Private/MegaLights/MegaLights.cpp` and
+`MegaLightsRayTracing.cpp`.
+
+### MegaLights Usage
 
 ```cpp
 // Add point lights as usual
@@ -82,7 +120,7 @@ UPointLightComponent* Light = CreateDefaultSubobject<UPointLightComponent>(TEXT(
 Light->SetIntensity(5000.0f);
 Light->SetAttenuationRadius(500.0f);
 
-// Megalights automatically handles thousands/millions of these
+// MegaLights handles many of these at a consistent GPU cost
 ```
 
 ---
@@ -92,8 +130,9 @@ Light->SetAttenuationRadius(500.0f);
 ### Enable Substrate
 
 ```cpp
-// Project Settings > Engine > Substrate > Enable Substrate
-// Restart editor
+// On by default for new projects created in 5.7+.
+// Existing project: Project Settings > Engine > Rendering > Substrate >
+//   Substrate materials (r.Substrate), then restart the editor
 ```
 
 ### Substrate Material Nodes
@@ -292,6 +331,8 @@ Console commands:
 ---
 
 ## Sources
+- UE 5.8 release notes: https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
+- UE 5.7 release notes: https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-7-release-notes?application_version=5.7
 - https://docs.unrealengine.com/5.7/en-US/lumen-global-illumination-and-reflections-in-unreal-engine/
 - https://docs.unrealengine.com/5.7/en-US/nanite-virtualized-geometry-in-unreal-engine/
 - https://docs.unrealengine.com/5.7/en-US/substrate-materials-in-unreal-engine/

@@ -1,8 +1,18 @@
 # Godot Physics — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-10-17 (4.7 changes); 2026-02-12 (rest) | Engine: Godot 4.7
 
 ## What Changed Since ~4.3 (LLM Cutoff)
+
+### 4.7 Changes
+- **Jolt `WorldBoundaryShape3D`**: `plane.d` sign now matches Godot Physics,
+  flipped from 4.6; negate it to keep 4.6 behavior
+- **Jolt `SoftBody3D`**: mass defaults to 1 kg for the whole body (was 1 kg per
+  point) and `linear_stiffness` is applied differently; re-tune
+  `linear_stiffness` and `damping_coefficient`
+- **Jolt `Area3D`** reports overlaps with `SoftBody3D`; filter with layers/masks
+- **`PhysicsServer2D.body_set_shape_as_one_way_collision()`**: optional
+  `direction` parameter (required in `PhysicsServer2DExtension`) (4.7 migration guide: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html)
 
 ### 4.6 Changes
 - **Jolt Physics is the DEFAULT 3D engine** for new projects

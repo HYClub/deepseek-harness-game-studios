@@ -16,7 +16,7 @@
           {
             "type": "command",
             "command": "node \".dsh/hooks/session-start.mjs\"",
-            "timeout": 10
+            "timeout": 20
           },
           {
             "type": "command",
@@ -38,6 +38,31 @@
           {
             "type": "command",
             "command": "node \".dsh/hooks/validate-push.mjs\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "write|edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \".dsh/hooks/validate-registry.mjs\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "node \".dsh/hooks/validate-write.mjs\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "matcher": "read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \".dsh/hooks/validate-read.mjs\"",
             "timeout": 10
           }
         ]
@@ -95,7 +120,7 @@
     ],
     "Notification": [
       {
-        "matcher": "",
+        "matcher": "permission_prompt|idle_prompt",
         "hooks": [
           {
             "type": "command",
@@ -117,18 +142,6 @@
         ]
       }
     ],
-    "PostCompact": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \".dsh/hooks/post-compact.mjs\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": "",
@@ -136,7 +149,8 @@
           {
             "type": "command",
             "command": "node \".dsh/hooks/session-stop.mjs\"",
-            "timeout": 10
+            "timeout": 10,
+            "async": true
           }
         ]
       }
@@ -161,6 +175,11 @@
             "type": "command",
             "command": "node \".dsh/hooks/log-agent-stop.mjs\"",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \".dsh/hooks/validate-agent-artifact.mjs\"",
+            "timeout": 10
           }
         ]
       }

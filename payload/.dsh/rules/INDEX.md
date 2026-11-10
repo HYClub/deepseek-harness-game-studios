@@ -14,6 +14,7 @@
 | `.dsh/rules/narrative.md` | `design/narrative/**` |
 | `.dsh/rules/network-code.md` | `src/networking/**`<br>`Assets/**/{Networking,networking,Network,network}/**/*.cs`<br>`Source/**/{Networking,networking,Network,network}/**/*.{h,cpp}` |
 | `.dsh/rules/prototype-code.md` | `prototypes/**` |
+| `.dsh/rules/scene-files.md` | `**/*.tscn`<br>`**/*.tres`<br>`**/*.unity`<br>`**/*.prefab`<br>`Assets/**/*.asset` |
 | `.dsh/rules/shader-code.md` | `assets/shaders/**`<br>`**/*.gdshader`<br>`Assets/**/*.{shader,hlsl,cginc,compute,shadergraph}`<br>`Shaders/**`<br>`**/*.{usf,ush}` |
 | `.dsh/rules/skill-authoring.md` | `.dsh/skills/**`<br>`.dsh/agents/**` |
 | `.dsh/rules/test-standards.md` | `tests/**`<br>`Assets/Tests/**/*.cs`<br>`Source/**/Tests/**/*.{h,cpp}` |

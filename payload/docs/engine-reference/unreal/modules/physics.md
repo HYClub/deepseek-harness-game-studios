@@ -1,7 +1,13 @@
-# Unreal Engine 5.7 — Physics Module Reference
+# Unreal Engine 5.8 — Physics Module Reference
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 Chaos Physics improvements
+**Last verified:** 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
+**Knowledge Gap:** UE 5.7-5.8 Chaos Physics improvements
+
+> **UE 5.8 changes:** PhysicsMover / NetworkPhysicsLiaison code was removed
+> from the Mover plugin; use the ChaosMover plugin ("Equivalent functionality
+> is there for every PhysicsMover feature"). Mover and ChaosMover are still
+> flagged Experimental. Floor queries: move `FloorQueryUtil` calls to the new
+> `FFloorCheckSettings` variants. Source: UE 5.8 release notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
 
 ---
 

@@ -106,6 +106,14 @@ function run(command, args, { cwd, stdin }) {
 /** Build a throwaway project tree from a `{ 'relative/path': 'content' }` map. */
 function fixture(files) {
   const root = mkdtempSync(join(tmpdir(), 'DSGS-parity-fixture-'));
+  // A project initialised by DSGS has the framework beside it: the bash scripts read project.yaml
+  // through `.claude/hooks/yaml-helper.sh`, so a fixture without it looks like a project with no
+  // configuration at all — which made one parity case disagree for a reason that was not parity.
+  const helper = join(REPO_ROOT, '.claude', 'hooks', 'yaml-helper.sh');
+  if (existsSync(helper)) {
+    mkdirSync(join(root, '.claude', 'hooks'), { recursive: true });
+    writeFileSync(join(root, '.claude', 'hooks', 'yaml-helper.sh'), readFileSync(helper), 'utf8');
+  }
   for (const [rel, content] of Object.entries(files)) {
     const full = join(root, rel);
     mkdirSync(dirname(full), { recursive: true });
@@ -170,19 +178,23 @@ function findBash() {
 }
 
 /**
- * Is `python3` available **inside the bash we will use**? The bash side's YAML helper is what needs
- * it, and bash's PATH is not the Windows PATH: probing `python3` with the host's PATH reported it
- * present while the script inside Git Bash exited 127 without it.
+ * Which Python does the bash side's YAML helper get, **inside the bash we will use**?
+ *
+ * The helper itself tries `python`, then `python3`, then `py -3` (see `.claude/hooks/yaml-helper.sh`),
+ * so the probe asks the same three in the same order. Asking only `python3` reported a missing
+ * interpreter on a machine where `python` works perfectly: on Windows `python3` often resolves to the
+ * Microsoft Store stub (`…/WindowsApps/python3`), which exists, exits 0, and prints nothing.
+ *
  * @param {{command: string, args: string[]} | undefined} bashCommand - the shell found by findBash
- * @returns {boolean} true only when bash itself resolves python3
+ * @returns {string} the interpreter that answered, or '' when none did
  */
-function hasPython(bashCommand) {
-  if (bashCommand === undefined) return false;
-  // `command -v` is not enough on Windows: it resolves to the Microsoft Store stub
-  // (`…/WindowsApps/python3`), which exists, is found, and cannot run. Only a real interpreter
-  // counts, so this executes one.
-  const probe = run(bashCommand.command, [...bashCommand.args, 'python3 -c pass'], { cwd: REPO_ROOT });
-  return probe.status === 0;
+function findPython(bashCommand) {
+  if (bashCommand === undefined) return '';
+  for (const candidate of ['python', 'python3', 'py -3']) {
+    const probe = run(bashCommand.command, [...bashCommand.args, `${candidate} -c "print(1)"`], { cwd: REPO_ROOT });
+    if (probe.status === 0 && probe.stdout.trim() === '1') return candidate;
+  }
+  return '';
 }
 
 // ---------------------------------------------------------------- machinery self-test
@@ -218,7 +230,7 @@ check('the comparator detects different stdout as unequal', () => {
 // ------------------------------------------------------------------- real bash if present
 const bash = findBash();
 let skipped = 0;
-let pythonAvailable = false;
+let python = '';
 if (bash === undefined) {
   console.log('  skip  bash ↔ Node comparison: no usable bash on this host');
   console.log('        reason: Git Bash/WSL cannot start under the DSH sandbox (MSYS2 signal pipe,');
@@ -227,12 +239,14 @@ if (bash === undefined) {
   console.log('                works — the pairs below compare automatically.');
   for (const pair of PAIRS) console.log(`        would compare: ${pair.name}`);
 } else {
-  pythonAvailable = hasPython(bash);
-  const python = pythonAvailable;
-  console.log(`  info  bash: ${bash.label}${python ? '' : ' (no python3: YAML-dependent pairs will skip)'}`);
+  python = findPython(bash);
+  console.log(`  info  bash: ${bash.label}${python ? ` (${python} can read YAML)` : ' (no Python: YAML-dependent pairs will skip)'}`);
   for (const pair of PAIRS) {
-    if (pair.needs === 'python3' && !python) {
-      console.log(`  skip  ${pair.name}: needs python3 for the bash side's YAML helper`);
+    if (pair.needs === 'python3' && python === '') {
+      console.log(`  skip  ${pair.name}: needs a Python for the bash side's YAML helper (tried python, python3, py -3)`);
+      console.log('        fix: install one (Windows: winget install -e --id Python.Python.3.12) and make sure');
+      console.log('             python answers inside Git Bash, or point PATH at the interpreter.');
+      console.log('             PARITY_REQUIRE_ALL=1 turns this skip into a failure where it cannot be fixed.');
       skipped += 1;
       continue;
     }
@@ -251,8 +265,8 @@ if (bash === undefined) {
 // Skips are expected only when the host has no python3 for the bash side's YAML helper. Anything else is
 // a regression that has to be visible, and PARITY_REQUIRE_ALL=1 (used where python3 exists) forbids them.
 {
-  const expectedSkips = pythonAvailable ? 0 : 2;
-  check(`skips as expected (${skipped} of ${expectedSkips}, python3 ${pythonAvailable ? 'present' : 'absent'})`, () => {
+  const expectedSkips = python === '' ? 2 : 0;
+  check(`skips as expected (${skipped} of ${expectedSkips}, python ${python === '' ? 'absent' : `present as ${python}`})`, () => {
     assert.equal(skipped, expectedSkips, 'unexpected skip count — read the reason printed above');
     if (process.env.PARITY_REQUIRE_ALL === '1') assert.equal(skipped, 0, 'PARITY_REQUIRE_ALL=1 requires every pair to run');
   });

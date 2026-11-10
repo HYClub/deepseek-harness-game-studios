@@ -1,8 +1,14 @@
 # Godot Animation — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-10-17 (4.7 changes); 2026-02-12 (rest) | Engine: Godot 4.7
 
 ## What Changed Since ~4.3 (LLM Cutoff)
+
+### 4.7 Changes
+- **`Tween.tween_await()`**: pauses a tween until a signal is emitted (4.7 release notes: https://godotengine.org/releases/4.7/)
+- **`LookAtModifier3D.relative`** defaults to `false` (was `true`)
+- **`AnimationNodeBlendSpace1D/2D.add_blend_point()`**: optional `name` parameter
+- **`Animation.length`** is `double` in C# (was `float`); GDScript unaffected (4.7 migration guide: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html)
 
 ### 4.6 Changes
 - **IK system fully restored**: Complete inverse kinematics for 3D skeletons

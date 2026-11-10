@@ -1,8 +1,11 @@
 # Godot Navigation — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-10-17 (4.7 changes); 2026-02-12 (rest) | Engine: Godot 4.7
 
 ## What Changed Since ~4.3 (LLM Cutoff)
+
+### 4.7 Changes
+- **No navigation-specific changes** are listed in the 4.7 migration guide (4.7 migration guide: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html)
 
 ### 4.5 Changes
 - **Dedicated 2D navigation server**: No longer a proxy to 3D NavigationServer

@@ -1,6 +1,10 @@
 # Godot — Deprecated APIs
 
-Last verified: 2026-02-12
+Last verified: 2026-10-17 (4.7 rows); 2026-02-12 (rest)
+
+The 4.7 migration guide lists no formal deprecations; the 4.7 rows below are
+renames and removals from it
+(https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html).
 
 If an agent suggests any API in the "Deprecated" column, it MUST be replaced
 with the "Use Instead" column.
@@ -30,6 +34,11 @@ with the "Use Instead" column.
 | `Skeleton3D` signal `bone_pose_updated` | `skeleton_updated` | 4.3 | Renamed |
 | `AnimationPlayer.method_call_mode` | `AnimationMixer.callback_mode_method` | 4.3 | Moved to base class |
 | `AnimationPlayer.playback_active` | `AnimationMixer.active` | 4.3 | Moved to base class |
+| `RichTextLabel.ImageUpdateMask.UPDATE_WIDTH_IN_PERCENT` | `ImageUpdateMask.UPDATE_WIDTH_UNIT` | 4.7 | Renamed; GDScript using the old name breaks |
+| `add_image()` / `update_image()` `width_in_percent`, `height_in_percent` (`bool`) | `width_unit`, `height_unit` (`RichTextLabel.ImageUnit`) | 4.7 | Renamed and retyped |
+| `DisplayServer.AccessibilityLiveMode` for `Control.accessibility_live` | `AccessibilityServer.AccessibilityLiveMode` | 4.7 | Enum moved to `AccessibilityServer` |
+| `AudioEffectSpectrumAnalyzer.tap_back_pos` | — | 4.7 | Removed |
+| `EditorSceneFormatImporter.IMPORT_*` constants | `EditorSceneFormatImporter.ImportFlags` enum | 4.7 | Same names, now in an enum |
 
 ## Patterns (Not Just APIs)
 
@@ -41,3 +50,5 @@ with the "Use Instead" column.
 | `Texture2D` in `Shader.set_default_texture_parameter()` / `get_default_texture_parameter()` | `Texture` base type | Changed in 4.4; the shading language's `sampler2D` / `texture()` did not change |
 | Manual post-process viewport chains | `Compositor` + `CompositorEffect` | Structured post-processing (4.3+) |
 | GodotPhysics3D for new projects | Jolt Physics 3D | Default since 4.6; better stability |
+| `event.device == 0` to detect mouse or keyboard | `event is InputEventMouse` / `InputEventKey`, or `InputEvent.DEVICE_ID_MOUSE` / `DEVICE_ID_KEYBOARD` | Since 4.7 mouse and keyboard no longer report device `0`, which some joypads use |
+| Installing addons from the editor's AssetLib tab | The editor's Asset Store workspace (4.7+) | 4.7 replaced the Asset Library with the Asset Store |

@@ -74,6 +74,7 @@ import { join } from 'node:path';
 import { runCommand, git } from './_capture.mjs';
 import { normaliseInput, sessionStateEnabled } from './_session-state.mjs';
 import { run, readInput, projectRoot, context } from './runtime.mjs';
+import { updateNotice } from './update-check.mjs';
 
 /** The original's STATE_FILE, repo-relative (project assets keep their paths). */
 const STATE_FILE = 'production/session-state/active.md';
@@ -482,6 +483,14 @@ run(async () => {
   }
 
   w('===================================');
+
+  // One line when a newer release is out. It reads a cache and never waits for the network; a stale
+  // cache starts a background refresh that writes the next session's line.
+  const update = updateNotice(process.cwd());
+  if (update.length > 0) {
+    w('');
+    w(update);
+  }
 
   context(event, out.join('\n'));
   for (const note of notRun) process.stderr.write(`session-start: NOT RUN — ${note}\n`);

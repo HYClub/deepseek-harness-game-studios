@@ -10,7 +10,7 @@ These are production-ready recommendations as of Unity 6.3 LTS.
 ## Project Setup
 
 ### Use Unity 6.3 LTS for Production
-- **Tech Stream** (6.4+): Latest features, less stable
+- **Supported Update releases** (6.4+): Latest features, supported only until the next one ships
 - **LTS** (6.3): Production-ready, 2-year support (until Dec 2027)
 
 ### Choose the Right Render Pipeline

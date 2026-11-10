@@ -1,13 +1,19 @@
-# Unreal Engine 5.7 — Navigation Module Reference
+# Unreal Engine 5.8 — Navigation Module Reference
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 navigation improvements
+**Last verified:** 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
+**Knowledge Gap:** UE 5.7-5.8 navigation improvements
+
+> **UE 5.8 changes:** Static meshes can define their own walkable areas
+> during navmesh generation (per-mesh area costs, e.g. so AI walks around a
+> couch rather than over it), enabled per mesh through a flag and an area class
+> setting on NavCollision. Mover gained NavWalking support for Detour Crowd.
+> Source: UE 5.8 release notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
 
 ---
 
 ## Overview
 
-UE 5.7 navigation systems:
+UE 5.8 navigation systems:
 - **Nav Mesh**: Automatic pathfinding mesh for AI
 - **AI Controller**: Controls AI movement and behavior
 - **Behavior Trees**: AI decision-making (covered in AI module)

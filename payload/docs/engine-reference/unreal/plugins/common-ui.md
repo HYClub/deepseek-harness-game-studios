@@ -1,8 +1,15 @@
-# Unreal Engine 5.7 — CommonUI Plugin
+# Unreal Engine 5.8 — CommonUI Plugin
 
-**Last verified:** 2026-02-13
+**Last verified:** 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
 **Status:** Production-Ready
 **Plugin:** `CommonUI` (built-in, enable in Plugins)
+
+> **UE 5.8 changes:** Common Input/UI and Enhanced Input are unified, which
+> "removes the need for duplicate data assets", with more reliable event
+> processing, better widget binding and an Input Debugger for Enhanced Input
+> UI. CommonUI tags are now comparable in Blueprint. The `CommonUI.uplugin` in a
+> 5.8.1 install carries no Beta/Experimental flag. Source: UE 5.8 release
+> notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
 
 ---
 

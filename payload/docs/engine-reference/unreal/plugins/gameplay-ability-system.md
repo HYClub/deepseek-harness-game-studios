@@ -1,6 +1,6 @@
-# Unreal Engine 5.7 — Gameplay Ability System (GAS)
+# Unreal Engine 5.8 — Gameplay Ability System (GAS)
 
-**Last verified:** 2026-02-13
+**Last verified:** 2026-10-17 (ability asset tags, re-confirmed against the 5.8 header); 2026-02-13 (rest of file, written against 5.7)
 **Status:** Production-Ready
 **Plugin:** `GameplayAbilities` (built-in, enable in Plugins)
 
@@ -210,16 +210,11 @@ public:
         InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
         NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerInitiated;
 
-        // Tags
-        // ⚠️ UNVERIFIED FOR 5.7 — `AbilityTags` may be deprecated in favour of
-        // SetAssetTags()/GetAssetTags(). Reported by the `unreal-specialist`
-        // agent (2026-08-12), which believed the change landed around 5.5 and
-        // correctly REFUSED to emit code on a symbol it could not verify.
-        // NOT SOURCEABLE offline: this repo has no 5.7 API dump to check against,
-        // and the same knowledge-gap warning that governs the agent governs this
-        // file. Verify against the UE 5.7 docs before using this snippet, and
-        // correct both occurrences (here and ~line 328) together.
-        AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Attack.Fireball")));
+        // Tags: the ability's own tags (asset tags, formerly AbilityTags).
+        // Set them with SetAssetTags(), constructor only; read with GetAssetTags().
+        FGameplayTagContainer Tags;
+        Tags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Attack.Fireball")));
+        SetAssetTags(Tags);
     }
 
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -347,8 +342,10 @@ class UGA_MeleeAttack : public UGameplayAbility {
 
 public:
     UGA_MeleeAttack() {
-        // This ability has these tags
-        AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Attack.Melee")));
+        // This ability has these tags (asset tags; SetAssetTags() is constructor-only)
+        FGameplayTagContainer Tags;
+        Tags.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Attack.Melee")));
+        SetAssetTags(Tags);
 
         // Block these tags while active
         BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Attack")));
@@ -407,4 +404,5 @@ void AMyCharacter::OnHealthChanged(const FOnAttributeChangeData& Data) {
 ## Sources
 - https://docs.unrealengine.com/5.7/en-US/gameplay-ability-system-for-unreal-engine/
 - Clamping: *Gameplay Attributes and Attribute Sets* https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-attributes-and-attribute-sets-for-the-gameplay-ability-system-in-unreal-engine ; `UAttributeSet` API https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAttributeSet ; `PreAttributeChange` https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UAttributeSet/PreAttributeChange
+- Ability asset tags (`SetAssetTags()` / `GetAssetTags()`) — `UGameplayAbility` API, UE 5.7: https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UGameplayAbility?application_version=5.7 ; `SetAssetTags`: https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UGameplayAbility/SetAssetTags?application_version=5.7 . The 5.7 reference lists `SetAssetTags(const FGameplayTagContainer&)` as protected, "formerly AbilityTags", callable "only ... during construction"; `GetAssetTags()` as the public read; and `AbilityTags` as a public variable "exposed for backwards compatibility" (no deprecation note on the page). Re-confirmed for UE 5.8 on 2026-10-17 against `Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Public/Abilities/GameplayAbility.h` (5.8.1 install): `GetAssetTags()` public, `SetAssetTags(const FGameplayTagContainer&)` protected ("This can only be called during construction"), and `AbilityTags` still a public `UPROPERTY`, marked `UE_DEPRECATED_FORGAME(5.5, "Use GetAssetTags(). This is being made non-mutable, private and renamed to AssetTags in the future. Use SetAssetTags to set defaults (in constructor only).")` — so game code that touches `AbilityTags` directly gets a deprecation warning. 5.8 API page: https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/UGameplayAbility/SetAssetTags?application_version=5.8 . Also deprecated in 5.8: the `FActiveGameplayEffectHandle(int32)` constructor (use `GenerateNewHandle` or `GetInstantExecutedHandle()`; `.../Public/ActiveGameplayEffectHandle.h`).
 - https://github.com/tranek/GASDocumentation (community guide)

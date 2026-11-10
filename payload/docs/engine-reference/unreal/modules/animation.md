@@ -1,13 +1,22 @@
-# Unreal Engine 5.7 — Animation Module Reference
+# Unreal Engine 5.8 — Animation Module Reference
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 animation authoring improvements, Control Rig 2.0
+**Last verified:** 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
+**Knowledge Gap:** UE 5.4-5.8 animation authoring improvements, Control Rig 2.0
+
+> **UE 5.8 changes:** Smart names are deprecated — `FSmartName`,
+> `FSmartNameMapping` and `FSmartNameContainer` carry `UE_DEPRECATED(5.8, "Smart
+> names and their mappings are no longer used")` (`Engine/Source/Runtime/Engine/Classes/Animation/SmartName.h`).
+> Non-reflected deprecated Animation, Control Rig, Persona and Live Link APIs
+> from 5.0-5.6 were removed (e.g. `UMotionWarpingComponent::GetCharacterOwner`
+> → `GetOwnerAdapter()->GetActor()`). Control Rig Physics and the RigMapper
+> retargeting tool are Beta; Animation Mixing in Sequencer and Direct Mesh
+> Controls are Experimental. Source: UE 5.8 release notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
 
 ---
 
 ## Overview
 
-UE 5.7 animation systems:
+UE 5.8 animation systems:
 - **Animation Blueprint**: State machine-based animation logic
 - **Control Rig**: Runtime procedural animation (production-ready in UE5)
 - **IK Rig + Retargeter**: Modern retargeting system

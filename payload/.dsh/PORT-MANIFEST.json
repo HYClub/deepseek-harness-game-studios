@@ -1,9 +1,9 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "inputsDigest": "05f59ab17224cb27",
+  "inputsDigest": "4f4653c85c747aaf",
   "generatedFrom": "content-source",
   "output": ".dsh",
-  "fileCount": 331,
+  "fileCount": 403,
   "files": [
     {
       "kind": "skill",
@@ -193,6 +193,15 @@
     },
     {
       "kind": "skill",
+      "source": "skills/cut/SKILL.md",
+      "output": ".dsh/skills/cut/SKILL.md",
+      "upstreamFrontmatter": "name: cut\ndescription: \"Proposes cuts and a polish list to finish the game from its brief and what is built; the person picks each cut. A game to sell also gets a release date and a feature freeze. Use when asked what to cut, how to finish or ship it, or for a polish list.\"\nargument-hint: \"[no arguments]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, AskUserQuestion, Bash(bash \"*/.claude/skills/cut/../../hooks/yaml-helper.sh\" resolve_config *), Bash(bash .claude/scripts/cut-read.sh*), Bash(bash .claude/scripts/cut-apply.sh *), Bash(bash .claude/scripts/config-set.sh project.goal *), Bash(bash .claude/scripts/one-shot-check.sh *), Bash(bash .claude/scripts/one-shot-run.sh *), Bash(find prototypes/*), Bash(timeout 900 npm run smoke), Bash(timeout 900 godot --headless *), Bash(git rev-parse *), Bash(git add design/*), Bash(git commit -m *)\nmodel: sonnet",
+      "sourceSha256": "68e9ba619bcfb9e3",
+      "outputSha256": "a4f83944a89572b0",
+      "rewritten": true
+    },
+    {
+      "kind": "skill",
       "source": "skills/day-one-patch/SKILL.md",
       "output": ".dsh/skills/day-one-patch/SKILL.md",
       "upstreamFrontmatter": "name: day-one-patch\ndescription: \"Day-one launch patch — focused fix for known issues found after gold master. Mini-sprint with QA gate and rollback.\"\nargument-hint: \"[scope: known-bugs | cert-feedback | all]\"\nuser-invocable: true\ndisable-model-invocation: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion\nmodel: sonnet",
@@ -365,6 +374,15 @@
     },
     {
       "kind": "skill",
+      "source": "skills/next-step/SKILL.md",
+      "output": ".dsh/skills/next-step/SKILL.md",
+      "upstreamFrontmatter": "name: next-step\ndescription: \"Names the one next step: make a game, change it after play, grow it, or the next studio-mode step. Use when asked what to do next, or stuck.\"\nargument-hint: \"[optional: what you just finished, e.g. 'finished design-review' or 'stuck on ADRs']\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(bash \"*/.claude/skills/next-step/../../hooks/yaml-helper.sh\" resolve_config *), Bash(bash \"*/.claude/skills/next-step/../../scripts/story-status.sh\"), Bash(bash .claude/scripts/story-status.sh*), Bash(bash .claude/scripts/artifact-check.sh *), Bash(bash \".claude/scripts/artifact-check.sh\" *), Bash(bash ./.claude/scripts/artifact-check.sh *), Bash(git log *)\nmodel: haiku",
+      "sourceSha256": "0781318ec190efc0",
+      "outputSha256": "14484fd361169303",
+      "rewritten": true
+    },
+    {
+      "kind": "skill",
       "source": "skills/onboard/SKILL.md",
       "output": ".dsh/skills/onboard/SKILL.md",
       "upstreamFrontmatter": "name: onboard\ndescription: \"Onboarding doc for a new contributor or agent — project state, conventions, priorities relevant to the specified role.\"\nargument-hint: \"[role|area]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/onboard/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: haiku",
@@ -397,6 +415,15 @@
       "upstreamFrontmatter": "name: playtest-report\ndescription: \"Structured playtest report template, or turn existing playtest notes into structured feedback.\"\nargument-hint: \"[new|analyze path-to-notes] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/playtest-report/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "e3fb83ac622eb666",
       "outputSha256": "0bac8c0f031736da",
+      "rewritten": true
+    },
+    {
+      "kind": "skill",
+      "source": "skills/project-settings/SKILL.md",
+      "output": ".dsh/skills/project-settings/SKILL.md",
+      "upstreamFrontmatter": "name: project-settings\ndescription: \"Shows or changes a project setting and where its value comes from. Use to check or set one.\"\nargument-hint: \"[key | key=value | --local key=value]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" resolve_setting *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" get_yaml_key *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" validate_yaml_enum *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" validate_enum_value *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" is_locally_overridable *), Bash(bash .claude/scripts/config-set.sh *), Bash(grep -B14 '^> ### RESERVED' .claude/docs/effects-map.md), Bash(grep -E '^## ')\nmodel: sonnet",
+      "sourceSha256": "c73abd78a6905ab6",
+      "outputSha256": "0f1a2e4ed3b5e0ae",
       "rewritten": true
     },
     {
@@ -805,6 +832,15 @@
       "upstreamFrontmatter": "name: vertical-slice\ndescription: \"Pre-production validation — end-to-end build to confirm the full loop is achievable before committing to Production. After GDDs, architecture, UX specs.\"\nargument-hint: \"[--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/vertical-slice/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "5ca4cb1420837ed7",
       "outputSha256": "99c05ec58995e40d",
+      "rewritten": true
+    },
+    {
+      "kind": "skill",
+      "source": "skills/write-changelog/SKILL.md",
+      "output": ".dsh/skills/write-changelog/SKILL.md",
+      "upstreamFrontmatter": "name: write-changelog\ndescription: \"Writes a changelog from git commits and sprint data. Use for an internal or player-facing one.\"\nargument-hint: \"[version|sprint-number]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, Bash(bash \"*/.claude/skills/write-changelog/../../hooks/yaml-helper.sh\" resolve_config *), Bash(git log *), Bash(git tag --list*), Bash(git rev-parse *)\nmodel: sonnet",
+      "sourceSha256": "532aac96745ef61f",
+      "outputSha256": "e4e70c0e145db83e",
       "rewritten": true
     },
     {
@@ -1331,6 +1367,15 @@
     },
     {
       "kind": "rule",
+      "source": "rules/scene-files.md",
+      "output": ".dsh/rules/scene-files.md",
+      "upstreamFrontmatter": "paths:\n  - \"**/*.tscn\"\n  - \"**/*.tres\"\n  - \"**/*.unity\"\n  - \"**/*.prefab\"\n  - \"Assets/**/*.asset\"",
+      "sourceSha256": "c184c693e5f31a21",
+      "outputSha256": "c184c693e5f31a21",
+      "rewritten": false
+    },
+    {
+      "kind": "rule",
       "source": "rules/shader-code.md",
       "output": ".dsh/rules/shader-code.md",
       "upstreamFrontmatter": "paths:\n  - \"assets/shaders/**\"\n  - \"**/*.gdshader\"\n  - \"Assets/**/*.{shader,hlsl,cginc,compute,shadergraph}\"\n  - \"Shaders/**\"\n  - \"**/*.{usf,ush}\"",
@@ -1439,6 +1484,22 @@
     },
     {
       "kind": "hook",
+      "source": "hooks/update-check.sh",
+      "output": ".dsh/hooks/update-check.sh",
+      "sourceSha256": "dd1a159664e045b6",
+      "outputSha256": "18bc7a792edbb394",
+      "rewritten": true
+    },
+    {
+      "kind": "hook",
+      "source": "hooks/validate-agent-artifact.sh",
+      "output": ".dsh/hooks/validate-agent-artifact.sh",
+      "sourceSha256": "936660d0f89c03e5",
+      "outputSha256": "1fdcb3a2d7d3d94e",
+      "rewritten": true
+    },
+    {
+      "kind": "hook",
       "source": "hooks/validate-assets.sh",
       "output": ".dsh/hooks/validate-assets.sh",
       "sourceSha256": "90ac157acc4d21bc",
@@ -1463,10 +1524,34 @@
     },
     {
       "kind": "hook",
+      "source": "hooks/validate-read.sh",
+      "output": ".dsh/hooks/validate-read.sh",
+      "sourceSha256": "3b5aa4b352855820",
+      "outputSha256": "7679225a18cc7ac8",
+      "rewritten": true
+    },
+    {
+      "kind": "hook",
+      "source": "hooks/validate-registry.sh",
+      "output": ".dsh/hooks/validate-registry.sh",
+      "sourceSha256": "883062e201565098",
+      "outputSha256": "c29f03fe25ca7a0a",
+      "rewritten": true
+    },
+    {
+      "kind": "hook",
       "source": "hooks/validate-skill-change.sh",
       "output": ".dsh/hooks/validate-skill-change.sh",
       "sourceSha256": "5b0fa4e21ee57b7b",
       "outputSha256": "be7d8889b3c0835b",
+      "rewritten": true
+    },
+    {
+      "kind": "hook",
+      "source": "hooks/validate-write.sh",
+      "output": ".dsh/hooks/validate-write.sh",
+      "sourceSha256": "b9cfc93b1f29fcd3",
+      "outputSha256": "9ed615d0895c6ef7",
       "rewritten": true
     },
     {
@@ -1495,6 +1580,30 @@
     },
     {
       "kind": "other",
+      "source": "scripts/config-set.sh",
+      "output": ".dsh/scripts/config-set.sh",
+      "sourceSha256": "7e304314cff11bdc",
+      "outputSha256": "3ef1eb740e833c05",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/cut-apply.sh",
+      "output": ".dsh/scripts/cut-apply.sh",
+      "sourceSha256": "01ad8f6004b0daf4",
+      "outputSha256": "0666316c5196a1dd",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/cut-read.sh",
+      "output": ".dsh/scripts/cut-read.sh",
+      "sourceSha256": "c9927348543edb14",
+      "outputSha256": "ae21f2d18e066ba2",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
       "source": "scripts/gdd-structure-check.sh",
       "output": ".dsh/scripts/gdd-structure-check.sh",
       "sourceSha256": "95f2a075e8272a7a",
@@ -1511,10 +1620,82 @@
     },
     {
       "kind": "other",
+      "source": "scripts/itch-zip.sh",
+      "output": ".dsh/scripts/itch-zip.sh",
+      "sourceSha256": "6dc5505f2aa0125c",
+      "outputSha256": "0aecf253c16ab101",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
       "source": "scripts/migrate-v1-config.sh",
       "output": ".dsh/scripts/migrate-v1-config.sh",
       "sourceSha256": "f52520f1f0a06a99",
       "outputSha256": "7ddbf6623745f872",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-check.sh",
+      "output": ".dsh/scripts/one-shot-check.sh",
+      "sourceSha256": "562afdcd2d19a6b4",
+      "outputSha256": "9d0e4b8cffffd0d1",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-driver.js",
+      "output": ".dsh/scripts/one-shot-driver.js",
+      "sourceSha256": "3effaad08fbed1be",
+      "outputSha256": "3effaad08fbed1be",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-grow.sh",
+      "output": ".dsh/scripts/one-shot-grow.sh",
+      "sourceSha256": "4897b03deabe0b53",
+      "outputSha256": "beee3d0a4dbbbf4d",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-new.sh",
+      "output": ".dsh/scripts/one-shot-new.sh",
+      "sourceSha256": "6bae7ca3779a8cde",
+      "outputSha256": "21112a669e473700",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-run.sh",
+      "output": ".dsh/scripts/one-shot-run.sh",
+      "sourceSha256": "695d1dfdc58dad33",
+      "outputSha256": "3de9551c6df48378",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-share.sh",
+      "output": ".dsh/scripts/one-shot-share.sh",
+      "sourceSha256": "ab70d59627170814",
+      "outputSha256": "15aab945a25fb6b9",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/one-shot-tune.sh",
+      "output": ".dsh/scripts/one-shot-tune.sh",
+      "sourceSha256": "e0d0bbc2e96214b8",
+      "outputSha256": "ae2cc7798a365b09",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/page-shot.sh",
+      "output": ".dsh/scripts/page-shot.sh",
+      "sourceSha256": "3143510781faca94",
+      "outputSha256": "3a6edddbcd821981",
       "rewritten": true
     },
     {
@@ -1555,6 +1736,14 @@
       "output": ".dsh/scripts/story-status.sh",
       "sourceSha256": "8ecb9c1db3bdb96c",
       "outputSha256": "931f13129db6acb5",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "scripts/web-scaffold.sh",
+      "output": ".dsh/scripts/web-scaffold.sh",
+      "sourceSha256": "bc63a290d9af4604",
+      "outputSha256": "f96896d4e3325763",
       "rewritten": true
     },
     {
@@ -2239,6 +2428,30 @@
     },
     {
       "kind": "doc",
+      "source": "docs/templates/one-shot-lean/config.js",
+      "output": ".dsh/docs/templates/one-shot-lean/config.js",
+      "sourceSha256": "e122e7f882314ef7",
+      "outputSha256": "e122e7f882314ef7",
+      "rewritten": false
+    },
+    {
+      "kind": "doc",
+      "source": "docs/templates/one-shot-lean/index.html",
+      "output": ".dsh/docs/templates/one-shot-lean/index.html",
+      "sourceSha256": "707763d0e848a89a",
+      "outputSha256": "707763d0e848a89a",
+      "rewritten": false
+    },
+    {
+      "kind": "doc",
+      "source": "docs/templates/one-shot-lean/tune.js",
+      "output": ".dsh/docs/templates/one-shot-lean/tune.js",
+      "sourceSha256": "8eda5897f39b77c3",
+      "outputSha256": "ea623c8e9a80bad2",
+      "rewritten": true
+    },
+    {
+      "kind": "doc",
       "source": "docs/templates/pitch-document.md",
       "output": ".dsh/docs/templates/pitch-document.md",
       "sourceSha256": "ed0a544b18032bad",
@@ -2398,6 +2611,230 @@
       "rewritten": true
     },
     {
+      "kind": "other",
+      "source": "engines/engines.tsv",
+      "output": ".dsh/engines/engines.tsv",
+      "sourceSha256": "a32474e3c67dbd23",
+      "outputSha256": "a32474e3c67dbd23",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/README.md",
+      "output": ".dsh/engines/README.md",
+      "sourceSha256": "eed25e4e9f297312",
+      "outputSha256": "cdfee5a2eecd4c6f",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/grow/config.js",
+      "output": ".dsh/engines/web/grow/config.js",
+      "sourceSha256": "ad6b57ea74a475b9",
+      "outputSha256": "ad6b57ea74a475b9",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/grow/tune.ts",
+      "output": ".dsh/engines/web/grow/tune.ts",
+      "sourceSha256": "da62926aac1bc7b2",
+      "outputSha256": "da62926aac1bc7b2",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/README.md",
+      "output": ".dsh/engines/web/README.md",
+      "sourceSha256": "d16bd85ac21993b5",
+      "outputSha256": "aedee739531d97ee",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/.gitignore",
+      "output": ".dsh/engines/web/scaffold/.gitignore",
+      "sourceSha256": "2b5082a65fb1b687",
+      "outputSha256": "2b5082a65fb1b687",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/assets/provenance.yaml",
+      "output": ".dsh/engines/web/scaffold/assets/provenance.yaml",
+      "sourceSha256": "b460afa58a7bb894",
+      "outputSha256": "b460afa58a7bb894",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/data/config.json",
+      "output": ".dsh/engines/web/scaffold/data/config.json",
+      "sourceSha256": "fd7b6b06497ebcb9",
+      "outputSha256": "fd7b6b06497ebcb9",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/index.html",
+      "output": ".dsh/engines/web/scaffold/index.html",
+      "sourceSha256": "d92f5fdbf1281e15",
+      "outputSha256": "d92f5fdbf1281e15",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/package-lock.json",
+      "output": ".dsh/engines/web/scaffold/package-lock.json",
+      "sourceSha256": "af15dfa7cc85e1a1",
+      "outputSha256": "af15dfa7cc85e1a1",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/package.json",
+      "output": ".dsh/engines/web/scaffold/package.json",
+      "sourceSha256": "f5fee63ba82c7ddc",
+      "outputSha256": "f5fee63ba82c7ddc",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/playwright.config.ts",
+      "output": ".dsh/engines/web/scaffold/playwright.config.ts",
+      "sourceSha256": "3a171da3b9ac3715",
+      "outputSha256": "f030f9d186bcae44",
+      "rewritten": true
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/src/game/rules.ts",
+      "output": ".dsh/engines/web/scaffold/src/game/rules.ts",
+      "sourceSha256": "c3eb0e09403d4bd6",
+      "outputSha256": "c3eb0e09403d4bd6",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/src/hook.ts",
+      "output": ".dsh/engines/web/scaffold/src/hook.ts",
+      "sourceSha256": "aef3257dd7a6f7bb",
+      "outputSha256": "aef3257dd7a6f7bb",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/src/main.ts",
+      "output": ".dsh/engines/web/scaffold/src/main.ts",
+      "sourceSha256": "6cc57ae3a090f09f",
+      "outputSha256": "6cc57ae3a090f09f",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/tests/integration/boot.spec.ts.tmpl",
+      "output": ".dsh/engines/web/scaffold/tests/integration/boot.spec.ts.tmpl",
+      "sourceSha256": "c66cab7b7834661f",
+      "outputSha256": "c66cab7b7834661f",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/tests/unit/rules.test.ts.tmpl",
+      "output": ".dsh/engines/web/scaffold/tests/unit/rules.test.ts.tmpl",
+      "sourceSha256": "39d436b22946a598",
+      "outputSha256": "39d436b22946a598",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/tsconfig.json",
+      "output": ".dsh/engines/web/scaffold/tsconfig.json",
+      "sourceSha256": "622b338b86fcf249",
+      "outputSha256": "622b338b86fcf249",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/scaffold/vite.config.ts",
+      "output": ".dsh/engines/web/scaffold/vite.config.ts",
+      "sourceSha256": "c4f69832d007c5be",
+      "outputSha256": "c4f69832d007c5be",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/phaser/package-lock.json",
+      "output": ".dsh/engines/web/starters/phaser/package-lock.json",
+      "sourceSha256": "e62c23ff152af047",
+      "outputSha256": "e62c23ff152af047",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/phaser/package.json",
+      "output": ".dsh/engines/web/starters/phaser/package.json",
+      "sourceSha256": "972b28f5cfeecfb3",
+      "outputSha256": "972b28f5cfeecfb3",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/phaser/src/main.ts",
+      "output": ".dsh/engines/web/starters/phaser/src/main.ts",
+      "sourceSha256": "d6fd67e37df5ff97",
+      "outputSha256": "d6fd67e37df5ff97",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/pixi/package-lock.json",
+      "output": ".dsh/engines/web/starters/pixi/package-lock.json",
+      "sourceSha256": "c8133b59d14481f0",
+      "outputSha256": "c8133b59d14481f0",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/pixi/package.json",
+      "output": ".dsh/engines/web/starters/pixi/package.json",
+      "sourceSha256": "e2340a0255b96ad4",
+      "outputSha256": "e2340a0255b96ad4",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/pixi/src/main.ts",
+      "output": ".dsh/engines/web/starters/pixi/src/main.ts",
+      "sourceSha256": "1952c9113a086809",
+      "outputSha256": "1952c9113a086809",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/three/package-lock.json",
+      "output": ".dsh/engines/web/starters/three/package-lock.json",
+      "sourceSha256": "82ecdaf9ceeacbe0",
+      "outputSha256": "82ecdaf9ceeacbe0",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/three/package.json",
+      "output": ".dsh/engines/web/starters/three/package.json",
+      "sourceSha256": "7e8c7e4b630692f4",
+      "outputSha256": "7e8c7e4b630692f4",
+      "rewritten": false
+    },
+    {
+      "kind": "other",
+      "source": "engines/web/starters/three/src/main.ts",
+      "output": ".dsh/engines/web/starters/three/src/main.ts",
+      "sourceSha256": "1941dbfe076c83e9",
+      "outputSha256": "1941dbfe076c83e9",
+      "rewritten": false
+    },
+    {
       "kind": "script",
       "source": "statusline.sh",
       "output": ".dsh/statusline.sh",
@@ -2521,8 +2958,8 @@
       "kind": "overlay",
       "source": "dsh-src/hooks/session-start.mjs",
       "output": ".dsh/hooks/session-start.mjs",
-      "sourceSha256": "8632d63dd1983da5",
-      "outputSha256": "dd5b4549e0e1acfd",
+      "sourceSha256": "aba8f3b10a95d243",
+      "outputSha256": "a7a1af409e804deb",
       "rewritten": true
     },
     {
@@ -2531,6 +2968,22 @@
       "output": ".dsh/hooks/session-stop.mjs",
       "sourceSha256": "bec03f491cb040cd",
       "outputSha256": "80fb0657cf1e86c5",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/hooks/update-check.mjs",
+      "output": ".dsh/hooks/update-check.mjs",
+      "sourceSha256": "9c86d502a7e4fa3b",
+      "outputSha256": "dcd57cba968af47e",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/hooks/validate-agent-artifact.mjs",
+      "output": ".dsh/hooks/validate-agent-artifact.mjs",
+      "sourceSha256": "6890f49b1d2efcd3",
+      "outputSha256": "b1328adede240f04",
       "rewritten": true
     },
     {
@@ -2559,10 +3012,34 @@
     },
     {
       "kind": "overlay",
+      "source": "dsh-src/hooks/validate-read.mjs",
+      "output": ".dsh/hooks/validate-read.mjs",
+      "sourceSha256": "a76b000b4d0eb845",
+      "outputSha256": "fba1fde01c2412c5",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/hooks/validate-registry.mjs",
+      "output": ".dsh/hooks/validate-registry.mjs",
+      "sourceSha256": "5f3ad5b015c6202d",
+      "outputSha256": "f4075324fbdea39a",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
       "source": "dsh-src/hooks/validate-skill-change.mjs",
       "output": ".dsh/hooks/validate-skill-change.mjs",
       "sourceSha256": "b5a42cec53b961ea",
       "outputSha256": "4e4d62b3888a3938",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/hooks/validate-write.mjs",
+      "output": ".dsh/hooks/validate-write.mjs",
+      "sourceSha256": "b7537105219d0abc",
+      "outputSha256": "045afa66fc940985",
       "rewritten": true
     },
     {
@@ -2599,6 +3076,30 @@
     },
     {
       "kind": "overlay",
+      "source": "dsh-src/scripts/config-set.mjs",
+      "output": ".dsh/scripts/config-set.mjs",
+      "sourceSha256": "8bb5995e34a01b1d",
+      "outputSha256": "6df077b5f6d34d4b",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/cut-apply.mjs",
+      "output": ".dsh/scripts/cut-apply.mjs",
+      "sourceSha256": "0133beeba325a433",
+      "outputSha256": "d433cb34bbe895ac",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/cut-read.mjs",
+      "output": ".dsh/scripts/cut-read.mjs",
+      "sourceSha256": "249a78691fd324cd",
+      "outputSha256": "8907c9965e1cf2ce",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
       "source": "dsh-src/scripts/gdd-structure-check.mjs",
       "output": ".dsh/scripts/gdd-structure-check.mjs",
       "sourceSha256": "31fe5d114d2bee31",
@@ -2619,6 +3120,62 @@
       "output": ".dsh/scripts/migrate-v1-config.mjs",
       "sourceSha256": "90138fa7d499fb13",
       "outputSha256": "21a0a9d5ddf970d6",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/one-shot-check.mjs",
+      "output": ".dsh/scripts/one-shot-check.mjs",
+      "sourceSha256": "50f851d1e4c87518",
+      "outputSha256": "e11a369bf294dd88",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/one-shot-grow.mjs",
+      "output": ".dsh/scripts/one-shot-grow.mjs",
+      "sourceSha256": "9478e2c905430530",
+      "outputSha256": "31b77e347d546b0f",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/one-shot-new.mjs",
+      "output": ".dsh/scripts/one-shot-new.mjs",
+      "sourceSha256": "8414bed1da939800",
+      "outputSha256": "99b3f0a4390bb3ca",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/one-shot-run.mjs",
+      "output": ".dsh/scripts/one-shot-run.mjs",
+      "sourceSha256": "0a3bcca323244630",
+      "outputSha256": "6af0433abcee9aa4",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/one-shot-share.mjs",
+      "output": ".dsh/scripts/one-shot-share.mjs",
+      "sourceSha256": "ea67b77f7dc120d2",
+      "outputSha256": "5d0b29ca0e5307f5",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/one-shot-tune.mjs",
+      "output": ".dsh/scripts/one-shot-tune.mjs",
+      "sourceSha256": "e5467b2f9d22a066",
+      "outputSha256": "279420bfef0f9150",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/page-shot.mjs",
+      "output": ".dsh/scripts/page-shot.mjs",
+      "sourceSha256": "dbfa960180cd89c7",
+      "outputSha256": "3079f79b322ab369",
       "rewritten": true
     },
     {
@@ -2644,6 +3201,14 @@
       "sourceSha256": "abc8146511879e4d",
       "outputSha256": "abc8146511879e4d",
       "rewritten": false
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/registry.mjs",
+      "output": ".dsh/scripts/registry.mjs",
+      "sourceSha256": "5682b5951cf1911a",
+      "outputSha256": "8bfb0daab7b15dda",
+      "rewritten": true
     },
     {
       "kind": "overlay",
@@ -2683,6 +3248,22 @@
       "output": ".dsh/scripts/story-status.mjs",
       "sourceSha256": "61474974ee78a3a7",
       "outputSha256": "b1bcfb7422360f53",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/web-scaffold.mjs",
+      "output": ".dsh/scripts/web-scaffold.mjs",
+      "sourceSha256": "1c3db78cd23f78b5",
+      "outputSha256": "cecd78e54014661d",
+      "rewritten": true
+    },
+    {
+      "kind": "overlay",
+      "source": "dsh-src/scripts/write-guard.mjs",
+      "output": ".dsh/scripts/write-guard.mjs",
+      "sourceSha256": "58deec3e82844175",
+      "outputSha256": "82fc35b137367c87",
       "rewritten": true
     },
     {
@@ -2785,8 +3366,8 @@
       "kind": "overlay",
       "source": "dsh-src/statusline.mjs",
       "output": ".dsh/statusline.mjs",
-      "sourceSha256": "fb00e40da4779209",
-      "outputSha256": "19d6dc706788b8d3",
+      "sourceSha256": "87b220185405c24b",
+      "outputSha256": "9d66286f164a3a73",
       "rewritten": true
     }
   ]

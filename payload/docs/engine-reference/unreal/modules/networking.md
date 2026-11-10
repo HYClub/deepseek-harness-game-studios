@@ -1,13 +1,28 @@
-# Unreal Engine 5.7 — Networking Module Reference
+# Unreal Engine 5.8 — Networking Module Reference
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 networking improvements
+**Last verified:** 2026-10-18 (Iris status: release notes and plugin flag); 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
+**Knowledge Gap:** UE 5.7-5.8 networking improvements (Iris production-ready in 5.8)
+
+> **UE 5.8 changes:** Iris "is now production-ready for licensees in UE
+> 5.8" (the `Iris.uplugin` in a 5.8.1 install still carries a Beta flag), with
+> clearer protocol-mismatch errors and RPC DoS detection re-enabled. Thread-safety
+> primitives were added for parallel `NetConnection::Tick`; a target that does
+> not need them can drop them with `ExcludeParallelIrisSupport` in
+> `TargetRules.cs`. Network Prediction gained optional Iris support. Source: UE
+> 5.8 release notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
+>
+> **The notes and the plugin flag disagree.** Treat Iris as production-ready,
+> as the release notes say ("Iris is now production-ready for licensees in UE
+> 5.8", Framework > "Iris: Production-Ready Replication System"), and expect
+> the editor's plugin list to show it as Beta: `Engine/Plugins/Experimental/Iris/Iris.uplugin`
+> in a 5.8.1 install (CL 56057345) has `"IsBetaVersion": true`. Both read
+> 2026-10-18.
 
 ---
 
 ## Overview
 
-UE 5.7 networking:
+UE 5.8 networking:
 - **Client-Server Architecture**: Server-authoritative (RECOMMENDED)
 - **Replication**: Automatic state synchronization
 - **RPCs (Remote Procedure Calls)**: Call functions across network

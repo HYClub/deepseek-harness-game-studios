@@ -1,8 +1,19 @@
 # Godot UI — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-10-17 (4.7 changes); 2026-02-12 (rest) | Engine: Godot 4.7
 
 ## What Changed Since ~4.3 (LLM Cutoff)
+
+### 4.7 Changes
+- **`RichTextLabel` images**: `ImageUpdateMask.UPDATE_WIDTH_IN_PERCENT` renamed
+  `UPDATE_WIDTH_UNIT`; `add_image()` / `update_image()` take `width_unit` /
+  `height_unit` (`RichTextLabel.ImageUnit`) instead of `*_in_percent` booleans,
+  and `width` / `height` are `float`
+- **`Control.accessibility_live`** is typed `AccessibilityServer.AccessibilityLiveMode`
+- **Stretch defaults for new projects**: `display/window/stretch/mode`
+  `canvas_items`, `aspect` `expand` (existing projects keep theirs) (4.7 migration guide: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html)
+- **`Control.offset_transform_*`**: visual offset transforms that containers
+  do not reset; **`PopupMenu`** can show a search bar (4.7 release notes: https://godotengine.org/releases/4.7/)
 
 ### 4.6 Changes
 - **Dual-focus system**: Mouse/touch focus is now SEPARATE from keyboard/gamepad focus

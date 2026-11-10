@@ -5,11 +5,14 @@
 | **Engine Version** | Unity 6.3 LTS |
 | **Installed at pin time** | NOT DETERMINED — `/setup-engine` §3 probes the installed editor and records the result here. |
 | **Release Date** | December 2025 |
+| **Latest editor on the pinned line** | 6000.3.26f1 (Oct 8, 2026) |
 | **Project Pinned** | 2026-02-13 |
-| **Last Docs Verified** | 2026-02-13 |
+| **Last Docs Verified** | 2026-10-17 (release timeline, newer releases, latest 6.3 LTS editor); 2026-02-13 (rest of directory) |
 | **LLM Knowledge Cutoff** | May 2025 |
 
 ## Knowledge Gap Warning
+
+May 2025 is a floor for every model the studio runs on: a newer model may know more, but check this folder first.
 
 The LLM's training data likely covers Unity up to ~2022 LTS (2022.3). The entire
 Unity 6 release series (formerly Unity 2023 Tech Stream) introduced significant
@@ -27,39 +30,60 @@ version-qualified claim** — `NOT DETERMINED` means the gap is unknown, not abs
 
 ## Post-Cutoff Version Timeline
 
-<!-- timeline-unverified -->
+| Version | Release | Risk Level | Key Theme |
+|---------|---------|------------|-----------|
+| 6.2 | Aug 2025 | MEDIUM | Supported Update release: Unity AI (beta) in the Editor, Mesh LOD, World Space UI for UI Toolkit, Graph Toolkit, Android XR hand mesh |
+| 6.3 LTS | Dec 2025 | HIGH | First LTS since 6.0 (two years of support): Platform Toolkit, Nintendo Switch 2 support, Android XR, desktop screen reader support, Shader Build Settings |
 
-> **⚠ THIS TABLE IS INTERNALLY INCONSISTENT AND MUST NOT BE TRUSTED FOR RISK
-> JUDGEMENTS UNTIL RE-VERIFIED (flagged 2026-08-10).** It is titled
-> *Post-Cutoff* and the stated cutoff above is **May 2025**, yet three of its four
-> rows are dated **Oct, Nov and Dec 2024** — before that cutoff — followed by a
-> twelve-month gap to 6.3 in Dec 2025. Both cannot be right. The sibling files
-> `godot/VERSION.md` and `unreal/VERSION.md` list only genuinely post-cutoff
-> versions, so this is a defect in this file, not in the format.
->
-> **Why it matters more than a wrong date.** This table's entire job is to tell an
-> agent what it does *not* already know. Rows that predate the cutoff invert that
-> signal: take an installed `6000.1.0f1` (**Unity 6.1**) — this
-> table dates it to Nov 2024 and labels it post-cutoff MEDIUM risk, while by its own
-> cutoff a Nov 2024 release would be *inside* training data. An agent reading this
-> either over-trusts the reference or mis-scopes what is new, and the `6.2+`
-> boundaries cited elsewhere in this directory are anchored to these rows.
->
-> **The dates are NOT corrected here, deliberately.** Real Unity release dates
-> cannot be sourced from this repo — this directory *is* the source — and writing
-> them from training data is the failure this whole directory exists to prevent
-> (`/security-audit` makes the same call). Re-verify against Unity's
-> published release notes and update the row dates, the `Release Date` field, and
-> `Last Docs Verified` together. Until then, treat every version-qualified claim in
-> `docs/engine-reference/unity/` as **unconfirmed**, and prefer APIs that are not
-> version-boundary-dependent.
+## Newer Releases After the Pin (6.4 to 6.7)
+
+**The pin does not change: it stays Unity 6.3 LTS, the newest LTS.** These are
+Supported Update releases that shipped after it. Nothing else in this directory
+covers their APIs, so treat any 6.4+ API as unconfirmed until checked against
+Unity's docs for that release. 6.0 LTS support ended in October 2026.
+
+| Version | Release | Status (2026-10-17) | Key Theme |
+|---------|---------|---------------------|-----------|
+| 6.4 | Mar 2026 | Reached end of life | ECS (Entities, Collections, Mathematics, Entities Graphics) ships as Core packages, Project Auditor built into the Editor, DirectStorage on Windows, `EntityId` replaces `InstanceID`, URP Compatibility Mode removed in favor of Render Graph |
+| 6.5 | Jun 2026 | Reached end of life | Entity unification (`InstanceID` to `EntityId`), Editor Lifecycle API toward a CoreCLR Editor, 2D (custom lights and shadows, `RenderSprite` API, Physics Core 2D), on-tile post-processing for mobile, Built-In Render Pipeline deprecated |
+| 6.6 | Sep 2026 | Supported until 6.7 ships | Final supported release of the Unity 6 family: Play Mode skips domain reloads by default for new projects, Content Directories, Build Analysis window, WebGPU as a production Web option |
+| 6.7 | Beta | Not released | 6000.7.0b1 on Sep 17, 2026, latest 6000.7.0b5 on Oct 15, 2026; Unity's 6.6 post calls it the 6.7 LTS |
+
+Dates and status, verified 2026-10-17: 6.4 (announced Mar 17, 2026; editor
+6000.4.0f1 Mar 18) https://discussions.unity.com/t/unity-6-4-is-now-available/1713245
+and https://docs.unity.com/en-us/engine/6000.6/manual/whats-new/unity64; 6.5
+(Jun 15, 2026) https://discussions.unity.com/t/unity-6-5-is-now-available/1723176
+and https://docs.unity.com/en-us/engine/6000.5/manual/whats-new/unity65; 6.6
+(editor 6000.6.0f1 Aug 31, announced Sep 1, 2026, latest 6000.6.6f1 Oct 15)
+https://discussions.unity.com/t/unity-6-6-is-now-available/1735357. The 6.4 and
+6.5 threads carry the banner "This supported release has reached end of life"
+(6.4 points to 6.5 or above, 6.5 to 6.6 or above); the 6.6 post says it is
+supported "until the next release - in this case 6.7 - arrives" and that it
+"brings you one step closer to the 6.7 LTS". Editor versions and release dates
+come from Unity's release API
+https://services.api.unity.com/unity/editor/release/v1/releases (6.3 LTS first
+editor 6000.3.0f1 on Dec 3, 2025; latest 6000.3.26f1 on Oct 8, 2026). Upgrading
+the pin is a decision for when 6.7 LTS ships and `/setup-engine` re-pins; until
+then new projects stay on 6.3 LTS.
+
+## Unity 6 Releases Before the Cutoff
+
+These two predate the May 2025 cutoff, so they are not post-cutoff. The Knowledge
+Gap Warning above still applies to them: treat their APIs as unconfirmed until
+checked against this directory.
 
 | Version | Release | Risk Level | Key Theme |
 |---------|---------|------------|-----------|
-| 6.0 | Oct 2024 | HIGH | Unity 6 rebrand, new rendering features, Entities 1.3, DOTS improvements |
-| 6.1 | Nov 2024 | MEDIUM | Bug fixes, stability improvements |
-| 6.2 | Dec 2024 | MEDIUM | Performance optimizations, new input system improvements |
-| 6.3 LTS | Dec 2025 | HIGH | First LTS since 6.0, production-ready DOTS, enhanced graphics features |
+| 6.0 LTS | Oct 2024 | HIGH | Unity 6 launch: GPU Resident Drawer, Render Graph for URP, multiplayer workflows, mobile web, new Update release type |
+| 6.1 | Apr 2025 | MEDIUM | First Supported Update release: URP Deferred+ path, Variable Rate Shading, Project Auditor, WebGPU for Unity Web, foldable/large-screen Android |
+
+Release dates verified 2026-10-17 against Unity's announcements: 6.0
+(Oct 17, 2024) https://unity.com/blog/introducing-unity-6-launch, 6.1
+(Apr 24, 2025) https://unity.com/blog/unity-6-1-is-now-available, 6.2
+(Aug 12, 2025) https://discussions.unity.com/t/6-2-is-now-available/1677060,
+6.3 LTS (Dec 4, 2025) https://unity.com/blog/unity-6-3-lts-is-now-available.
+Support windows: https://unity.com/releases/unity-6/support (6.0 LTS through
+October 2026, 6.3 LTS until December 2027).
 
 ## Major Changes from 2022 LTS to Unity 6.3 LTS
 
@@ -88,7 +112,14 @@ version-qualified claim** — `NOT DETERMINED` means the gap is unknown, not abs
 
 - Official docs: https://docs.unity3d.com/6000.0/Documentation/Manual/index.html
 - Unity 6 release: https://unity.com/releases/unity-6
+- Unity 6.0 launch: https://unity.com/blog/introducing-unity-6-launch
+- Unity 6.1 announcement: https://unity.com/blog/unity-6-1-is-now-available
+- Unity 6.2 announcement: https://discussions.unity.com/t/6-2-is-now-available/1677060
 - Unity 6.3 LTS announcement: https://unity.com/blog/unity-6-3-lts-is-now-available
 - Migration guide: https://docs.unity3d.com/6000.0/Documentation/Manual/upgrade-guides.html
 - Unity 6 support: https://unity.com/releases/unity-6/support
+- Unity 6.4 announcement: https://discussions.unity.com/t/unity-6-4-is-now-available/1713245
+- Unity 6.5 announcement: https://discussions.unity.com/t/unity-6-5-is-now-available/1723176
+- Unity 6.6 announcement: https://discussions.unity.com/t/unity-6-6-is-now-available/1735357
+- Editor release API: https://services.api.unity.com/unity/editor/release/v1/releases
 - C# API reference: https://docs.unity3d.com/6000.0/Documentation/ScriptReference/index.html

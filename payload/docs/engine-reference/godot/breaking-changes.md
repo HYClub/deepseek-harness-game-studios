@@ -1,8 +1,47 @@
 # Godot — Breaking Changes
 
-Last verified: 2026-02-12
+Last verified: 2026-10-17 (4.6 → 4.7 and the section dates); 2026-02-12 (older sections)
 
 Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
+
+## 4.6 → 4.7 (Jun 2026 — POST-CUTOFF, HIGH RISK)
+
+From the official migration guide
+(https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html,
+checked 2026-10-17). Rows marked **GDScript breaks** stop existing GDScript from
+working; the rest add optional parameters, change C# compatibility only, or
+change behaviour or defaults. The guide lists no deprecations.
+
+| Subsystem | Change | Details |
+|-----------|--------|---------|
+| GDScript | Overrides inherit a typed return | An override of a method with a typed return now inherits that type, so it needs an explicit `return` (add `return null` to fix the error). **GDScript breaks** |
+| GDScript | Packed array element writes | Setting one element of a packed array no longer calls the setter of the whole packed-array property |
+| GUI | `RichTextLabel.ImageUpdateMask.UPDATE_WIDTH_IN_PERCENT` renamed | Now `UPDATE_WIDTH_UNIT`. **GDScript breaks** |
+| GUI | `RichTextLabel.add_image()` / `update_image()` | `width` / `height` are `float` (were `int`); `width_in_percent` / `height_in_percent` renamed `width_unit` / `height_unit`, typed `RichTextLabel.ImageUnit` (were `bool`, default `false` → `0`). C# source breaks |
+| GUI | `Control.accessibility_live` type | `AccessibilityServer.AccessibilityLiveMode` (was `DisplayServer.AccessibilityLiveMode`). C# breaks |
+| Core | `Object.is_class()` | Parameter is `StringName` (was `String`) |
+| Core | `OptimizedTranslation.generate()` | Returns `bool` (was `void`). C# binary breaks |
+| Input | Mouse and keyboard device IDs | Were `0`; now `InputEvent.DEVICE_ID_MOUSE` and `InputEvent.DEVICE_ID_KEYBOARD`, because some joypads use `0`. Identify events by type or compare `InputEvent.device` to those constants |
+| Physics | Jolt: `WorldBoundaryShape3D` plane sign | The sign of `plane.d` is read the way Godot Physics reads it, so it is flipped compared to 4.6: negate it to keep 4.6 behaviour |
+| Physics | Jolt: `SoftBody3D` mass and stiffness | Mass defaults to 1 kg for the whole body (was 1 kg per point); `linear_stiffness` is applied differently. Re-tune `linear_stiffness` and `damping_coefficient` on every `SoftBody3D` |
+| Physics | Jolt: `Area3D` and `SoftBody3D` | `Area3D` now reports overlaps with `SoftBody3D`; use collision layers and masks to ignore them |
+| Physics | `PhysicsServer2D.body_set_shape_as_one_way_collision()` | Optional `direction` added; `PhysicsServer2DExtension._body_set_shape_as_one_way_collision()` requires it (extensions break) |
+| Audio | `AudioStreamPlayer2D` / `AudioStreamPlayer3D` `area_mask` default | Changed from layer `1` to `0` (disabled). An `Area2D`/`Area3D` `audio_bus_override` that relied on the default mask stops working until the mask is set back to layer `1` |
+| Audio | `AudioEffectSpectrumAnalyzer.tap_back_pos` | Removed. **GDScript breaks** where it is used |
+| Rendering | `CanvasItem` line drawing | No antialiasing feather is added, so lines look thinner; widen lines that relied on the old thickness |
+| Rendering | `LinearToSRGB` visual shader node | No longer clamps to `[0.0, 1.0]` under Forward+ and Mobile |
+| Rendering | `get_format()` moved | From `ImageTexture` / `PortableCompressedTexture2D` to base class `Texture2D` |
+| Rendering | `RenderingServer.particles_request_process_time()` | `time` renamed `process_time`; optional `process_time_residual` added (also on `request_particles_process()` of the four particle nodes) |
+| Rendering | Sky reflection roughness layers | `rendering/reflections/sky_reflections/roughness_layers` default `7` → `8` |
+| Animation | `Animation.length` | Type metadata `double` (was `float`). C# breaks |
+| Animation | `LookAtModifier3D.relative` | Default `false` (was `true`) |
+| Animation | `AnimationNodeBlendSpace1D/2D.add_blend_point()` | Optional `name` added |
+| Project | Stretch defaults for NEW projects | `display/window/stretch/mode` `canvas_items` (was `disabled`), `display/window/stretch/aspect` `expand` (was `keep`). Existing projects keep their settings |
+| Text | `ResourceImporterDynamicFont.hinting` | Default `3` (was `1`) |
+| Editor | `EditorSceneFormatImporter` import constants | Moved into the `ImportFlags` enum (`IMPORT_SCENE`, `IMPORT_ANIMATION`, …). C# source breaks |
+| Editor | `EditorVCSInterface._commit()` | New `amend` parameter; VCS plugins break |
+| Editor | Asset Library replaced by the Asset Store | The editor workspace is now "Asset Store" (release notes: https://godotengine.org/releases/4.7/) |
+| XR | `OpenXRExtensionWrapper._on_register_metadata()` | New `interaction_profile_metadata` parameter; extensions break |
 
 ## 4.5 → 4.6 (Jan 2026 — POST-CUTOFF, HIGH RISK)
 
@@ -10,7 +49,6 @@ Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
 |-----------|--------|---------|
 | Physics | Jolt is now the DEFAULT 3D physics engine | New projects use Jolt automatically. Existing projects keep their setting. Some HingeJoint3D properties (like `damp`) only work with GodotPhysics. |
 | Rendering | Glow processes BEFORE tonemapping | Was after tonemapping. Scenes with glow will look different. Adjust intensity/blend in WorldEnvironment. |
-| Rendering | D3D12 default on Windows | Was Vulkan. For better driver compatibility. |
 | Rendering | AgX tonemapper new controls | White point and contrast parameters added. |
 | Core | Quaternion initializes to identity | Was zero. Unlikely to affect most code but technically breaking. |
 | UI | Dual-focus system | Mouse/touch focus now separate from keyboard/gamepad focus. Visual feedback differs by input method. |
@@ -22,7 +60,7 @@ Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
 | C# | Automatic string extraction | Translation strings auto-extracted from C# code. |
 | Plugins | New EditorDock class | Specialized container for plugin docks with layout control. |
 
-## 4.4 → 4.5 (Late 2025 — POST-CUTOFF, HIGH RISK)
+## 4.4 → 4.5 (Sep 2025 — POST-CUTOFF, HIGH RISK)
 
 | Subsystem | Change | Details |
 |-----------|--------|---------|
@@ -45,7 +83,7 @@ Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
 | Platform | SDL3 gamepad driver | Delegated gamepad handling to SDL library |
 | Platform | Android 16KB page support | Required for Google Play targeting Android 15+ |
 
-## 4.3 → 4.4 (Mid 2025 — NEAR CUTOFF, VERIFY)
+## 4.3 → 4.4 (Mar 2025 — BEFORE CUTOFF, VERIFY)
 
 | Subsystem | Change | Details |
 |-----------|--------|---------|
@@ -68,3 +106,13 @@ Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
 | Navigation | `NavigationRegion2D` | Removed `avoidance_layers`, `constrain_avoidance` properties |
 | Editor | `EditorSceneFormatImporterFBX` | Renamed to `EditorSceneFormatImporterFBX2GLTF` |
 | Animation | AnimationMixer base class | AnimationPlayer and AnimationTree now extend AnimationMixer |
+
+## Sources
+
+- Official docs: https://docs.godotengine.org/en/stable/
+- 4.6→4.7 migration: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html
+- 4.5→4.6 migration: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.6.html
+- 4.4→4.5 migration: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.5.html
+- Changelog: https://github.com/godotengine/godot/blob/master/CHANGELOG.md
+- Release notes: https://godotengine.org/releases/4.7/ (4.6: https://godotengine.org/releases/4.6/)
+- Releases and dates: https://github.com/godotengine/godot/releases

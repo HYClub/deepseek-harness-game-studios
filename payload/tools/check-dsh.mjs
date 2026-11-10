@@ -239,7 +239,9 @@ for (const dir of ['skills', 'agents', 'docs']) {
     const lines = (await readFile(file, 'utf8')).split('\n');
     lines.forEach((line, index) => {
       for (const [label, re] of POSIX_ONLY) {
-        if (re.test(line)) posixHits.push(`${relative(ROOT, file).split('\\').join('/')}:${index + 1} (${label})`);
+        // An `allowed-tools:` line lists grants, not commands: DSH ignores them, and rewriting the
+        // arguments inside `pwsh(...)` would be inventing text the upstream file does not have.
+        if (!/^\s*allowed-tools:/.test(line) && re.test(line)) posixHits.push(`${relative(ROOT, file).split('\\').join('/')}:${index + 1} (${label})`);
       }
     });
   }

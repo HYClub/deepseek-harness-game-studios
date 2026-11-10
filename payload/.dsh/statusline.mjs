@@ -59,9 +59,10 @@ const SOURCE_THRESHOLD = 10;
  */
 export function projectRoot() {
   const cwd = process.cwd();
-  if (existsSync(join(cwd, 'project.yaml')) || existsSync(join(cwd, '.dsh')) || existsSync(join(cwd, '.dsh'))) {
-    return cwd;
-  }
+  // The status line runs inside the project it describes, so the working directory IS the root —
+  // upstream reads $cwd the same way. Falling back to the framework directory when the project had
+  // no project.yaml made an empty project read the framework's own configuration.
+  if (existsSync(cwd)) return cwd;
   const fromEnv = process.env.DSH_PROJECT_DIR ?? process.env.CLAUDE_PROJECT_DIR;
   if (typeof fromEnv === 'string' && fromEnv.length > 0 && existsSync(fromEnv)) return fromEnv;
   return resolve(HERE, '..');
@@ -233,6 +234,9 @@ export function minimalPosition(workspace, rigorResolved) {
   } catch {
     text = '';
   }
+  // No project.yaml at all: upstream shows the stage ('Concept'), because nothing has configured the
+  // workflow yet. Only a project with a configuration file can claim the minimal path.
+  if (text === '') return '';
   if (/\s+workflow:/.test(text)) {
     const explicit = getYamlKey(projectYaml, 'modes.workflow');
     if (explicit !== '') workflow = explicit;
@@ -322,6 +326,9 @@ export function breadcrumb(workspace, stage) {
  */
 export function renderStatus(input, root = projectRoot()) {
   const { model, usedPct, workspace: rawWorkspace } = parseStatusInput(input);
+  // The payload's `workspace.project_dir` is the project the line is about, and `.` means "here" —
+  // the directory the status line runs in. Resolving it against the framework root instead made an
+  // empty project read the framework's own project.yaml and claim a minimal workflow it never set.
   const workspace = resolve(root, rawWorkspace === '' ? '.' : rawWorkspace);
   const ctxLabel = usedPct === '' ? 'ctx: --' : `ctx: ${usedPct}%`;
   const projectYaml = join(workspace, 'project.yaml');

@@ -1,9 +1,32 @@
-# Unreal Engine 5.7 — Deprecated APIs
+# Unreal Engine 5.8 — Deprecated APIs
 
-**Last verified:** 2026-02-13
+**Last verified:** 2026-10-17 (Deprecated in UE 5.8, Gameplay Ability System row, summary); 2026-02-13 (rest of file, written against 5.7)
 
 Quick lookup table for deprecated APIs and their replacements.
 Format: **Don't use X** → **Use Y instead**
+
+---
+
+## Deprecated in UE 5.8
+
+From the 5.8 release notes' Upgrade Notes and the 5.8 engine headers (sources at
+the end of this file). Deprecated items still compile with a warning unless the
+Notes column says otherwise.
+
+| Deprecated | Replacement | Notes |
+|------------|-------------|-------|
+| `UE_LOG(...)` | `UE_LOGF(Category, Verbosity, "fmt", ...)` | Not deprecated yet: Epic says UE_LOG "will eventually be deprecated" and asks for `UE_LOGF`. The header documents the format as a printf-style literal given as `"..."` or `UTF8TEXT("...")`. 5.8 ships `ConvertUELog.py` for most uses |
+| `#if PLATFORM_IOS` (and other `PLATFORM_*`) | `#if UE_PLATFORM_IOS` (`UE_PLATFORM_*`) | Optional migration; `PLATFORM_IOS` can be stomped by Apple framework headers |
+| `CppStandardVersion.Cpp17` / `Cpp14` | `CppStandardVersion.Default` (C++20) | Obsolete in 5.8: code no longer compiles with them |
+| Raw Input plugin (`RawInput`) | Game Input for Windows plugin (`GameInputWindows`, Beta) | `"DeprecatedEngineVersion": "5.8"` in `RawInput.uplugin` |
+| PhysicsMover (Mover plugin) | ChaosMover plugin | Removed in 5.8, not just deprecated |
+| `FActiveGameplayEffectHandle(int32)` | `FActiveGameplayEffectHandle::GenerateNewHandle` or `GetInstantExecutedHandle()` | `UE_DEPRECATED(5.8, ...)` |
+| `FSmartName`, `FSmartNameMapping`, `FSmartNameContainer` | None: remove the use | `UE_DEPRECATED(5.8, "Smart names and their mappings are no longer used")` |
+| `UFadeFunction`, `FFadeFunctionData`, `EWaveEditorFadeMode` | `UTransformationFadeFunction`, `UWaveformTransformationFade` | Waveform Editor |
+| `URigHierarchy::FindBone` / `FindControl` / `FindNull` in Blueprint | `Contains(Key)`, `GetBoneType(Key)`, `GetControlSettings(Key)`, `IsSelected(Key)`, `GetIndex(Key)` | Control Rig; existing graphs keep working with warnings |
+| `PluginName.ini` / `BasePluginName.ini` in a plugin | `DefaultPluginName.ini` | Plugin config files |
+| `r.Water.SingleLayer.ForceVelocity` | `r.Water.SingleLayer.VelocityOutputPass` (or the project setting) | Rendering CVar |
+| `EWindowType::GameWindow` | `EWindowType::Normal` | Slate |
 
 ---
 
@@ -23,7 +46,7 @@ Format: **Don't use X** → **Use Y instead**
 
 | Deprecated | Replacement | Notes |
 |------------|-------------|-------|
-| Legacy material nodes | Substrate material nodes | Substrate is production-ready in 5.7 |
+| Legacy material nodes | Substrate material nodes | Substrate is production-ready in 5.7 and on by default for new projects |
 | Forward shading (default) | Deferred + Lumen | Lumen is default in UE5 |
 | Old lighting workflow | Lumen Global Illumination | Real-time GI |
 
@@ -53,6 +76,15 @@ Format: **Don't use X** → **Use Y instead**
 |------------|-------------|-------|
 | `UGameplayStatics::LoadStreamLevel()` | World Partition streaming | Use Data Layers |
 | Hardcoded input bindings | Enhanced Input system | Rebindable, modular input |
+
+---
+
+## Gameplay Ability System
+
+| Deprecated | Replacement | Notes |
+|------------|-------------|-------|
+| `UGameplayAbility::AbilityTags` (direct access) | `GetAssetTags()` to read; `SetAssetTags()` in the constructor to set | `UE_DEPRECATED_FORGAME(5.5, ...)` in the 5.8 header: "This is being made non-mutable, private and renamed to AssetTags in the future" |
+| `FActiveGameplayEffectHandle(int32)` | `GenerateNewHandle` / `GetInstantExecutedHandle()` | Deprecated in 5.8 |
 
 ---
 
@@ -150,21 +182,25 @@ UNiagaraComponent* NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT(
 
 ---
 
-## Summary: UE 5.7 Tech Stack
+## Summary: UE 5.8 Tech Stack
 
 | Feature | Use This (2026) | Avoid This (Legacy) |
 |---------|------------------|----------------------|
 | **Input** | Enhanced Input | Legacy Input Bindings |
 | **Materials** | Substrate | Legacy Material System |
-| **Lighting** | Lumen + Megalights | Lightmaps + Limited Lights |
+| **Lighting** | Lumen + MegaLights | Lightmaps + Limited Lights |
 | **Particles** | Niagara | Cascade |
 | **Audio** | MetaSounds | Sound Cue (for logic) |
 | **World Streaming** | World Partition | World Composition |
 | **Animation Retarget** | IK Rig + Retargeter | Old Retargeting |
 | **Geometry** | Nanite (high-poly) | Standard Static Mesh LODs |
+| **Logging** | `UE_LOGF` (5.8) | `UE_LOG` (still supported) |
+| **Windows device input** | Game Input for Windows | Raw Input plugin (deprecated 5.8) |
 
 ---
 
 **Sources:**
+- UE 5.8 release notes, Upgrade Notes and API Change entries: https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
+- 5.8 engine headers, read from a UE 5.8.1 install on 2026-10-17: `Engine/Source/Runtime/Core/Public/Logging/LogMacros.h` (`UE_LOGF`); `Engine/Source/Runtime/Core/Public/HAL/Platform.h` (`UE_PLATFORM_*`); `Engine/Source/Programs/UnrealBuildTool/System/CppCompileEnvironment.cs`; `Engine/Plugins/Experimental/RawInput/RawInput.uplugin` and `Engine/Plugins/GameInputWindows/GameInputWindows.uplugin`; `Engine/Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Public/ActiveGameplayEffectHandle.h` and `.../Public/Abilities/GameplayAbility.h`; `Engine/Source/Runtime/Engine/Classes/Animation/SmartName.h`
 - https://docs.unrealengine.com/5.7/en-US/deprecated-and-removed-features/
 - https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-7-release-notes

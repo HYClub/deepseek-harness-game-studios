@@ -1,8 +1,18 @@
-# Unreal Engine 5.7 — PCG (Procedural Content Generation)
+# Unreal Engine 5.8 — PCG (Procedural Content Generation)
 
-**Last verified:** 2026-02-13
+**Last verified:** 2026-10-17 (UE 5.8 changes block); 2026-02-13 (rest of file, written against 5.7)
 **Status:** Production-Ready (as of UE 5.7)
 **Plugin:** `PCG` (built-in, enable in Plugins)
+
+> **UE 5.8 changes:** Non-destructive manual editing of PCG data (selection,
+> exclusion, modification, restore; a Data Overrides window), complex metadata
+> attributes (arrays, structs, sets, maps), embedded subgraphs stored inside a
+> graph, a graph parameters hierarchy editor, and GPU runtime scatter "within
+> the same performance range as the landscape GPU grass system". New nodes
+> include metadata array operations, Align Points, Apply Spline to Component
+> and Teleport Actors and Components. `UPCGComponent` exposes a
+> `SourceDataContainer` through the execution source interface. Source: UE 5.8
+> release notes, https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8
 
 ---
 

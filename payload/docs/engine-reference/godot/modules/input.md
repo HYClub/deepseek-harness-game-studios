@@ -1,8 +1,16 @@
 # Godot Input — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-10-17 (4.7 changes); 2026-02-12 (rest) | Engine: Godot 4.7
 
 ## What Changed Since ~4.3 (LLM Cutoff)
+
+### 4.7 Changes
+- **Mouse and keyboard device IDs**: `InputEvent.device` is
+  `InputEvent.DEVICE_ID_MOUSE` / `DEVICE_ID_KEYBOARD` (was `0`, which some
+  joypads also use). Identify events by type, not `device == 0` (4.7 migration guide: https://docs.godotengine.org/en/stable/tutorials/migrating/upgrading_to_godot_4.7.html)
+- **`VirtualJoystick` node**: on-screen joystick with Fixed, Dynamic and
+  Following modes
+- **Gamepad gyro and accelerometer** readings are available (4.7 release notes: https://godotengine.org/releases/4.7/)
 
 ### 4.6 Changes
 - **Dual-focus system**: Mouse/touch focus is now separate from keyboard/gamepad focus
