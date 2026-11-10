@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.6 — one broken sentence, fixed
+
+The 0.3.5 README carried a mangled line where two edits met ("never needs an API key of a false
+failure"). It now reads as intended. Nothing else changed.
+
 ## 0.3.5 — nothing here needs an API key
 
 The previous notes said the live hook probe reads a model key from DSH's credential store. It does not,
