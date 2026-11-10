@@ -23,7 +23,7 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, cpSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -37,7 +37,20 @@ function findPackageLib(pkgName, libRel) {
   const home = process.env.USERPROFILE || process.env.HOME || '';
   const candidates = [];
   const envOverride = process.env.DSH_HOOK_BRIDGE_DIR;
-  if (envOverride) candidates.push(join(envOverride, 'lib', 'index.js'));
+  if (envOverride) {
+    // The override names ONE package of the pair (its directory holds lib/index.js). The other package
+    // of the pair sits beside it, and both may also be reachable from a node_modules above the override.
+    if (basename(envOverride) === pkgName) candidates.push(join(envOverride, 'lib', libRel));
+    candidates.push(join(envOverride, '..', pkgName, 'lib', libRel));
+    let up = envOverride;
+    for (let depth = 0; depth < 4; depth += 1) {
+      up = join(up, '..');
+      candidates.push(join(up, 'node_modules', pkgName, 'lib', libRel));
+    }
+  }
+  // This checkout's own devDependencies (npm install at the repo root), then the package build.
+  candidates.push(join(ROOT, 'node_modules', pkgName, 'lib', libRel));
+  candidates.push(join(ROOT, 'dist', 'deepseek-harness-game-studios', 'node_modules', pkgName, 'lib', libRel));
   const dsh = findDshRoot();
   if (dsh !== undefined) candidates.push(join(dsh, 'node_modules', pkgName, 'lib', libRel));
   // profiles/<name>/node_modules/@deepseek-ai/<pkg>
@@ -295,9 +308,10 @@ testCase('SubagentStart/Stop: the audit hooks log and never block', async () => 
   const payload = (event) => base(event, { agent_type: 'general-purpose', agent_id: 'agent-verify' });
   const start = await fire('SubagentStart', payload('SubagentStart'), 'general-purpose');
   const stop = await fire('SubagentStop', payload('SubagentStop'), 'general-purpose');
+  const expected = { start: 1, stop: 2 };  // the audit log, plus the artifact check on stop
   for (const [label, result] of [['start', start], ['stop', stop]]) {
-    if (result.merged.decision !== 'none') throw new Error(`${label} must not decide, got ${result.merged.decision}`);
-    if (result.outputs.length !== 1) throw new Error(`${label}: expected 1 hook, got ${result.outputs.length}`);
+    if (result.merged.decision !== 'none') throw new Error(label + ' must not decide, got ' + result.merged.decision);
+    if (result.outputs.length !== expected[label]) throw new Error(label + ': expected ' + expected[label] + ' hook(s), got ' + result.outputs.length);
   }
   const audit = join(fixture, 'production/session-logs/agent-audit.log');
   if (!existsSync(audit)) throw new Error('agent-audit.log was not written');
@@ -313,20 +327,24 @@ testCase('Stop: the session hook archives and allows', async () => {
 });
 
 testCase('Notification: the toast downgrade emits a system message', async () => {
-  const { outputs, merged } = await fire('Notification', base('Notification', { message: 'verify' }), '');
+  const { outputs, merged } = await fire('Notification', base('Notification', { message: 'verify' }), 'permission_prompt');
   if (outputs.length !== 1) throw new Error(`expected 1 hook, got ${outputs.length}`);
   const text = `${merged.systemMessages.join(' ')}${merged.additionalContext.join(' ')}`;
   if (text.trim().length === 0) throw new Error('notify emitted nothing');
   return 'emitted a message';
 });
 
-testCase('PreCompact/PostCompact run without deciding', async () => {
-  for (const event of ['PreCompact', 'PostCompact']) {
-    const { outputs, merged } = await fire(event, base(event, { trigger: 'auto' }), '');
-    if (outputs.length !== 1) throw new Error(`${event}: expected 1 hook, got ${outputs.length}`);
-    if (merged.decision !== 'none') throw new Error(`${event}: unexpected decision ${merged.decision}`);
-  }
-  return 'both ran';
+testCase('compaction runs without deciding, and PostCompact is the plugin\'s own', async () => {
+  // PreCompact is a Claude Code event, so the protocol selects its group and runs it.
+  const pre = await fire('PreCompact', base('PreCompact', { trigger: 'auto' }), '');
+  if (pre.outputs.length !== 1) throw new Error(`PreCompact: expected 1 hook, got ${pre.outputs.length}`);
+  if (pre.merged.decision !== 'none') throw new Error(`PreCompact: unexpected decision ${pre.merged.decision}`);
+
+  // PostCompact is not: the protocol's parser drops the event, and hooks.js registers that hook group
+  // itself (registerUnmappedHooks). Expecting the protocol to run it would test the wrong component.
+  const post = await fire('PostCompact', base('PostCompact', { trigger: 'auto' }), '');
+  if (post.outputs.length !== 0) throw new Error(`PostCompact: the protocol should ignore the event, got ${post.outputs.length}`);
+  return 'PreCompact ran; PostCompact left to the plugin';
 });
 
 // ------------------------------------------------------------------------ main
@@ -346,6 +364,7 @@ for (const { name, fn } of cases) {
 cleanup();
 console.log(`\n${passed}/${cases.length} bridge cases passed (protocol: ${protocolPath})`);
 process.exit(failures.length === 0 ? 0 : 1);
+
 
 
 

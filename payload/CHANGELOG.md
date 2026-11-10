@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.3.3 — the hook checks run against the real bridge
+
+The two hook suites now measure the plugin against the published bridge instead of skipping, and the
+numbers in the README are the ones they print: **mount 10/10 · protocol 12/12**, reproduced by
+`npm install` at the repository root (the bridge and protocol are devDependencies there).
+
+Five things had to be fixed to get there — four were the checks' own bugs, one was a wrong expectation:
+
+- The protocol lookup accepted the bridge's own `lib/index.js` as the protocol package, so it called
+  `matchesMatcher` on a module that has none. With `DSH_HOOK_BRIDGE_DIR` set it now resolves the other
+  half of the pair beside it.
+- The stand-in context had no `workingDirectory`; the bridge asks it for a session's directory and for
+  the project's committed one, so every hook ran in the repository instead of the fixture. Tools that
+  look at staged files then allowed what should have been denied.
+- `SubagentStop` runs two hooks now (the audit log and the artifact check); the case expected one.
+- `Notification` has a matcher (`permission_prompt|idle_prompt`), so firing it with an empty subject
+  selected nothing.
+- `PostCompact` is not a Claude Code event: the bridge's config parser drops it, and hooks.js registers
+  that group itself. The case asserted the bridge would run it.
+
+The live-event probe still needs `DEEPSEEK_API_KEY`; without one it says so and the release gate reports
+the whole assertion as SKIP rather than a pass.
+
 ## 0.3.2 — the hook bridge is declared, and found
 
 The plugin's hooks.js loads the official `@deepseek-ai/dsh-hooks-claude-code` package and calls its
@@ -158,6 +181,7 @@ plugin description, the repository About and CONTRIBUTING now state the same cou
 
 - First release: hook bridge for all nine upstream hook events, studio status line projection, and a self-installing framework payload (76 skills, 49 agents, 13 rules, 14 Node hooks).
 - Installing the plugin bootstraps the machine (`~/.dsh/dsgs` plus user-level `dsgs-init` / `start` skills) so an empty workspace can be initialised with `/start`.
+
 
 
 

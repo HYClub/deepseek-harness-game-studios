@@ -23,7 +23,7 @@ import {
   cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -37,7 +37,20 @@ function findPackageLib(pkgName, libRel) {
   const home = process.env.USERPROFILE || process.env.HOME || '';
   const candidates = [];
   const envOverride = process.env.DSH_HOOK_BRIDGE_DIR;
-  if (envOverride) candidates.push(join(envOverride, 'lib', 'index.js'));
+  if (envOverride) {
+    // The override names ONE package of the pair (its directory holds lib/index.js). The other package
+    // of the pair sits beside it, and both may also be reachable from a node_modules above the override.
+    if (basename(envOverride) === pkgName) candidates.push(join(envOverride, 'lib', libRel));
+    candidates.push(join(envOverride, '..', pkgName, 'lib', libRel));
+    let up = envOverride;
+    for (let depth = 0; depth < 4; depth += 1) {
+      up = join(up, '..');
+      candidates.push(join(up, 'node_modules', pkgName, 'lib', libRel));
+    }
+  }
+  // This checkout's own devDependencies (npm install at the repo root), then the package build.
+  candidates.push(join(ROOT, 'node_modules', pkgName, 'lib', libRel));
+  candidates.push(join(ROOT, 'dist', 'deepseek-harness-game-studios', 'node_modules', pkgName, 'lib', libRel));
   const dsh = findDshRoot();
   if (dsh !== undefined) candidates.push(join(dsh, 'node_modules', pkgName, 'lib', libRel));
   // profiles/<name>/node_modules/@deepseek-ai/<pkg>
@@ -141,6 +154,13 @@ const ctx = {
   // `lastTurn` reads a projection; returning no `lastTurn` keeps the bridge's
   // per-turn hook/invoked logging out of the way (it needs a real session).
   sessionProjections: { stateOf: () => ({}) },
+  // The bridge resolves a hook's workdir through this service: get() for a session, ensure() for the
+  // project's committed directory. A real session supplies both; the harness stands in with the repo.
+  // Hooks run against the fixture project, so the bridge must resolve workdirs there.
+  workingDirectory: {
+    get: () => fixture,
+    ensure: async () => fixture,
+  },
   shell: createShellShim(),
 };
 
@@ -336,6 +356,8 @@ rmSync(fixture, { recursive: true, force: true });
 const total = cases.length + 1;
 console.log(`\n${passed}/${total} mount cases passed (bridge: ${bridgePath})`);
 process.exit(failures.length === 0 ? 0 : 1);
+
+
 
 
 
