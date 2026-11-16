@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.7 — the market can install this
+
+Installing from the plugin market used to end the same way every time: the download finished, and then
+the market threw the package away. It was looking for a file the package could be loaded from at its
+root, found none, and treated a finished download as an unbuilt source checkout. One line in
+package.json now names a file that was always there, so the market keeps the install. Nothing else
+changes — an install that worked before still works the same way.
+
+A guard now asserts this before a release: the published package must resolve a root entry that an
+installer can load. Nothing checked that while every release up to 0.3.6 shipped without one.
+
 ## 0.3.6 — one broken sentence, fixed
 
 The 0.3.5 README carried a mangled line where two edits met ("never needs an API key of a false
