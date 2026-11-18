@@ -63,7 +63,7 @@ No level drops the Visual/Feel and UI screenshot rows — tests are waived at
 
 ## Phase 1: Parse Scope
 
-**Argument:** `$ARGUMENTS` (blank = ask user via ask_user_question)
+**Argument:** the text you wrote after the command (blank = ask user via ask_user_question)
 
 Determine scope from the argument:
 

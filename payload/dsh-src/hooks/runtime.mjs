@@ -188,8 +188,8 @@ export function warn(event, message) {
  *
  * `post` (default) keeps upstream's behaviour: a notice that arrives with the tool result on the
  * PostToolUse channel. `deny` turns the same text into a pre-action block, which is the only
- * pre-execution channel DSH deliver（见仓库 README 的说明）
- * README's "Known platform limits").
+ * pre-execution channel DSH delivers to the model (see the repository README's "Known platform
+ * limits").
  *
  * @returns {'post' | 'deny'} the resolved mode
  */

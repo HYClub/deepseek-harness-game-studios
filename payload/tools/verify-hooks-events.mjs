@@ -12,7 +12,8 @@
  * Events that cannot be provoked from a prompt (compaction, notification) are reported as
  * `mount-only`: the wiring is verified, the trigger is not available in this environment. They
  * never count as passes, and they do not fail the run either — the report says exactly which
- * evidence exists.
+ * evidence exists. `PostCompact` is not configured at all (upstream never registers it either),
+ * so it is excluded from the "configured but not provokable" count instead of inflating it.
  *
  * Needs to create a throwaway profile (`~/.dsh/profiles/dgsevents`), so run it outside the file
  * sandbox or approve the escalation. The profile is deleted at the end.
@@ -23,14 +24,16 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { SUBSCRIPTIONS } from './dsh-plugin/index.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PROFILE = 'dgsevents';
 const INVOCATION_LOG = join(ROOT, '.verify-logs', 'hook-invocations.log');
-const PROFILE_DIR = join(process.env.USERPROFILE ?? '', '.dsh', 'profiles', PROFILE);
+const HOME = process.env.USERPROFILE ?? process.env.HOME ?? '';
+const PROFILE_DIR = join(HOME, '.dsh', 'profiles', PROFILE);
 const KEEP = process.argv.includes('--keep');
 
 /** The prompt that makes one live session exercise as many events as it can. */
@@ -84,6 +87,17 @@ function eventsFor(events, command) {
 const NOT_PROVOKABLE = new Set(['Notification', 'PreCompact', 'PostCompact']);
 
 /**
+ * What the mount-only rows can honestly point at. `PreCompact` is wired to `session/event` and is
+ * covered by the plugin's own test (the mount suite has no `session/event` case), so naming the mount
+ * suite there would overstate the evidence.
+ */
+const MOUNT_EVIDENCE = {
+  Notification: 'not provokable from a prompt: no event on this runtime; the plugin test asserts the absence and the reason',
+  PreCompact: 'not provokable from a prompt: wired to session/event (compaction/start); tools/tests/plugin/unmapped-events.test.mjs asserts the filter and the hook run',
+  PostCompact: 'not provokable from a prompt: not configured; upstream does not register it either',
+};
+
+/**
  * Turn a parsed invocation log into a per-event verdict. Exported so the classification is
  * unit-testable without booting a session.
  * @param {Map<string, string[]>} events - event → configured commands
@@ -111,7 +125,7 @@ export function classifyInvocations(events, log) {
     const evidence = hits.length > 0
       ? `${hits.length} hook(s): ${hits.map((h) => `exit=${h.exit}`).join(', ')}`
       : NOT_PROVOKABLE.has(event)
-        ? 'wiring verified by verify-hooks-mount; not provokable from a prompt'
+        ? (MOUNT_EVIDENCE[event] ?? 'wiring verified by verify-hooks-mount; not provokable from a prompt')
         : everResolved
           ? 'resolved but never executed (the session never triggered it)'
           : 'no invocation recorded';
@@ -121,7 +135,16 @@ export function classifyInvocations(events, log) {
 }
 
 function main() {
+  // This probe needs the repository's dev overlay and devDependencies. The installed payload carries
+  // neither, so from there it says so instead of failing halfway through with a missing-directory error.
+  if (!existsSync(join(ROOT, 'tools', 'dsh-hooks-direct-overlay.yml'))) {
+    console.log('SKIP: this probe runs from a repository checkout (the installed payload does not carry its overlay).');
+    console.log('      Hook wiring is covered by verify-hooks-mount (10/10) and verify-hooks-bridge (12/12);');
+    console.log('      after a profile restart, tools/check-hooks-live.ps1 confirms liveness from a delegation.');
+    return 3;
+  }
   const events = configuredEvents();
+  mkdirSync(dirname(INVOCATION_LOG), { recursive: true });
   writeFileSync(INVOCATION_LOG, '', 'utf8');
   if (existsSync(PROFILE_DIR)) rmSync(PROFILE_DIR, { recursive: true, force: true });
 
@@ -137,17 +160,19 @@ function main() {
   }
 
   const sessionOutput = (run.stdout ?? '') + (run.stderr ?? '');
-  if (sessionOutput.trim().length > 0) process.stdout.write(sessionOutput.endsWith('\n') ? sessionOutput : sessionOutput + '\n');
+  // A session that cannot start is a skip, not a finding — and its raw output can contain setup
+  // instructions a reader should never be shown here. Detect that case first and print nothing from it.
+  const noSession = /MISSING_CREDENTIAL|ACCOUNT_SIGN_IN_REQUIRED/i.test(sessionOutput);
+  if (!noSession && sessionOutput.trim().length > 0) {
+    process.stdout.write(sessionOutput.endsWith('\n') ? sessionOutput : sessionOutput + '\n');
+  }
 
   const { resolved, ran } = invocationLog();
 
-  // A session that cannot reach a model stops before most events can happen. That is a skip, not a
-  // finding: the bridge wiring is covered by verify-hooks-mount, and the framework itself never needs
-  // an API key — only this opt-in live probe needs a session that can reach a model.
-  const noAuth = /MISSING_CREDENTIAL|ACCOUNT_SIGN_IN_REQUIRED|no API key/i.test(sessionOutput);
-  if (noAuth || (resolved.length <= 1 && run.status !== 0)) {
-    console.log('SKIP: no model session could be started here, so no events could be provoked.');
-    console.log('      the hook wiring is still verified: node tools/verify-hooks-mount.mjs (10/10 cases).');
+  if (noSession || (resolved.length <= 1 && run.status !== 0)) {
+    console.log('SKIP: no live session could be started here, so no events could be provoked.');
+    console.log('      Live liveness is checked after a profile restart by tools/check-hooks-live.ps1;');
+    console.log('      the wiring is covered by verify-hooks-mount (10/10) and verify-hooks-bridge (12/12).');
     return 3;
   }
   const { rows, live, gaps } = classifyInvocations(events, { resolved, ran });
@@ -158,7 +183,11 @@ function main() {
 
   if (!KEEP) rmSync(PROFILE_DIR, { recursive: true, force: true });
 
-  console.log(`\n${live}/${events.size} events observed live; ${NOT_PROVOKABLE.size} mount-only (compaction/notification)`);
+  // `NOT_PROVOKABLE.size` overstates the coverage: PostCompact is in that set but is not configured
+  // at all (upstream never registers it). Report what this run actually has in front of it.
+  const mountOnly = [...events.keys()].filter((event) => NOT_PROVOKABLE.has(event));
+  const wired = SUBSCRIPTIONS.join(', ');
+  console.log(`\n${live}/${events.size} configured events observed live; ${mountOnly.length} configured but not provokable (${mountOnly.join(', ') || 'none'}); wiring: ${wired}`);
   if (gaps > 0) {
     console.log(`${gaps} event(s) were neither live nor provokable — that is a gap, not a pass.`);
     return 1;

@@ -6,7 +6,7 @@
 > AGENTS.md import) in v1.1 — read this when actually considering a team, not
 > on every turn.
 
-Multiple independent 上游运行时 *sessions* running simultaneously, coordinated
+Multiple independent *sessions* running simultaneously, coordinated
 via a shared task list. Each session has its own context window and token budget.
 Requires the `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable.
 

@@ -4,8 +4,7 @@
 #   pwsh -File tools/verify-port.ps1 -SkipTests      # fast structural pass
 #   pwsh -File tools/verify-port.ps1 -Filter hooks   # only suites whose name matches
 #
-# It runs the f（见仓库 README）al
-# check, reference audit, and the behaviour test suites. Exit code 0 means every step
+# It runs the full check, reference audit, and the behaviour test suites. Exit code 0 means every step
 # passed; 1 means at least one failed (the failing suites are listed at the end).
 #
 # Windows note: nothing here captures a child's output through a pipe at the Node

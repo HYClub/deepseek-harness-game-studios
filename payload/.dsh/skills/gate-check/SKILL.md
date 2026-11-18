@@ -70,7 +70,7 @@ The project progresses through these stages:
 
 ## 1. Parse Arguments
 
-**Target phase:** `$ARGUMENTS` with any `--review <mode>` pair removed (blank = auto-detect current stage, then validate next transition). `/gate-check --review full` names no phase.
+**Target phase:** the text you wrote after the command with any `--review <mode>` pair removed (blank = auto-detect current stage, then validate next transition). `/gate-check --review full` names no phase.
 
 
 Note: in `solo` mode, director spawns (CD-PHASE-GATE, TD-PHASE-GATE, PR-PHASE-GATE, AD-PHASE-GATE) are skipped — gate-check becomes artifact-existence checks only. In `lean` mode, the phase-gate directors still run (phase gates are the purpose of lean mode); how many of them run is set by `workflow` below.

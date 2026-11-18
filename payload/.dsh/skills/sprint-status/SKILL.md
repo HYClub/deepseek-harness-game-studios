@@ -45,7 +45,7 @@ at `balanced` (`rigor: standard`), **AC-sized** at `fine`.
 
 ## 1. Find the Sprint
 
-**Argument:** `$ARGUMENTS` (blank = use current sprint)
+**Argument:** the text you wrote after the command (blank = use current sprint)
 
 - If an argument is given (e.g., `/sprint-status 3`), search
   `production/sprints/` for a file matching `sprint-003.md`, `sprint-03.md`, `sprint-3.md`,

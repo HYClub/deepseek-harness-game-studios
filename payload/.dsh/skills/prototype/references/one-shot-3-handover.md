@@ -43,7 +43,7 @@ Not yet played by a person.
 The Brief checklist shows every item that is not a pass, one a line; with all passed, the one
 line alone. Any stuck screen, overlap or error left after the fix round goes on Still broken.
 The Effort line is the build file's true one: `this session's`, `<effort> (set on the builder)`
-or `set by CLAUDE_CODE_EFFORT_LEVEL`.
+or `set by the session's effort setting`.
 Leave out the Fixed, Not as you said, Still broken, Still to do and Guessed lines when they are empty,
 and the Next line unless the brief's Engine line named an engine for after play, the brief's Out
 of scope has online play or a later system with its step. For online play, the

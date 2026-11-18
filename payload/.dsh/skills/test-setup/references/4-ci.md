@@ -229,7 +229,7 @@ jobs:
 `npm test` exits non-zero when either half fails, so the job fails with it.
 GitHub's `ubuntu-latest` image has Google Chrome on the `PATH`, which is what
 `page-shot.sh --which` finds there; `.dsh/` must be in the repository, as it
-is in every 上游运行时 Game Studios project. `test-results/` holds Playwright's traces and
+is in every DeepSeek Game Studios project. `test-results/` holds Playwright's traces and
 screenshots of a failing test, and is empty when every test passed.
 
 ---

@@ -16,9 +16,9 @@ runs at all.
 | Tool | Purpose | Install |
 | ---- | ---- | ---- |
 | **Git** | Version control, branch management | [git-scm.com](https://git-scm.com/) |
-| **上游运行时** | AI agent CLI | Native installer: `curl -fsSL https://claude.ai/install.sh \| bash` (macOS, Linux, WSL) or `irm https://claude.ai/install.ps1 \| iex` (Windows PowerShell). npm also works: `npm install -g @anthropic-ai/claude-code` (Node.js 22+). See [code.dsh.com/docs/en/setup](https://code.dsh.com/docs/en/setup) |
+| **the upstream runtime** | AI agent CLI | Native installer: `curl -fsSL https://claude.ai/install.sh \| bash` (macOS, Linux, WSL) or `irm https://claude.ai/install.ps1 \| iex` (Windows PowerShell). npm also works: `npm install -g @anthropic-ai/claude-code` (Node.js 22+). See [code.claude.com/docs/en/setup](https://code.claude.com/docs/en/setup) |
 | **Python 3** | Reads `project.yaml` for every skill and hook | [python.org](https://www.python.org/). Without it every setting silently falls back to its default, and a commit that stages data JSON is blocked because it cannot be validated |
-| **Bash** | Runs every hook | Built into macOS and Linux. On Windows, install [Git for Windows](https://git-scm.com/downloads/win) — 上游运行时 runs without it, but no DSGS hook does |
+| **Bash** | Runs every hook | Built into macOS and Linux. On Windows, install [Git for Windows](https://git-scm.com/downloads/win) — the upstream runtime runs without it, but no DSGS hook does |
 
 ## Recommended
 
@@ -52,11 +52,11 @@ sudo pacman -S jq       # Arch
 ### Windows
 - Git for Windows includes **Git Bash**, which provides the `bash` command
   used by all hooks in `settings.json`
-- If 上游运行时 can't find Git Bash, set `CLAUDE_CODE_GIT_BASH_PATH` to its
+- If the upstream runtime can't find Git Bash, set `CLAUDE_CODE_GIT_BASH_PATH` to its
   `bash.exe` in the `env` block of your settings (for example
   `C:\\Program Files\\Git\\bin\\bash.exe` in JSON)
 - Hooks use `bash .dsh/hooks/[name].sh` — this works on Windows because
-  上游运行时 invokes commands through a shell that can find `bash.exe`
+  the upstream runtime invokes commands through a shell that can find `bash.exe`
 
 ### macOS / Linux
 - Bash is available natively
@@ -84,7 +84,7 @@ python --version       # Required: Python 3 (python3 or py also work)
 ## Optional Performance Settings
 
 DSGS deliberately ships **no** values for the settings below. Each one's best
-value depends on your machine, your the agent plan and how you work, so a value
+value depends on your machine, your plan and how you work, so a value
 committed here would be a guess every user inherits without noticing. Set the
 ones you want in `.dsh/settings.local.json`, which is gitignored and yours
 alone.
@@ -93,8 +93,8 @@ alone.
 | ---- | ---- | ---- |
 | `promptCacheTtl` | How long the main conversation's prompt cache lives. | Raise it if you work in long sessions with gaps; the cache surviving a break avoids re-sending context. |
 | `subagentPromptCacheTtl` | The same, for subagents and other off-conversation requests. | Worth raising on a 49-agent project like this one, where `team-*` skills spawn repeatedly. |
-| `autoCompactWindow` | How full the context gets before 上游运行时 compacts it. | Lower it if compaction keeps surprising you mid-task; raise it if you would rather compact less often and keep more history. |
-| `skillListingBudgetFraction` | How much context the skill listing may occupy. | DSGS ships 74 skills, so the listing is not small. Lower it if you want more room for work; `skillListingMaxDescChars` trims each description instead. |
+| `autoCompactWindow` | How full the context gets before the upstream runtime compacts it. | Lower it if compaction keeps surprising you mid-task; raise it if you would rather compact less often and keep more history. |
+| `skillListingBudgetFraction` | How much context the skill listing may occupy. | DSGS ships 83 skills, so the listing is not small. Lower it if you want more room for work; `skillListingMaxDescChars` trims each description instead. |
 
 `sandbox.enabled` isolates shell commands from your filesystem and network. It
 is worth turning on, but it runs on **macOS, Linux and WSL2 only** — it is not
@@ -103,7 +103,7 @@ available on native Windows, which is DSGS's primary platform.
 ### One setting DSGS does ship
 
 `permissions.defaultMode` is set to `default` in `.dsh/settings.json`, on
-purpose. It makes 上游运行时 ask before acting, which is what every approval
+purpose. It makes the upstream runtime ask before acting, which is what every approval
 gate in this framework depends on. Project settings outrank personal ones, so
 this holds even if your own config sets `acceptEdits` or `auto` — otherwise
 DSGS's collaboration protocol would be silently switched off for you and the
@@ -119,7 +119,7 @@ in. To get the same behaviour there, set `claudeCode.initialPermissionMode` to
 
 ## Recommended IDE
 
-上游运行时 works with any editor, but the template is optimized for:
-- **VS Code** with the 上游运行时 extension
-- **Cursor** (上游运行时 compatible)
-- Terminal-based 上游运行时 CLI
+The upstream runtime works with any editor, but the template is optimized for:
+- **VS Code** with the upstream extension
+- **Cursor** (upstream-compatible)
+- Terminal-based upstream CLI

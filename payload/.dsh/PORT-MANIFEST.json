@@ -1,6 +1,6 @@
 {
   "generatedBy": "tools/build-dsh.mjs",
-  "inputsDigest": "bb48c74c6597143d",
+  "inputsDigest": "3f068f3bd6004cb6",
   "generatedFrom": "content-source",
   "output": ".dsh",
   "fileCount": 601,
@@ -67,7 +67,7 @@
       "output": ".dsh/skills/adopt/SKILL.md",
       "upstreamFrontmatter": "name: adopt\ndescription: \"Brownfield audit — do existing artifacts actually work? Numbered migration plan. Unlike /project-stage-detect, checks compliance not existence.\"\nargument-hint: \"[focus: full | gdds | adrs | stories | infra]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/adopt/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "9f126d50097315a0",
-      "outputSha256": "08eb0cd52c1632b6",
+      "outputSha256": "07a011cda216b0f2",
       "rewritten": true
     },
     {
@@ -281,7 +281,7 @@
       "output": ".dsh/skills/balance-check/SKILL.md",
       "upstreamFrontmatter": "name: balance-check\ndescription: \"Find balance outliers, broken progressions, degenerate strategies, economy imbalances in formulas and data. 'Check game balance'.\"\nargument-hint: \"[system-name|path-to-data-file]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, AskUserQuestion, Bash(bash \"*/.claude/skills/balance-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "37cad855a7f47c85",
-      "outputSha256": "b3ec973fbc0e9823",
+      "outputSha256": "8544445bd4da3ae5",
       "rewritten": true
     },
     {
@@ -763,7 +763,7 @@
       "output": ".dsh/skills/gate-check/SKILL.md",
       "upstreamFrontmatter": "name: gate-check\ndescription: \"Ready to advance between development phases? PASS/CONCERNS/NOT ASSESSED/FAIL with blockers and required artifacts. 'Can we move to production?'\"\nargument-hint: \"[target-phase: systems-design | technical-setup | pre-production | production | polish | release] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash, Write, Edit, Agent, AskUserQuestion, Bash(bash \"*/.claude/skills/gate-check/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: opus",
       "sourceSha256": "be9c7ee9b8c0489c",
-      "outputSha256": "a66eb2f31ed1ee2f",
+      "outputSha256": "7cbd2f6c73e4e766",
       "rewritten": true
     },
     {
@@ -871,7 +871,7 @@
       "output": ".dsh/skills/project-settings/SKILL.md",
       "upstreamFrontmatter": "name: project-settings\ndescription: \"Shows or changes a project setting and where its value comes from. Use to check or set one.\"\nargument-hint: \"[key | key=value | --local key=value]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" resolve_setting *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" get_yaml_key *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" validate_yaml_enum *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" validate_enum_value *), Bash(bash \"*/.claude/skills/project-settings/../../hooks/yaml-helper.sh\" is_locally_overridable *), Bash(bash .claude/scripts/config-set.sh *), Bash(grep -B14 '^> ### RESERVED' .claude/docs/effects-map.md), Bash(grep -E '^## ')\nmodel: sonnet",
       "sourceSha256": "c73abd78a6905ab6",
-      "outputSha256": "0f1a2e4ed3b5e0ae",
+      "outputSha256": "35c0c24b766d4d24",
       "rewritten": true
     },
     {
@@ -969,7 +969,7 @@
       "source": "skills/prototype/references/one-shot-0-door.md",
       "output": ".dsh/skills/prototype/references/one-shot-0-door.md",
       "sourceSha256": "c0c62fde52f1db92",
-      "outputSha256": "ce360b440437322e",
+      "outputSha256": "f8935e1755d10831",
       "rewritten": true
     },
     {
@@ -977,7 +977,7 @@
       "source": "skills/prototype/references/one-shot-1-card.md",
       "output": ".dsh/skills/prototype/references/one-shot-1-card.md",
       "sourceSha256": "974ca2b4ae2b4b8a",
-      "outputSha256": "f37b0f67c841867b",
+      "outputSha256": "2ca4f7ef59f019a7",
       "rewritten": true
     },
     {
@@ -985,7 +985,7 @@
       "source": "skills/prototype/references/one-shot-2-build.md",
       "output": ".dsh/skills/prototype/references/one-shot-2-build.md",
       "sourceSha256": "b2f3ec40e52d25b8",
-      "outputSha256": "c694a0b249e4c1db",
+      "outputSha256": "56e2c012f932b91d",
       "rewritten": true
     },
     {
@@ -1001,8 +1001,8 @@
       "source": "skills/prototype/references/one-shot-3-handover.md",
       "output": ".dsh/skills/prototype/references/one-shot-3-handover.md",
       "sourceSha256": "c53a0b91052be73e",
-      "outputSha256": "c53a0b91052be73e",
-      "rewritten": false
+      "outputSha256": "148f83c1f9651877",
+      "rewritten": true
     },
     {
       "kind": "skill-reference",
@@ -1051,7 +1051,7 @@
       "output": ".dsh/skills/qa-plan/SKILL.md",
       "upstreamFrontmatter": "name: qa-plan\ndescription: \"QA test plan for a sprint — classifies stories by Logic/Integration/Visual/UI, covers automated tests, manual cases, smoke scope.\"\nargument-hint: \"[sprint | feature: system-name | story: path]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(bash \"*/.claude/skills/qa-plan/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "a854582e521b3366",
-      "outputSha256": "f49642332e32252a",
+      "outputSha256": "baf0b70e11602dc5",
       "rewritten": true
     },
     {
@@ -1169,7 +1169,7 @@
       "output": ".dsh/skills/review-all-gdds/SKILL.md",
       "upstreamFrontmatter": "name: review-all-gdds\ndescription: \"Holistic cross-GDD review — contradictions between systems, dominant strategies, economic imbalance, cognitive overload, pillar drift.\"\nargument-hint: \"[focus: full | consistency | design-theory | since-last-review]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/review-all-gdds/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: opus",
       "sourceSha256": "f2bb0d7a8a05f7eb",
-      "outputSha256": "bef089676541bdfd",
+      "outputSha256": "cb29e879d2e352ca",
       "rewritten": true
     },
     {
@@ -1178,7 +1178,7 @@
       "output": ".dsh/skills/scope-check/SKILL.md",
       "upstreamFrontmatter": "name: scope-check\ndescription: \"Scope creep check — current scope versus the original plan. Flags additions, quantifies bloat, recommends cuts. 'Any scope creep?'\"\nargument-hint: \"[feature-name or sprint-N]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(git log *)\nmodel: haiku",
       "sourceSha256": "e107c71689aedeb0",
-      "outputSha256": "d21b82b2622db967",
+      "outputSha256": "5599ec610d11b879",
       "rewritten": true
     },
     {
@@ -1276,7 +1276,7 @@
       "source": "skills/setup-engine/references/7.5-scaffold.md",
       "output": ".dsh/skills/setup-engine/references/7.5-scaffold.md",
       "sourceSha256": "f27167c5c630b3e2",
-      "outputSha256": "d868373535c4f0e2",
+      "outputSha256": "08307a13f1d01ddd",
       "rewritten": true
     },
     {
@@ -1300,7 +1300,7 @@
       "source": "skills/setup-engine/references/web.md",
       "output": ".dsh/skills/setup-engine/references/web.md",
       "sourceSha256": "785d42767f422530",
-      "outputSha256": "ec68acca86957299",
+      "outputSha256": "464b0ab106be24ee",
       "rewritten": true
     },
     {
@@ -1327,7 +1327,7 @@
       "output": ".dsh/skills/skill-test/SKILL.md",
       "upstreamFrontmatter": "name: skill-test\ndescription: \"Validate skill files for structural compliance and behavioral correctness. Four modes: static linter, spec, category rubric, audit.\"\nargument-hint: \"static [skill-name | all] | spec [skill-or-agent-name] | category [skill-or-agent-name | all] | audit\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Bash(bash \"*/.claude/skills/skill-test/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "d927ccbd6f7ff0e3",
-      "outputSha256": "1541897c4821c9f2",
+      "outputSha256": "d39a74b88eff7ec9",
       "rewritten": true
     },
     {
@@ -1411,7 +1411,7 @@
       "output": ".dsh/skills/sprint-status/SKILL.md",
       "upstreamFrontmatter": "name: sprint-status\ndescription: \"Fast, concise sprint snapshot — burndown and emerging risks for situational awareness. 'How is the sprint going?'\"\nargument-hint: \"[sprint-number or blank for current]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Bash(bash \"*/.claude/skills/sprint-status/../../hooks/yaml-helper.sh\" resolve_config *), Bash(bash \"*/.claude/skills/sprint-status/../../scripts/story-status.sh\"), Bash(bash .claude/scripts/story-status.sh*)\nmodel: haiku",
       "sourceSha256": "2622108162d6ed82",
-      "outputSha256": "26139668a7619add",
+      "outputSha256": "61673aae49344f65",
       "rewritten": true
     },
     {
@@ -1420,7 +1420,7 @@
       "output": ".dsh/skills/start/SKILL.md",
       "upstreamFrontmatter": "name: start\ndescription: \"First-time onboarding — asks where you are, then guides you to the right workflow.\"\nargument-hint: \"[no arguments]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion\nmodel: sonnet",
       "sourceSha256": "132cc5a633e86575",
-      "outputSha256": "2d231c9c4415fd87",
+      "outputSha256": "467cd48cd161842e",
       "rewritten": true
     },
     {
@@ -1486,7 +1486,7 @@
       "output": ".dsh/skills/story-readiness/SKILL.md",
       "upstreamFrontmatter": "name: story-readiness\ndescription: \"Is a story implementation-ready? Checks clear acceptance criteria, open questions, ADR refs. READY/NEEDS WORK/BLOCKED/NOT ASSESSED.\"\nargument-hint: \"[story-file-path or 'all' or 'sprint'] [--review full|lean|solo]\"\nuser-invocable: true\nallowed-tools: Read, Glob, Grep, AskUserQuestion, Agent, Bash(bash \"*/.claude/skills/story-readiness/../../hooks/yaml-helper.sh\" resolve_config *)\nmodel: sonnet",
       "sourceSha256": "c3b8ae00afa2a873",
-      "outputSha256": "f144a2d1f9fb0729",
+      "outputSha256": "f64148312902f0f1",
       "rewritten": true
     },
     {
@@ -1635,7 +1635,7 @@
       "source": "skills/test-setup/references/4-ci.md",
       "output": ".dsh/skills/test-setup/references/4-ci.md",
       "sourceSha256": "504a26128cde3c2d",
-      "outputSha256": "04bb0fc970e9c9fa",
+      "outputSha256": "177ee35d21ce344b",
       "rewritten": true
     },
     {
@@ -2004,7 +2004,7 @@
       "output": ".dsh/agents/qa-tester.md",
       "upstreamFrontmatter": "name: qa-tester\ndescription: \"Writes test cases, bug reports, and checklists — test case generation, regression checklist creation, execution documentation.\"\ntools: Read, Glob, Grep, Write, Edit, Bash\nmodel: inherit\nmaxTurns: 10",
       "sourceSha256": "2500855056d30e0f",
-      "outputSha256": "b78c1c1009ee5dc7",
+      "outputSha256": "3cbf2633cd11f23e",
       "rewritten": true
     },
     {
@@ -2751,7 +2751,7 @@
       "source": "docs/agent-teams.md",
       "output": ".dsh/docs/agent-teams.md",
       "sourceSha256": "a47a929581e22b9e",
-      "outputSha256": "c95fcd092442d53c",
+      "outputSha256": "ae5b4cbf535caa8d",
       "rewritten": true
     },
     {
@@ -2767,7 +2767,7 @@
       "source": "docs/local-instructions-template.md",
       "output": ".dsh/docs/local-instructions-template.md",
       "sourceSha256": "18158b03f609cafb",
-      "outputSha256": "1f50ac206bf23358",
+      "outputSha256": "f17bc5840a482baf",
       "rewritten": true
     },
     {
@@ -2791,7 +2791,7 @@
       "source": "docs/config-resolution.md",
       "output": ".dsh/docs/config-resolution.md",
       "sourceSha256": "dd041af96f1e6664",
-      "outputSha256": "d4406548237dee2d",
+      "outputSha256": "c7669136ef7fdc1e",
       "rewritten": true
     },
     {
@@ -2799,7 +2799,7 @@
       "source": "docs/context-management.md",
       "output": ".dsh/docs/context-management.md",
       "sourceSha256": "44d4f2bd72e50eed",
-      "outputSha256": "112d6529f337410d",
+      "outputSha256": "1691a878f1ab72a0",
       "rewritten": true
     },
     {
@@ -2807,7 +2807,7 @@
       "source": "docs/coordination-rules.md",
       "output": ".dsh/docs/coordination-rules.md",
       "sourceSha256": "00937a9df37752ef",
-      "outputSha256": "5fb0e5998680f6f1",
+      "outputSha256": "7eefae7bff0fee50",
       "rewritten": true
     },
     {
@@ -3055,7 +3055,7 @@
       "source": "docs/effects-map.md",
       "output": ".dsh/docs/effects-map.md",
       "sourceSha256": "8262993e0c3bc3fc",
-      "outputSha256": "9a1e37e2a4cd7a11",
+      "outputSha256": "67020213b0869fb0",
       "rewritten": true
     },
     {
@@ -3071,7 +3071,7 @@
       "source": "docs/hooks-reference/hook-input-schemas.md",
       "output": ".dsh/docs/hooks-reference/hook-input-schemas.md",
       "sourceSha256": "9a5c9942043791e2",
-      "outputSha256": "bdff55416ef34f10",
+      "outputSha256": "7165e9739f6a4253",
       "rewritten": true
     },
     {
@@ -3119,7 +3119,7 @@
       "source": "docs/hooks-reference.md",
       "output": ".dsh/docs/hooks-reference.md",
       "sourceSha256": "395340c6088f0a69",
-      "outputSha256": "d20edf2ffe84f1d5",
+      "outputSha256": "f19866f9354d73a2",
       "rewritten": true
     },
     {
@@ -3127,7 +3127,7 @@
       "source": "docs/model-tiers.md",
       "output": ".dsh/docs/model-tiers.md",
       "sourceSha256": "25b7607a1af30f33",
-      "outputSha256": "417314a07bf89596",
+      "outputSha256": "407ec926d38da159",
       "rewritten": true
     },
     {
@@ -3135,7 +3135,7 @@
       "source": "docs/quick-start.md",
       "output": ".dsh/docs/quick-start.md",
       "sourceSha256": "4efea26c6bcb1c4b",
-      "outputSha256": "4ae4f0f4b9b98277",
+      "outputSha256": "0432c8fecc9c87e6",
       "rewritten": true
     },
     {
@@ -3143,7 +3143,7 @@
       "source": "docs/rules-reference.md",
       "output": ".dsh/docs/rules-reference.md",
       "sourceSha256": "745978b926120b10",
-      "outputSha256": "5db71359c5ce7122",
+      "outputSha256": "6cf640c8548153db",
       "rewritten": true
     },
     {
@@ -3151,7 +3151,7 @@
       "source": "docs/run-and-observe.md",
       "output": ".dsh/docs/run-and-observe.md",
       "sourceSha256": "77a370a483638fd5",
-      "outputSha256": "d3331001c56262a7",
+      "outputSha256": "0ba0bc91cab32508",
       "rewritten": true
     },
     {
@@ -3167,7 +3167,7 @@
       "source": "docs/settings-local-template.md",
       "output": ".dsh/docs/settings-local-template.md",
       "sourceSha256": "6bc44902a74c9632",
-      "outputSha256": "750a398b2da322f5",
+      "outputSha256": "8dbbe867ba1dfd33",
       "rewritten": true
     },
     {
@@ -3175,7 +3175,7 @@
       "source": "docs/setup-requirements.md",
       "output": ".dsh/docs/setup-requirements.md",
       "sourceSha256": "016fb0c0f014e17c",
-      "outputSha256": "43863048f7629a5b",
+      "outputSha256": "d44a7930a4ff9baa",
       "rewritten": true
     },
     {
@@ -3183,7 +3183,7 @@
       "source": "docs/skills-reference.md",
       "output": ".dsh/docs/skills-reference.md",
       "sourceSha256": "3ec77ab2e7b06f86",
-      "outputSha256": "36a340731b40af95",
+      "outputSha256": "224a0bac1a7db843",
       "rewritten": true
     },
     {
@@ -3215,7 +3215,7 @@
       "source": "docs/templates/architecture-doc-from-code.md",
       "output": ".dsh/docs/templates/architecture-doc-from-code.md",
       "sourceSha256": "120a052b06f0f687",
-      "outputSha256": "4c2702901e356e47",
+      "outputSha256": "609bb3c1f8503882",
       "rewritten": true
     },
     {
@@ -3247,7 +3247,7 @@
       "source": "docs/templates/concept-doc-from-prototype.md",
       "output": ".dsh/docs/templates/concept-doc-from-prototype.md",
       "sourceSha256": "f42d764e92891b1f",
-      "outputSha256": "8c7249e617063301",
+      "outputSha256": "026f26baa688fe3a",
       "rewritten": true
     },
     {
@@ -3255,7 +3255,7 @@
       "source": "docs/templates/design-doc-from-implementation.md",
       "output": ".dsh/docs/templates/design-doc-from-implementation.md",
       "sourceSha256": "cdb12f8909534e84",
-      "outputSha256": "c2b14b85925f7deb",
+      "outputSha256": "43d220c25a81d669",
       "rewritten": true
     },
     {
@@ -3439,7 +3439,7 @@
       "source": "docs/templates/one-shot-lean/tune.js",
       "output": ".dsh/docs/templates/one-shot-lean/tune.js",
       "sourceSha256": "8eda5897f39b77c3",
-      "outputSha256": "ea623c8e9a80bad2",
+      "outputSha256": "b5fdd29a2300479f",
       "rewritten": true
     },
     {
@@ -4446,8 +4446,8 @@
       "kind": "overlay",
       "source": "dsh-src/docs/hooks-reference/dsh-differences.md",
       "output": ".dsh/docs/hooks-reference/dsh-differences.md",
-      "sourceSha256": "57483b4c632648b8",
-      "outputSha256": "57483b4c632648b8",
+      "sourceSha256": "7b62be023740bd33",
+      "outputSha256": "7b62be023740bd33",
       "rewritten": false
     },
     {
@@ -4534,8 +4534,8 @@
       "kind": "overlay",
       "source": "dsh-src/hooks/runtime.mjs",
       "output": ".dsh/hooks/runtime.mjs",
-      "sourceSha256": "892835fb3dad9ac9",
-      "outputSha256": "892835fb3dad9ac9",
+      "sourceSha256": "b778580982e5aa26",
+      "outputSha256": "b778580982e5aa26",
       "rewritten": false
     },
     {
@@ -4782,8 +4782,8 @@
       "kind": "overlay",
       "source": "dsh-src/scripts/project-state.mjs",
       "output": ".dsh/scripts/project-state.mjs",
-      "sourceSha256": "abc8146511879e4d",
-      "outputSha256": "abc8146511879e4d",
+      "sourceSha256": "39c4ad5f2434cd25",
+      "outputSha256": "39c4ad5f2434cd25",
       "rewritten": false
     },
     {
@@ -4918,16 +4918,16 @@
       "kind": "overlay",
       "source": "dsh-src/skills/dsgs-install/SKILL.md",
       "output": ".dsh/skills/dsgs-install/SKILL.md",
-      "sourceSha256": "35c013165df41368",
-      "outputSha256": "35c013165df41368",
+      "sourceSha256": "cff8e5e4a4c2e82c",
+      "outputSha256": "cff8e5e4a4c2e82c",
       "rewritten": false
     },
     {
       "kind": "overlay",
       "source": "dsh-src/skills/statusline/SKILL.md",
       "output": ".dsh/skills/statusline/SKILL.md",
-      "sourceSha256": "3b8ea6f1cd96bb72",
-      "outputSha256": "3b8ea6f1cd96bb72",
+      "sourceSha256": "f60475a4f1edb29b",
+      "outputSha256": "f60475a4f1edb29b",
       "rewritten": false
     },
     {

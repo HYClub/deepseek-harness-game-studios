@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-74 slash commands organized by phase. Type `/` in 上游运行时 to access any of them.
+74 upstream slash commands plus 9 added by DSGS (83 total), organized by phase. Type `/` in DSH to access any of them.
 
 ## Onboarding & Navigation
 
@@ -138,14 +138,31 @@ Coordinate multiple agents on a single feature area:
 | `/team-live-ops` | live-ops-designer + economy-designer + community-manager + analytics-engineer |
 | `/team-qa` | qa-lead + qa-tester + gameplay-programmer + producer |
 
-## Overlap with 上游运行时's bundled skills
+## Added by DSGS
 
-上游运行时 ships its own skills, and one name collides with DSGS's.
+Nine commands exist here beyond the 74 upstream ones: four synced from the upstream
+v1.3.0 line, five written for this port.
+
+| Command | Purpose |
+|---|---|
+| `/cut` | Propose cuts and a polish list to finish the game; the person picks each cut |
+| `/next-step` | Name the one next step: make a game, change it, grow it, or the next studio-mode step |
+| `/project-settings` | Show or change a project setting and where its value comes from |
+| `/write-changelog` | Write a changelog from git commits and sprint data |
+| `/statusline` | Print the studio status line — stage, posture, epic > story, sprint, engine — as one line |
+| `/today` | Answer "what do I do now" in three to five lines |
+| `/dashboard` | Render the studio state as one offline HTML board |
+| `/update` | Check for a newer DSGS release and update the profile after you confirm |
+| `/dsgs-install` | Install DSGS machine-wide, so any empty folder can be initialised |
+
+## Overlap with the upstream runtime's bundled skills
+
+The upstream runtime ships its own skills, and one name collides with DSGS's.
 
 | You type | You get | Use it for |
 |---------|---------|-----------|
 | `/code-review` | **DSGS's** — project skills take the bare name | Architectural review against this project's coding standards, SOLID, testability and the control manifest. Knows about ADRs, stories and `docs/architecture/`. |
-| `/review` | **上游运行时's bundled** review — the alias of its `/code-review`, which DSGS's skill shadows | Reviewing a pull request or a plain diff for correctness bugs, with no knowledge of DSGS's design documents or gates. |
+| `/review` | **the upstream runtime's bundled** review — the alias of its `/code-review`, which DSGS's skill shadows | Reviewing a pull request or a plain diff for correctness bugs, with no knowledge of DSGS's design documents or gates. |
 
 Both are useful; they answer different questions. Reach for the DSGS one during
 `/dev-story` and before `/story-done`, because it checks the things the gates

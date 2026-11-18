@@ -14,7 +14,7 @@ not expected to behave identically here.
 | `Stop` / `SessionEnd` | fires | session bookkeeping and checkpoints |
 | `SubagentStop` | fires | delegation bookkeeping |
 | `PreCompact` / `PostCompact` | mapped, no source | unit-tested and verified at mount level only |
-| `Notification` | mapped, no source | there is no DSH notification event to attach to |
+| `Notification` | mapped, no channel | `approval/asked` exists as a session-event type on `session/event`, but that feed is an emit with no return value, so the notice has nowhere to go |
 
 ## Payload shape
 

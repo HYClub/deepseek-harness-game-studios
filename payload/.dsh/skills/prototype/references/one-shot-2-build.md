@@ -3,7 +3,7 @@
 > Part of `/prototype`. `SKILL.md` names when to read this file; the settings it
 > resolved and the rules under its later headings still apply here.
 
-A good brief built at high effort makes the deepest games; the same brief at medium makes thinner ones. The build follows the brief and the rules below, nothing else from 上游运行时 Game Studios: the genre sheet has done its work in the brief.
+A good brief built at high effort makes the deepest games; the same brief at medium makes thinner ones. The build follows the brief and the rules below, nothing else from DeepSeek Game Studios: the genre sheet has done its work in the brief.
 
 **In this file:** 1 Who builds · 2 The rules · 3 Build it · 4 Day-one screens · 5 The small
 check · 6 The report
@@ -28,12 +28,12 @@ check · 6 The report
    end and follow it. Images the brief names: <its references/ files, or none>.
    ```
 
-   An subagent tool with no `effort` input means `CLAUDE_CODE_EFFORT_LEVEL` fixes every agent's
+   An subagent tool with no `effort` input inherits this session's
    effort: build it here.
 3. Say one line as it starts, with the time it started (the `time` row `one-shot-new.sh`
    printed) and no estimate: "Building at this session's effort since <time>", "Building at
    <effort> effort on a builder since <time>", or "Building at the effort
-   CLAUDE_CODE_EFFORT_LEVEL sets since <time>".
+   this session was started with, since <time>".
 
    **Asked how long, or what we are waiting for,** while a build or a change is being made: run
    `date +%H:%M` first and count the minutes since it started (this `time` row, or the clock
@@ -45,7 +45,7 @@ check · 6 The report
    is left is the One-shot 4 step this session is on (making it, its light check, then the
    accept question).
 4. The handover's Effort line is the true one: `this session's`, `<effort> (set on the
-   builder)`, or `set by CLAUDE_CODE_EFFORT_LEVEL`. Never a level nobody set.
+   builder)`, or `set by the session's effort setting`. Never a level nobody set.
 5. The report (section 6) is the handover's material: a builder's comes back to this session,
    and built here, the lines go straight on the card. Check that
    `prototypes/<name>/evidence/check-run.yaml` is there; without it, the handover says "Not
@@ -97,7 +97,7 @@ And how to build:
   player, simulator, probe or test harness of your own, and play nothing headless yourself. What
   the small check cannot show, the card names as not checked, and the person's play covers it.
 - **A browser the sandbox stopped:** a `not_assessed` row with "no headless shell to try" and
-  `socket() failed: Operation not permitted` is 上游运行时's sandbox: install the shell once,
+  `socket() failed: Operation not permitted` is the upstream runtime's sandbox: install the shell once,
   outside it (`npx playwright install chromium-headless-shell`), and run the step again. Refused
   or failed: go on, and the report names what could not run.
 

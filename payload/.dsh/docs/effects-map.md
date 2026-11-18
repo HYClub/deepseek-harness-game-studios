@@ -1984,7 +1984,7 @@ skeleton-first output files for recovery
 | Value | Intent |
 |-------|--------|
 | `off` | Recovery via skeleton-first output files. Long-form skills write a complete skeleton (all section headers, empty bodies) before starting. If context clears or compacts, the agent reads the skeleton + relevant docs and resumes. The six session-state hooks do nothing, so no logs; skills still update the checkpoint in `active.md`, but session start does not show it. Saves at most ~750 tokens per session start. |
-| `on` | Full session tracking. Session-stop archival, compaction log and agent audit log all active. Adds the checkpoint preview to each session start, capped at 25 lines or 3,000 characters (at most ~750 tokens). Compaction hooks log to disk and add nothing to the agent's context. |
+| `on` | Full session tracking. Session-stop archival, compaction log and agent audit log all active. Adds the checkpoint preview to each session start, capped at 25 lines or 3,000 characters (at most ~750 tokens). Compaction hooks log to disk and add nothing to the upstream runtime's context. |
 
 ---
 
@@ -2002,8 +2002,8 @@ skeleton-first output files for recovery
 |------|--------------------|-------------------|
 | **session-start.sh** | Runs normally (git/sprint context) — skips active.yaml preview block | Runs fully including active.yaml preview |
 | **detect-gaps.sh** | Runs unchanged — gap detection is independent of session state | Runs unchanged |
-| **pre-compact.sh** | No-op — exits silently (no compaction-log append) | The CHECKPOINT block (and any STATUS lines) from `active.md`, changed and untracked file names and design docs with WIP markers — each list capped at 20 — then a compaction-log append; the output goes to the debug log, since PreCompact output never reaches the agent |
-| **post-compact.sh** | No-op — exits silently | Runs: prints a re-read reminder to the debug log (PostCompact output never reaches the agent; `session-start.sh` restores context) |
+| **pre-compact.sh** | No-op — exits silently (no compaction-log append) | The CHECKPOINT block (and any STATUS lines) from `active.md`, changed and untracked file names and design docs with WIP markers — each list capped at 20 — then a compaction-log append; the output goes to the debug log, since PreCompact output never reaches the upstream runtime |
+| **post-compact.sh** | No-op — exits silently | Runs: prints a re-read reminder to the debug log (PostCompact output never reaches the upstream runtime; `session-start.sh` restores context) |
 | **session-stop.sh** | No-op — exits silently | Archives active.yaml to session-log, appends commits and diffs |
 | **log-agent.sh** | No-op — exits silently | Appends to agent-audit.log |
 | **log-agent-stop.sh** | No-op — exits silently | Appends to agent-audit.log |
@@ -2135,7 +2135,7 @@ the `<!-- CHECKPOINT -->` block; the others append a SESSION EXTRACT.
 | Scenario | session_state: off | session_state: on |
 |----------|--------------------|-------------------|
 | Per session start | ~500 tokens (git/sprint context only) | ~500–1,250 tokens (+ checkpoint preview, at most ~750) |
-| Per compaction event | 0 (compaction hook output never reaches the agent) | 0 (logged to disk only) |
+| Per compaction event | 0 (compaction hook output never reaches the upstream runtime) | 0 (logged to disk only) |
 | Per session end | 0 | File I/O only (no conversation tokens) |
 | Recovery after /clear | Read skeleton + 2–3 docs (~1,000–3,000 tokens) | Read active.yaml (~200–500 tokens) |
 

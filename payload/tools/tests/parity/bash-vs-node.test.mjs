@@ -264,11 +264,19 @@ if (bash === undefined) {
 
 // Skips are expected only when the host has no python3 for the bash side's YAML helper. Anything else is
 // a regression that has to be visible, and PARITY_REQUIRE_ALL=1 (used where python3 exists) forbids them.
+// With no usable bash the comparison is ONE skip, reported above, and no pair ever reaches the per-pair
+// skip path — expecting 2 there made a bash-less machine fail with "0 of 2", which read like a parity
+// regression when nothing had been compared at all.
 {
-  const expectedSkips = python === '' ? 2 : 0;
-  check(`skips as expected (${skipped} of ${expectedSkips}, python ${python === '' ? 'absent' : `present as ${python}`})`, () => {
+  const noBash = bash === undefined;
+  const expectedSkips = noBash ? 0 : (python === '' ? 2 : 0);
+  const why = noBash ? 'no bash: the comparison was skipped as a whole' : `python ${python === '' ? 'absent' : `present as ${python}`}`;
+  check(`skips as expected (${skipped} of ${expectedSkips}, ${why})`, () => {
     assert.equal(skipped, expectedSkips, 'unexpected skip count — read the reason printed above');
-    if (process.env.PARITY_REQUIRE_ALL === '1') assert.equal(skipped, 0, 'PARITY_REQUIRE_ALL=1 requires every pair to run');
+    if (process.env.PARITY_REQUIRE_ALL === '1') {
+      assert.ok(bash !== undefined, 'PARITY_REQUIRE_ALL=1 requires a usable bash on this host');
+      assert.equal(skipped, 0, 'PARITY_REQUIRE_ALL=1 requires every pair to run');
+    }
   });
 }
 

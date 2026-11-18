@@ -224,7 +224,7 @@
 
 | Date | Author | Changes |
 |------|--------|---------|
-| [Date] | the agent (reverse-doc) | Initial reverse-documentation from `[source path]` |
+| [Date] | the upstream runtime (reverse-doc) | Initial reverse-documentation from `[source path]` |
 | [Date] | [User] | Clarified rationale for [X] |
 
 ---

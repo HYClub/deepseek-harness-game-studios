@@ -39,8 +39,12 @@ const VERDICTS = [
   'CRITICAL', 'HIGH', 'MEDIUM', 'LOW',
 ];
 
-/** Phrasing that promises an assessment — used when no verdict keyword is present. */
-const ASSESSMENT_WORDS = /review|audit|check|gate|readiness|validate|assess|verdict/i;
+/** Phrasing that promises an assessment — used when no verdict keyword is present.
+ *  Assessment NOUNS as whole words in the DESCRIPTION, not every verb that could mean "look
+ *  something up", and not identifiers: `modes.review_mode`, `validate_yaml_enum` and a status
+ *  value `In Review` used to make four cards fail for reporting state rather than judging it.
+ *  A card that really assesses says so in its description and is expected to emit PASS/FAIL. */
+const ASSESSMENT_WORDS = /\b(?:review|audit|readiness|assess|verdict|evaluation)\b/i;
 
 /** Split a leading `---` frontmatter block from the body. */
 function splitFrontmatter(text) {
@@ -138,7 +142,7 @@ export function checkSkill(name) {
 
   // 3 — a verdict vocabulary, or a documented reason not to have one.
   const found = VERDICTS.filter((word) => new RegExp(`\\b${word}\\b`).test(body));
-  const promisesAssessment = ASSESSMENT_WORDS.test(`${dshKeys.get('description') ?? ''}\n${body}`);
+  const promisesAssessment = ASSESSMENT_WORDS.test(String(dshKeys.get('description') ?? ''));
   if (found.length > 0) {
     detail.push(`Check 3 — Verdict Keywords:      PASS (${found.slice(0, 4).join(', ')}${found.length > 4 ? ', …' : ''})`);
   } else if (promisesAssessment) {

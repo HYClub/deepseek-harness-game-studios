@@ -53,7 +53,7 @@ Every `ask_user_question` call follows `.dsh/docs/automation-modes.md`
 
 **Argument modes:**
 
-**Focus:** `$ARGUMENTS` (blank = `full`)
+**Focus:** the text you wrote after the command (blank = `full`)
 
 - **No argument / `full`**: Both consistency and design theory passes
 - **`consistency`**: Cross-GDD consistency checks only (faster)

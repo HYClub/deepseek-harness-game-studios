@@ -6,14 +6,14 @@
 >
 > A skill's `model:` overrides the session model for the rest of the turn the
 > skill runs in, and your next prompt returns to the session model. Whether the
-> override happens depends on how the skill starts (measured on 上游运行时
+> override happens depends on how the skill starts (measured on the upstream runtime
 > 2.1.282):
 >
 > | How the skill starts | Is `model:` used? |
 > |---|---|
 > | You type `/skill-name` in Manual (`default`) mode | Yes |
 > | You type `/skill-name` in auto mode | `sonnet` and `opus`: yes. `haiku`: no — auto mode does not support Haiku, so the session keeps its model (documented) |
-> | the agent starts the skill itself, through the Skill tool | No — the session model runs it (measured; the docs do not say) |
+> | the upstream runtime starts the skill itself, through the Skill tool | No — the session model runs it (measured; the docs do not say) |
 >
 > Two things follow:
 >
@@ -21,7 +21,7 @@
 >   `/architecture-review`, `/gate-check` or `/review-all-gdds` moves that turn
 >   to Opus.
 > - **A `haiku` skill saves nothing in auto mode** (this project's settings start
->   terminal sessions in Manual, but a user can switch) — or when the agent starts
+>   terminal sessions in Manual, but a user can switch) — or when the upstream runtime starts
 >   it. Never tell a user a `haiku` tier is saving them money.
 >
 > Because the override ends at your next prompt, a skill that stops to ask you
@@ -29,12 +29,12 @@
 >
 > **This does NOT apply to agents.** `model:` in `.dsh/agents/*.md` is a
 > different mechanism, spawned as a separate session rather than executed inline,
-> and 上游运行时 documents it as applied: it is second in the subagent model
-> order, after a `model` the agent passes for one invocation. See the agent section
+> and the upstream runtime documents it as applied: it is second in the subagent model
+> order, after a `model` the upstream runtime passes for one invocation. See the agent section
 > below.
 
 Skills and agents are assigned tiers by task complexity. A tier is written as
-the alias `model:` takes, never as a model ID: 上游运行时 resolves each alias
+the alias `model:` takes, never as a model ID: the upstream runtime resolves each alias
 to the current model in that family, so this table does not change when a new
 model ships.
 
@@ -99,7 +99,7 @@ pin can be smaller too. A subagent starts from
 the brief it is given, not the parent's conversation, so this only matters when
 a brief is very large. If a pinned agent does overflow, run every subagent on
 the session's model with one line in your `.dsh/settings.local.json`
-(上游运行时 v2.1.257 or later):
+(the upstream runtime v2.1.257 or later):
 
 ```json
 { "env": { "CLAUDE_CODE_SUBAGENT_MODEL_FORCE": "1" } }

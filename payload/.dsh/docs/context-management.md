@@ -114,7 +114,7 @@ Two directories, two purposes — reach for the right one:
 
 | Directory | Purpose | Invoked by |
 |---|---|---|
-| `.dsh/hooks/` | Event-driven — wired into `settings.json` and fired by 上游运行时 | the harness |
+| `.dsh/hooks/` | Event-driven — wired into `settings.json` and fired by the upstream runtime | the harness |
 | `.dsh/scripts/` | Manually invoked from a skill body | `bash .dsh/scripts/<name>.sh` |
 
 Current helpers:

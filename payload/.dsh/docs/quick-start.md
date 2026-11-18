@@ -2,7 +2,7 @@
 
 ## What Is This?
 
-This is a complete 上游运行时 agent architecture for game development. It
+This is a complete agent architecture for game development. It
 organizes 49 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
@@ -297,9 +297,9 @@ If you have design docs, prototypes, or code already:
 AGENTS.md                          -- Master config (read this first, ~80 lines)
 project.yaml                       -- Machine-readable project config (engine, modes, stage) — source of truth
 .dsh/
-  settings.json                    -- 上游运行时 hooks and project settings
+  settings.json                    -- upstream hooks and project settings
   agents/                          -- 49 agent definitions (YAML frontmatter)
-  skills/                          -- 74 slash command definitions (YAML frontmatter)
+  skills/                          -- 83 slash command definitions (YAML frontmatter)
   hooks/                           -- 12 event hooks (.sh, wired by settings.json) + yaml-helper.sh
   rules/                           -- 13 path-specific rule files
   docs/

@@ -95,7 +95,7 @@ look is not.
 
 ## 1. Parse Arguments
 
-**Scope:** `$ARGUMENTS` with any `--review <mode>` pair removed (blank = ask user via ask_user_question). What remains is one value — a path may contain spaces.
+**Scope:** the text you wrote after the command with any `--review <mode>` pair removed (blank = ask user via ask_user_question). What remains is one value — a path may contain spaces.
 
 - **Specific path** (e.g., `/story-readiness production/epics/combat/story-001-basic-attack.md`):
   validate that single story file.

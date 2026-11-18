@@ -132,7 +132,7 @@ per-skill assignments and the authoring rule.
 
 **Load-bearing enough to restate here:** whether a skill's `model:` is used
 depends on how the skill starts. Typed as `/skill-name`: yes, except a `haiku`
-pin in auto mode. Started by the agent through the Skill tool: no. Never tell a
+pin in auto mode. Started by the upstream runtime through the Skill tool: no. Never tell a
 user a `haiku` skill saves money; an `opus` skill typed in a Sonnet session
 costs more. The agent-side `model:` is a different mechanism, and is applied.
 
@@ -142,7 +142,7 @@ This project uses two distinct multi-agent patterns:
 
 ### Subagents (current, always active)
 Spawned via the `Agent` tool within a single session (renamed from
-`Task` in 上游运行时 2.1.63; `Task` still works as an alias). Used by all
+`Task` in the upstream runtime 2.1.63; `Task` still works as an alias). Used by all
 `team-*` skills and orchestration skills. Subagents share the session's
 permission context, run sequentially or in parallel within the session, and
 return results to the parent.
@@ -155,7 +155,7 @@ Phase 1 loads the GDDs and both depend on it, so it is the one phase here that
 must NOT be parallelised.
 
 ### Agent Teams (experimental — opt-in)
-Multiple independent 上游运行时 *sessions* coordinated via a shared task list.
+Multiple independent *sessions* coordinated via a shared task list.
 Opt-in and never yet used here — read `.dsh/docs/agent-teams.md` on demand
 before proposing one.
 

@@ -14,8 +14,10 @@
 [CmdletBinding()]
 param(
   [string]$Source = (Split-Path -Parent $PSScriptRoot),
-  [string]$Payload = (Join-Path $env:USERPROFILE '.dsh\DSGS'),
-  [string]$SkillsHome = (Join-Path $env:USERPROFILE '.dsh\skills'),
+  # Same directory name and resolution as the plugin's self-installer (Windows: USERPROFILE,
+  # macOS/Linux: HOME), so the two installers never write two different payload copies.
+  [string]$Payload = (Join-Path (Join-Path $(if ($env:USERPROFILE) { $env:USERPROFILE } else { $env:HOME }) '.dsh') 'dsgs'),
+  [string]$SkillsHome = (Join-Path (Join-Path $(if ($env:USERPROFILE) { $env:USERPROFILE } else { $env:HOME }) '.dsh') 'skills'),
   [string]$Profile = 'web',
   [switch]$InstallPlugin,
   [switch]$Confirm

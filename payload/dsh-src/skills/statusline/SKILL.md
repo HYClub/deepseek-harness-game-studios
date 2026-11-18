@@ -15,7 +15,7 @@ user-invocable: true
        - the GUI's Plan panel is fed by the `todos` projection, which belongs to `todo_write`
          (writing there would clobber the model's own plan), and the Jobs panel is for background
          work.
-     So the *studio* half is printed h（见仓库 README 的 Known limits 一节）
+     So the *studio* half is printed by this skill instead — one line, in the transcript.
 
 # Statusline
 

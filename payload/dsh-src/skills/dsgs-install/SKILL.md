@@ -8,7 +8,8 @@ user-invocable: true
 <!-- DSGS-ONLY: upstream has no machine-level installer (its model is "clone the template").
      DSH needs one because skills are discovered only from `<workspace>/.dsh/skills` or the user-level
      `~/.dsh/skills`: in a bare folder neither exists, so nothing there even knows what "初始化 DSGS"
-     means. This skill is the one-time prerequisite; see docs（见仓库 README 的说明）
+     means. This skill is the one-time prerequisite: it lays down the payload that makes the phrase
+     resolvable in a folder that has no framework of its own yet.
 
 # DSGS machine-level install (机器级安装，一台机器一次)
 

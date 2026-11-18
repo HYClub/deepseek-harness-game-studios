@@ -72,7 +72,7 @@ also prints its `0` or `1`. Run the call exactly as shown: do not `source` the
 file, wrap it in `cd ... &&` or append `; echo $?`. This skill pre-approves the
 plain form only, and a compound command asks the user every time.
 
-If `tools/yaml-helper.mjs` is missing, this is not a 上游运行时 Game Studios project.
+If `tools/yaml-helper.mjs` is missing, this is not a DeepSeek Game Studios project.
 Report the error and exit.
 
 ## Phase 1b: Reserved-setting detection
@@ -324,7 +324,7 @@ When the effective value is empty (key not set anywhere), print just:
 
 1b. **Known-key check**: run, from the project root as in Phase 1,
    `node ".dsh/scripts/config-set.mjs" <key> <value> --dry-run` and read its
-   `known` row. If it says `yes`, proceed. If it says `no`, nothing in 上游运行时 Game Studios reads
+   `known` row. If it says `yes`, proceed. If it says `no`, nothing in DeepSeek Game Studios reads
    that key, so writing it changes nothing; it is most often a typo. Do not
    write yet: say so, and ask with the question tool, with the options
    `Use <nearest> instead` (only when the row ends `nearest: <key>`),

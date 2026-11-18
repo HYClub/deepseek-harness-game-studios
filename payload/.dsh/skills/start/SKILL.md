@@ -77,7 +77,7 @@ Store these findings internally to validate the user's self-assessment and tailo
 
 This is the first thing the user sees — unless Phase 1 found a returning user (engine configured, and a concept or brief present): then ask nothing here and answer as the **User is returning** edge case below. Otherwise, use `ask_user_question` with these exact options so the user can click rather than type:
 
-- **Prompt**: "Welcome to 上游运行时 Game Studios! Before I suggest anything, I'd like to understand where you're starting from. Where are you at with your game idea right now?"
+- **Prompt**: "Welcome to DeepSeek Game Studios! Before I suggest anything, I'd like to understand where you're starting from. Where are you at with your game idea right now?"
 - **Options**:
   - `A) No idea yet` — I don't have a game concept at all. I want to explore and figure out what to make.
   - `B) Vague idea` — I have a rough theme, feeling, or genre in mind (e.g., "something with space" or "a cozy farming game") but nothing concrete.
@@ -375,7 +375,7 @@ trigger in `.dsh/docs/settings-guidance.md § 4`: say so once, in one sentence,
 and offer `/settings` to change it. Do not re-ask.
 
 If Phase 1 found `origin` pointing at the template repo, add once, after the path:
-"Your clone's `origin` still points at the 上游运行时 Game Studios repo, so a push
+"Your clone's `origin` still points at the DeepSeek Game Studios repo, so a push
 or pull request would go there, not to your game. When you're ready:
 `git remote rename origin template` (the name `UPGRADING.md` uses to pull updates),
 then `git remote add origin <your repo URL>`. After the rename, `template` already

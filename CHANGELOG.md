@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.3.8 — hooks run in the desktop app
+
+The desktop app now mounts the project's hooks when a session opens. Before this release, a
+plugin installed in the app started from the app's own folder, found no project there, and
+silently ran no hooks. It now waits for the session's workspace and mounts the project it finds.
+
+The same release restores two template files that package managers drop on install:
+`.gitignore` and `.gitattributes`. A project initialised from the plugin now matches one
+initialised from the source, and both files remain ordinary template files you can edit or
+remove.
+
+- The desktop app loads the project's hooks from the session's workspace. `/start` and later
+  sessions get the same checks as a CLI install.
+- Undo removes only files the initialiser created. A file or folder you added under `src/`
+  (or anywhere else) survives it, and the plan printed before deleting tells the truth.
+- A project created by `/start` reports its stage in `/today` and `/dashboard` immediately,
+  instead of showing "unknown" until a session checkpoint exists.
+
 ## 0.3.7 — the market can install this
 
 Installing from the plugin market used to end the same way every time: the download finished, and then

@@ -247,7 +247,7 @@ cite the file it came from. Where the skill's or agent's own file contradicts
 it, the own file wins: it is the more specific instruction.
 
 **For an agent**, the spec's sections are evaluated against the agent file —
-and against every skill its frontmatter lists under `skills:`, which 上游运行时 loads into the agent at launch:
+and against every skill its frontmatter lists under `skills:`, which the upstream runtime loads into the agent at launch:
 
 - **Static Assertions** — check each against the agent's frontmatter and body.
   An assertion that names a literal value (a `model:` alias, a frontmatter key,

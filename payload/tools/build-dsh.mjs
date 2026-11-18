@@ -276,27 +276,155 @@ function bannerUnderTitle(text, banner) {
  * @returns {string} the same text with the other runtime's name replaced
  */
 function neutralizeRuntime(text) {
+  // The studio's own name is a brand, not a product reference. Park it for the whole pass: the
+  // `Claude`/`Claude Code` rules would otherwise eat half of it (`\bClaude\b` turned it into
+  // "the agent Code Game Studios"), and the brand rule then had nothing left to match.
+  const BRAND = '\u0000brand-name\u0000';
   return text
+    .split('Claude Code Game Studios').join(BRAND)
     // Instruction file: DSH's is AGENTS.md, which carries the engine anchor /setup-engine writes.
     .replace(/CLAUDE-local-template\.md/gi, 'local-instructions-template.md')
     .replace(/CLAUDE\.local\.md/gi, 'local overrides file')
     .replace(/CLAUDE\.md/g, 'AGENTS.md')
     .replace(/a fresh Claude Code session/g, 'a fresh session')
     .replace(/independent Claude session/g, 'independent session')
+    .replace(/Claude\s+Code sessions/g, 'sessions')
+    .replace(/Claude\s+Code \*sessions\*/g, '*sessions*')
     .replace(/Claude\s+Code session/g, 'session')
     .replace(/Claude-evaluated/g, 'model-judged')
+    // Adjective positions: "the upstream runtime extension" reads wrong. Say "upstream X" there,
+    // then the general rule below covers the noun positions ("which … loads", "… permission-checks").
+    .replace(/your Claude plan/g, 'your plan')
+    .replace(/I made it with Claude/g, 'I made it with an AI assistant')
+    .replace(/with the Claude Code extension/g, 'with the upstream extension')
+    .replace(/with Claude Code extension/g, 'with the upstream extension')
+    .replace(/Claude Code hooks\b/g, 'upstream hooks')
+    .replace(/Claude Code hook\b/g, 'upstream hook')
+    .replace(/Claude Code extension/g, 'upstream extension')
+    .replace(/Claude Code CLI/g, 'upstream CLI')
+    .replace(/Claude Code compatible/g, 'upstream-compatible')
+    .replace(/Claude Code agent architecture/g, 'agent architecture')
+    // Sentence-initial names take a capital; the general rule below is lowercase.
+    .replace(/(^|[.!?]\s+)Claude\s+Code(?!\s+Game\s+Studios)/gm, (_m, lead) => `${lead}The upstream runtime`)
     // Whitespace-tolerant: upstream prose wraps the phrase across lines ("…which Claude\nCode loads…").
-    .replace(/Claude\s+Code/g, '上游运行时')
-    .replace(/Claude's/g, "the agent's")
-    .replace(/\bClaude\b/g, 'the agent')
+    // The replacement is English on purpose: this text is read inside English sentences, where the
+    // old Chinese label ("上游运行时") produced "Multiple independent 上游运行时 *sessions*".
+    .replace(/Claude\s+Code(?!\s+Game\s+Studios)/g, 'the upstream runtime')
+    .replace(/Claude's/g, "the upstream runtime's")
+    .replace(/\bClaude\b/g, 'the upstream runtime')
+    // A skill card's arguments. Upstream expands `$ARGUMENTS` before the model sees the text; DSH's
+    // `skill` tool takes a name and nothing else, so the literal would arrive as `$ARGUMENTS` and the
+    // card would read "determine X from `$ARGUMENTS`" with nothing to determine it from. Say it in words.
+    .replace(/`\$ARGUMENTS`/g, 'the text you wrote after the command')
+    .replace(/\$ARGUMENTS\b/g, 'the text you wrote after the command')
+    // The other runtime's effort variable is read by a shell command. Nothing sets it here, and the
+    // upstream sentence wraps mid-command, so each line is replaced locally: a paragraph-spanning
+    // rewrite would break the line-by-line fidelity check (and the card's line count).
+    .replace(/run `printenv$/m, 'use the effort setting this session was started with')
+    .replace(
+      /CLAUDE_CODE_EFFORT_LEVEL` in a shell \(no output means it is unset\)\. A value printed fixes this/g,
+      '(DSH does not export it as an environment variable). That setting fixes this',
+    )
+    .replace(
+      /An Agent tool with no `effort` input means `CLAUDE_CODE_EFFORT_LEVEL` fixes every agent's/g,
+      "An Agent tool with no `effort` input inherits this session's",
+    )
+    .replace(/CLAUDE_CODE_EFFORT_LEVEL sets since <time>/g, 'this session was started with, since <time>')
+    // Everywhere else the name is only a label in the Effort line, so a phrase reads correctly.
+    .replace(/CLAUDE_CODE_EFFORT_LEVEL/g, "the session's effort setting")
     // Environment variables of the other runtime have no DSH equivalent; name the concept
     // instead of inventing a variable that nothing sets.
     .replace(/\$\{CLAUDE_PROJECT_DIR:-\.\}/g, '<project root>')
-    .replace(/\$\{CLAUDE_PROJECT_DIR\}/g, '<launch dir>');
+    .replace(/\$\{CLAUDE_PROJECT_DIR\}/g, '<launch dir>')
+    .split(BRAND).join('Claude Code Game Studios');
     // Template-origin check compares a `git remote` URL against the upstream repository slug.
     // The slug is KEPT: it is a factual provenance marker (which template you cloned from), not
     // a product name presented as ours, and the upstream spec's Case 4 asserts the literal — the
     // brand rules below cover the words `Claude Code Game Studios` and `CCGS` instead.
+}
+
+/**
+ * The generated skills catalog lists upstream's 74 commands. DSGS has 83: four synced from the
+ * upstream v1.3.0 line and five written for this port. A reader who types `/statusline` must find
+ * it there, and the intro's count must match the tree. Appending is safe for the fidelity check:
+ * it asserts that every source line survives, not that every generated line came from the source.
+ */
+const DSGS_ADDED_SKILLS = [
+  ['cut', 'Propose cuts and a polish list to finish the game; the person picks each cut'],
+  ['next-step', 'Name the one next step: make a game, change it, grow it, or the next studio-mode step'],
+  ['project-settings', 'Show or change a project setting and where its value comes from'],
+  ['write-changelog', 'Write a changelog from git commits and sprint data'],
+  ['statusline', 'Print the studio status line — stage, posture, epic > story, sprint, engine — as one line'],
+  ['today', 'Answer "what do I do now" in three to five lines'],
+  ['dashboard', 'Render the studio state as one offline HTML board'],
+  ['update', 'Check for a newer DSGS release and update the profile after you confirm'],
+  ['dsgs-install', 'Install DSGS machine-wide, so any empty folder can be initialised'],
+];
+
+/** Adjust the few shipped docs whose counts describe DSGS rather than upstream. */
+function adjustShippedDoc(rel, text) {
+  if (rel === 'docs/skills-reference.md') {
+    const intro = text
+      .replace(
+        '74 slash commands organized by phase.',
+        '74 upstream slash commands plus 9 added by DSGS (83 total), organized by phase.',
+      )
+      // This catalog is read by a DSH user, so the access instruction names DSH, not the
+      // upstream runtime the source had in that sentence.
+      .replace('Type `/` in the upstream runtime to access any of them.', 'Type `/` in DSH to access any of them.');
+    const section = [
+      '## Added by DSGS',
+      '',
+      'Nine commands exist here beyond the 74 upstream ones: four synced from the upstream',
+      'v1.3.0 line, five written for this port.',
+      '',
+      '| Command | Purpose |',
+      '|---|---|',
+      ...DSGS_ADDED_SKILLS.map(([name, purpose]) => `| \`/${name}\` | ${purpose} |`),
+      '',
+    ].join('\n');
+    return intro.includes('\n## Overlap with')
+      ? intro.replace('\n## Overlap with', `\n${section}\n## Overlap with`)
+      : `${intro.replace(/\s*$/, '')}\n\n${section}`;
+  }
+  if (rel === 'docs/quick-start.md') {
+    return text.replace('74 slash command definitions', '83 slash command definitions');
+  }
+  if (rel === 'docs/setup-requirements.md') {
+    return text.replace('DSGS ships 74 skills', 'DSGS ships 83 skills');
+  }
+  return text;
+}
+
+/** The QA card was copied from the programmer template; its workflow asks implementation questions. */
+const QA_TESTER_REWRITES = [
+  ['#### Implementation Workflow', '#### Test Workflow'],
+  ['Before writing any code:', 'Before writing any test:'],
+  ["- Note any deviations from standard patterns", '- Note any rule or invariant the test must pin'],
+  ['- Flag potential implementation challenges', '- Flag cases the design does not cover'],
+  ['2. **Ask architecture questions:**', '2. **Ask test-design questions:**'],
+  ['"Should this be a static utility class or a scene node?"', '"Which story or system does this case belong to, and what does a failure look like?"'],
+  ['"Where should [data] live? ([SystemData]? [Container] class? Config file?)"', '"Which fixture, save state or seed does this case start from?"'],
+  ['"This will require changes to [other system]. Should I coordinate with that first?"', '"This needs a test hook in [other system]. Should I coordinate that first?"'],
+  ['3. **Propose architecture before implementing:**', '3. **Propose the test approach before writing:**'],
+  ['- Show class structure, file organization, data flow', '- Show the case list, fixtures, and what each assertion proves'],
+  ["- Explain WHY you're recommending this approach (patterns, engine conventions, maintainability)", '- Explain why this coverage is enough (risks, engine conventions, maintenance cost)'],
+  ['- Highlight trade-offs: "This approach is simpler but less flexible" vs "This is more complex but more extensible"', '- Highlight trade-offs: "This is faster but tests less" vs "This is slower but catches more"'],
+  ['- Ask: "Does this match your expectations? Any changes before I write the code?"', '- Ask: "Does this cover the risks you care about? Any cases to add before I write them?"'],
+  ['4. **Implement with transparency:**', '4. **Write with transparency:**'],
+  ['- If you encounter spec ambiguities during implementation, STOP and ask', '- If you encounter spec ambiguities while writing, STOP and ask'],
+  ['- "Should I write tests now, or would you like to review the implementation first?"', '- "Should I write the automated test now, or would you like to review the cases first?"'],
+  ['- "I notice [potential improvement]. Should I refactor, or is this good for now?"', '- "I notice [potential improvement]. Should I extend coverage, or is this good for now?"'],
+  ["- Propose architecture, don't just implement — show your thinking", "- Propose the test plan, don't just run steps — show your thinking"],
+  ['- Flag deviations from design docs explicitly — designer should know if implementation differs', '- Flag deviations from design docs explicitly — designer should know if coverage differs'],
+];
+
+/** Role-card fixes that apply to exactly one generated card. */
+function adjustAgentCard(rel, text) {
+  if (rel !== 'agents/qa-tester.md') return text;
+  let out = text;
+  for (const [from, to] of QA_TESTER_REWRITES) out = out.split(from).join(to);
+  return out;
 }
 
 /**
@@ -354,9 +482,11 @@ async function rewriteText(text, kind, rel) {
   }
   // Every document under `docs/hooks-reference/` describes an upstream BASH hook implementation.
   // It gets the banner (and the POSIX scan in check-dsh exempts it) rather than having its
-  // examples rewritten: the examples ARE the subject matter.
-  if (rel.startsWith('docs/hooks-reference/')) out = bannerUnderTitle(out, UPSTREAM_DOC_BANNER);
-  if (UPSTREAM_ONLY_DOCS.has(rel)) out = bannerUnderTitle(out, UPSTREAM_DOC_BANNER);
+  // examples rewritten: the examples ARE the subject matter. `||` matters: one of these files is
+  // also in UPSTREAM_ONLY_DOCS, and applying the banner twice duplicated the note in the payload.
+  if (rel.startsWith('docs/hooks-reference/') || UPSTREAM_ONLY_DOCS.has(rel)) {
+    out = bannerUnderTitle(out, UPSTREAM_DOC_BANNER);
+  }
 
   // The studio's own name. `.claude/**` is upstream content (kept byte-identical for
   // clean `git pull`), so the brand is applied HERE, while generating: the DSH side
@@ -371,8 +501,13 @@ async function rewriteText(text, kind, rel) {
   out = out.replace(/\$\{?CLAUDE_SKILL_DIR\}?\s*\/\s*\.\.\s*\/\s*\.\./g, '.dsh');
   out = out.replace(/\$\{?CLAUDE_SKILL_DIR\}?/g, '<skill_dir>');
 
-  // Framework asset paths: `.claude/...` -> `.dsh/...` (never touches "Claude Code").
+  // Framework asset paths: `.claude/...` -> `.dsh/...` (never touches "Claude Code"). The vendor's own
+  // documentation host has to survive: `.claude` is a path segment there, not ours to rename, and
+  // rewriting it produced `code.dsh.com` — a dead link in shipped docs. Guard the one literal we know.
+  const DOMAIN_GUARD = '\u0000claude-domain\u0000';
+  out = out.split('code.claude.com').join(DOMAIN_GUARD);
   out = out.replace(/\.claude\b/g, '.dsh');
+  out = out.split(DOMAIN_GUARD).join('code.claude.com');
 
   // Distinctive Claude tool names are unambiguous anywhere.
   for (const [from, to] of DISTINCTIVE_TOOLS) {
@@ -721,7 +856,12 @@ async function convert() {
     const target = join(OUT_ROOT, outRel);
     const raw = await readFile(file, 'utf8');
     const kind = kindFor(rel);
-    const output = isTextFile(file) ? await rewriteText(raw, kind, outRel) : raw;
+    const rewritten = isTextFile(file) ? await rewriteText(raw, kind, outRel) : raw;
+    const output = kind === 'doc'
+      ? adjustShippedDoc(outRel, rewritten)
+      : kind === 'agent'
+        ? adjustAgentCard(outRel, rewritten)
+        : rewritten;
 
     if (DRY_RUN) {
       if (!existsSync(target) || (await readFile(target, 'utf8')) !== output) changed += 1;

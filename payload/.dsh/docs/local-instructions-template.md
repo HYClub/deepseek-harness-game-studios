@@ -20,7 +20,7 @@ This file is gitignored and will not be committed.
 ## Local Environment
 - Python command: python (or py / python3)
 - Shell: Git Bash on Windows
-- IDE: VS Code with 上游运行时 extension
+- IDE: VS Code with the upstream extension
 
 ## Communication Style
 - Keep responses concise
@@ -36,4 +36,4 @@ This file is gitignored and will not be committed.
 
 1. Copy this template to your project root: `cp .dsh/docs/local-instructions-template.md local overrides file`
 2. Edit to match your preferences
-3. Verify `local overrides file` is in `.gitignore` (上游运行时 reads it from the project root)
+3. Verify `local overrides file` is in `.gitignore` (the upstream runtime reads it from the project root)

@@ -16,7 +16,7 @@ before it closes**, and the observation is a **retained screenshot** in
 `production/qa/evidence/`. Compiling proves the code loads. Tests prove the
 logic. Neither proves the text fits in the box.
 
-The agent can see images: 上游运行时's `read` tool renders a PNG. The whole
+The agent can see images: the upstream runtime's `read` tool renders a PNG. The whole
 problem is getting a picture out of the engine unattended, and every supported
 engine has a native way.
 
@@ -140,7 +140,7 @@ the editor or a command you have confirmed (see
 
 `-game` runs standalone without the editor UI. The map is a **positional URL
 immediately after the `.uproject`** — not a console command. **The
-`MSYS_NO_PATHCONV=1` prefix is required on Windows:** 上游运行时 runs commands
+`MSYS_NO_PATHCONV=1` prefix is required on Windows:** the upstream runtime runs commands
 in Git Bash, which rewrites any argument beginning with `/` as a Windows path, so
 `/Game/Maps/Shop` reaches the engine as `C:/Program Files/Git/Game/Maps/Shop`
 and the game stops on a "map not found" dialog nobody can see. Alternatively

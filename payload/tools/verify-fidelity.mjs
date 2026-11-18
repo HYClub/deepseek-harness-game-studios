@@ -97,10 +97,50 @@ const REWRITES = [
   [/CLAUDE-local-template\.md/gi, 'local-instructions-template.md'],
   [/CLAUDE\.local\.md/gi, 'local overrides file'],
   [/CLAUDE\.md/g, 'AGENTS.md'],
-  [/Claude\s+Code/g, '上游运行时'],
-  [/Claude's/g, "the agent's"],
-  [/\bClaude\b/g, 'the agent'],
-  [/\.claude\b/g, '.dsh'],
+  [/a fresh Claude Code session/g, 'a fresh session'],
+  [/independent Claude session/g, 'independent session'],
+  [/Claude\s+Code sessions/g, 'sessions'],
+  [/Claude\s+Code \*sessions\*/g, '*sessions*'],
+  [/Claude\s+Code session/g, 'session'],
+  [/Claude-evaluated/g, 'model-judged'],
+  // Adjective positions: "the upstream runtime extension" reads wrong. The generator uses the
+  // same guards before its general rule; keep the two tables in step.
+  [/your Claude plan/g, 'your plan'],
+  [/I made it with Claude/g, 'I made it with an AI assistant'],
+  [/with the Claude Code extension/g, 'with the upstream extension'],
+  [/with Claude Code extension/g, 'with the upstream extension'],
+  [/Claude Code hooks\b/g, 'upstream hooks'],
+  [/Claude Code hook\b/g, 'upstream hook'],
+  [/Claude Code extension/g, 'upstream extension'],
+  [/Claude Code CLI/g, 'upstream CLI'],
+  [/Claude Code compatible/g, 'upstream-compatible'],
+  [/Claude Code agent architecture/g, 'agent architecture'],
+  [/(^|[.!?]\s+)Claude\s+Code(?!\s+Game\s+Studios)/gm, (_m, lead) => `${lead}The upstream runtime`],
+  [/Claude\s+Code(?!\s+Game\s+Studios)/g, 'the upstream runtime'],
+  [/Claude's/g, "the upstream runtime's"],
+  [/\bClaude\b/g, 'the upstream runtime'],
+  // Shipped docs whose counts describe DSGS, not upstream (see adjustShippedDoc in build-dsh).
+  [/74 slash commands organized by phase/g, '74 upstream slash commands plus 9 added by DSGS (83 total), organized by phase'],
+  [/Type `\/` in Claude Code to access any of them\./g, 'Type `/` in DSH to access any of them.'],
+  [/74 slash command definitions/g, '83 slash command definitions'],
+  [/CCGS ships 74 skills/g, 'DSGS ships 83 skills'],
+  [/DSGS ships 74 skills/g, 'DSGS ships 83 skills'],
+  // A skill card's arguments: DSH's `skill` tool takes a name and nothing else, so the
+  // upstream placeholder is spelled out in words instead of arriving as a literal.
+  [/`\$ARGUMENTS`/g, 'the text you wrote after the command'],
+  [/\$ARGUMENTS\b/g, 'the text you wrote after the command'],
+  // The shell check the other runtime's effort variable needs has no equivalent here. The generator
+  // replaces it line by line (the upstream sentence wraps mid-command), so model the same rules.
+  [/run `printenv$/m, 'use the effort setting this session was started with'],
+  [/CLAUDE_CODE_EFFORT_LEVEL` in a shell \(no output means it is unset\)\. A value printed fixes this/g,
+    '(DSH does not export it as an environment variable). That setting fixes this'],
+  [/An Agent tool with no `effort` input means `CLAUDE_CODE_EFFORT_LEVEL` fixes every agent's/g,
+    "An Agent tool with no `effort` input inherits this session's"],
+  [/CLAUDE_CODE_EFFORT_LEVEL sets since <time>/g, 'this session was started with, since <time>'],
+  [/CLAUDE_CODE_EFFORT_LEVEL/g, "the session's effort setting"],
+  // `.claude` → `.dsh`, except inside the vendor's documentation host: that is not a path of ours.
+  // `offset` points at the dot, so the four characters before it are `code`.
+  [/\.claude\b/g, (match, offset, whole) => (whole.slice(Math.max(0, offset - 4), offset) === 'code' ? '.claude' : '.dsh')],
   [/yaml-helper\.sh/g, 'tools/yaml-helper.mjs'],
   [/_yaml_helper_defaults\b/g, 'the defaults table in `tools/yaml-helper.mjs`'],
   [/_yaml_helper_rigor_expansion\b/g, 'the rigor expansion table in `tools/yaml-helper.mjs`'],
@@ -159,7 +199,30 @@ function bestContainment(line, generatedTokens) {
  * The port's documented rewrites, applied to a fixed point: a single upstream line may need
  * several (tool names inside a line that also moves `.claude` to `.dsh`, for example).
  */
-function variants(line) {
+/** Per-card fixes; keep in step with QA_TESTER_REWRITES in build-dsh.mjs. */
+const QA_TESTER_REWRITES = [
+  ['#### Implementation Workflow', '#### Test Workflow'],
+  ['Before writing any code:', 'Before writing any test:'],
+  ["- Note any deviations from standard patterns", '- Note any rule or invariant the test must pin'],
+  ['- Flag potential implementation challenges', '- Flag cases the design does not cover'],
+  ['2. **Ask architecture questions:**', '2. **Ask test-design questions:**'],
+  ['"Should this be a static utility class or a scene node?"', '"Which story or system does this case belong to, and what does a failure look like?"'],
+  ['"Where should [data] live? ([SystemData]? [Container] class? Config file?)"', '"Which fixture, save state or seed does this case start from?"'],
+  ['"This will require changes to [other system]. Should I coordinate with that first?"', '"This needs a test hook in [other system]. Should I coordinate that first?"'],
+  ['3. **Propose architecture before implementing:**', '3. **Propose the test approach before writing:**'],
+  ['- Show class structure, file organization, data flow', '- Show the case list, fixtures, and what each assertion proves'],
+  ["- Explain WHY you're recommending this approach (patterns, engine conventions, maintainability)", '- Explain why this coverage is enough (risks, engine conventions, maintenance cost)'],
+  ['- Highlight trade-offs: "This approach is simpler but less flexible" vs "This is more complex but more extensible"', '- Highlight trade-offs: "This is faster but tests less" vs "This is slower but catches more"'],
+  ['- Ask: "Does this match your expectations? Any changes before I write the code?"', '- Ask: "Does this cover the risks you care about? Any cases to add before I write them?"'],
+  ['4. **Implement with transparency:**', '4. **Write with transparency:**'],
+  ['- If you encounter spec ambiguities during implementation, STOP and ask', '- If you encounter spec ambiguities while writing, STOP and ask'],
+  ['- "Should I write tests now, or would you like to review the implementation first?"', '- "Should I write the automated test now, or would you like to review the cases first?"'],
+  ['- "I notice [potential improvement]. Should I refactor, or is this good for now?"', '- "I notice [potential improvement]. Should I extend coverage, or is this good for now?"'],
+  ["- Propose architecture, don't just implement — show your thinking", "- Propose the test plan, don't just run steps — show your thinking"],
+  ['- Flag deviations from design docs explicitly — designer should know if implementation differs', '- Flag deviations from design docs explicitly — designer should know if coverage differs'],
+];
+
+function variants(line, rel) {
   const out = new Set([line.replace(/\s+/g, ' ')]);
   for (let pass = 0; pass < 3; pass += 1) {
     for (const value of [...out]) {
@@ -169,11 +232,18 @@ function variants(line) {
       }
     }
   }
+  if (rel === 'agents/qa-tester.md') {
+    for (const value of [...out]) {
+      let next = value;
+      for (const [from, to] of QA_TESTER_REWRITES) next = next.split(from).join(to);
+      if (next !== value) out.add(next);
+    }
+  }
   return out;
 }
 
 /** Compare one source file against its generated counterpart. */
-function compare(sourcePath, generatedPath) {
+function compare(sourcePath, generatedPath, rel) {
   const source = stripAnnotations(readFileSync(sourcePath, 'utf8'));
   const generatedRaw = readFileSync(generatedPath, 'utf8');
   const generated = stripAnnotations(generatedRaw);
@@ -192,7 +262,7 @@ function compare(sourcePath, generatedPath) {
       result.structural += 1;
       continue;
     }
-    const candidates = variants(line);
+    const candidates = variants(line, rel);
     let matched = false;
     for (const candidate of candidates) {
       if (candidate.length > 2 && (generatedLines.has(candidate) || generatedSquashed.includes(candidate))) {
@@ -233,7 +303,7 @@ function main() {
       // A file with no generated counterpart is reported by check-dsh's parity pass, not here.
       if (!existsSync(generatedPath)) continue;
       files += 1;
-      const result = compare(sourcePath, generatedPath);
+      const result = compare(sourcePath, generatedPath, `${label}/${rel}`);
       lines += result.total;
       verbatim += result.verbatim;
       rewritten += result.rewritten;

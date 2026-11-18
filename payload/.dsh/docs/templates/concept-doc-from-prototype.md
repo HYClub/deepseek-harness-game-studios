@@ -290,7 +290,7 @@
 
 | Date | Author | Changes |
 |------|--------|---------|
-| [Date] | the agent (reverse-doc) | Initial concept doc from prototype analysis |
+| [Date] | the upstream runtime (reverse-doc) | Initial concept doc from prototype analysis |
 | [Date] | [User] | Clarified outcomes, added playtest feedback |
 
 ---

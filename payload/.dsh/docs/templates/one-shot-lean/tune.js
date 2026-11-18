@@ -5,7 +5,7 @@
 // each config.js value that has value, min, max and step, and a button for each option of a
 // switch (a word value with options), in the file's order; the game reads them live through
 // tune.<name>. Save keeps them in this browser and copies them as a block the person pastes to
-// the agent, who writes them into config.js (one-shot-tune.sh); Reset goes back to the last saved
+// the upstream runtime, who writes them into config.js (one-shot-tune.sh); Reset goes back to the last saved
 // values. On this computer only: a shared build leaves this file out (one-shot-share.sh), and
 // on a page served from anywhere else it does nothing.
 //
@@ -36,7 +36,7 @@
   const snap = (k, v) => Number(Number(v).toFixed((String(CONFIG[k].step).split('.')[1] || '').length));
   const moved = k => dispatchEvent(new CustomEvent('tune', { detail: { key: k } })); // for a value the game reads once
 
-  // A saved value stands only while config.js still holds the value it replaced: once the agent
+  // A saved value stands only while config.js still holds the value it replaced: once the upstream runtime
   // writes it in, or config.js changes another way, this browser's copy is dropped.
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { saved = {}; }
@@ -78,7 +78,7 @@
     out.value = block();
     out.style.display = out.value ? 'block' : 'none';
     if (!out.value) { note.textContent = kept + 'Nothing differs from config.js.'; return; }
-    const said = ok => { note.textContent = kept + (ok ? 'Copied: paste it to the agent and say keep.' : 'Press Ctrl+C to copy it, then paste it to the agent and say keep.'); };
+    const said = ok => { note.textContent = kept + (ok ? 'Copied: paste it to the upstream runtime and say keep.' : 'Press Ctrl+C to copy it, then paste it to the upstream runtime and say keep.'); };
     out.focus(); out.select();
     let copied = false;
     try { copied = document.execCommand('copy'); } catch (e) { copied = false; }

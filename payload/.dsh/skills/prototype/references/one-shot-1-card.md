@@ -109,7 +109,7 @@ with the default marked "(usual)":
    counts in the eight. Their words may settle it ("just test the grapple" is a quick test);
    then it is not asked. A quick test goes to Spike Mode (`references/spike-mode.md`) with the
    mechanic in their words as its question: no brief is written here. A spending limit on the
-   session (a budget 上游运行时 shows, a cap the person set) is never said to them, or used to
+   session (a budget the upstream runtime shows, a cap the person set) is never said to them, or used to
    pick a slice or a quick test, or an effort for them:
    ask the question as it stands.
 
@@ -209,10 +209,10 @@ Writes: design/game-brief.md, prototypes/<name>/
 ```
 
 - **Effort** is this session's: the session builds the game itself (the build file says how),
-  and high makes the deepest game. Before writing the line, run `printenv
-  CLAUDE_CODE_EFFORT_LEVEL` in a shell (no output means it is unset). A value printed fixes this
-  session's effort and every agent's, and the line reads `Effort: set by CLAUDE_CODE_EFFORT_LEVEL
-  outside 上游运行时 Game Studios (change it there for another)`.
+  and high makes the deepest game. Before writing the line, use the effort setting this session was started with
+  (DSH does not export it as an environment variable). That setting fixes this
+  session's effort and every agent's, and the line reads `Effort: set by the session's effort setting
+  outside DeepSeek Game Studios (change it there for another)`.
 - **No price or time.** The brief names no cost and no minutes, and nothing before Build it
   estimates them; asked, say it depends on the game's size and the effort.
 - **A lower effort only when the person names one** ("build it at medium"); xhigh too, and

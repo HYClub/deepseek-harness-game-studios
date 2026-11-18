@@ -13,7 +13,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, copyFileSyn
 import { join } from 'node:path';
 
 /** Payload version stamped into `<home>/DSGS/package-version.txt`. */
-export const INSTALL_VERSION = '0.3.7';
+export const INSTALL_VERSION = '0.3.8';
 
 /** Paths never copied out of the framework (build output, scratch, caches). */
 const SKIP = new Set(['node_modules', '.git', 'dist', '.smoke', '_external', '.verify-logs', '.local-backups', 'production/session-logs']);
@@ -39,6 +39,31 @@ function copyTree(from, to, onFile) {
       onFile?.(entry);
     }
   }
+}
+
+/**
+ * npm and pnpm drop `.gitignore` / `.gitattributes` when they install a package. The payload carries
+ * `<name>.template` copies instead; write them back under the real name (never replacing a real file).
+ * Runs even when the version stamp is current, so an already-installed payload is repaired in place.
+ * @param dir - installed payload root.
+ * @returns how many real files were restored.
+ */
+function restoreDotfiles(dir) {
+  let restored = 0;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const src = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      restored += restoreDotfiles(src);
+      continue;
+    }
+    if (!entry.name.endsWith('.template')) continue;
+    const real = join(dir, entry.name.slice(0, -'.template'.length));
+    if (!existsSync(real)) {
+      copyFileSync(src, real);
+      restored += 1;
+    }
+  }
+  return restored;
 }
 
 /**
@@ -155,16 +180,33 @@ export function ensureMachineInstall({ payloadDir, homeDir, log = () => {} }) {
     const target = join(homeDir, 'dsgs');
     const stamp = join(target, 'package-version.txt');
     const skillsPresent = ['dsgs-init', 'start'].every((n) => existsSync(join(homeDir, 'skills', n, 'SKILL.md')));
-    const fresh = skillsPresent && existsSync(join(target, '.dsh', 'skills')) && existsSync(stamp) && readFileSync(stamp, 'utf8').trim() === INSTALL_VERSION;
+    // A package manager strips `.gitignore`; the payload's `.template` copies are the fallback. A target
+    // that has the stamp but no restored dotfiles is incomplete, not fresh — otherwise it would never heal.
+    const templates = [];
+    const collectTemplates = (dir) => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const p = join(dir, entry.name);
+        if (entry.isDirectory()) collectTemplates(p);
+        else if (entry.name.endsWith('.template')) templates.push(p.slice(payloadDir.length + 1));
+      }
+    };
+    collectTemplates(payloadDir);
+    const dotfilesPresent = templates.every((rel) => existsSync(join(target, rel.slice(0, -'.template'.length))));
+    const fresh = skillsPresent && dotfilesPresent && existsSync(join(target, '.dsh', 'skills')) && existsSync(stamp) && readFileSync(stamp, 'utf8').trim() === INSTALL_VERSION;
     if (!fresh) {
       // `target` is a managed directory: rebuild it so files removed from the payload disappear too.
       rmSync(target, { recursive: true, force: true });
       mkdirSync(target, { recursive: true });
       copyTree(payloadDir, target, null);
       writeFileSync(stamp, INSTALL_VERSION);
-      report.payloadInstalled = !existsSync(stamp) ? true : true;
+      report.payloadInstalled = true;
       report.payloadRefreshed = true;
       log(`payload installed at ${target}`);
+    }
+    const restored = restoreDotfiles(target);
+    if (restored > 0) {
+      report.payloadRefreshed = true;
+      log(`restored ${restored} dotfile(s) dropped by the package manager`);
     }
     for (const [name, text] of [['dsgs-init', bootstrapSkillText(target)], ['start', startShimText(target)]]) {
       const skillPath = join(homeDir, 'skills', name, 'SKILL.md');

@@ -2,13 +2,11 @@
 
 > **上游机制说明**：本文描述的是上游运行时的做法；DSH 的等价做法见 [`dsh-differences.md`](dsh-differences.md)。
 
-> **上游机制说明**：本文描述的是上游运行时的做法；DSH 的等价做法见 [`dsh-differences.md`](dsh-differences.md)。
-
-This documents the JSON payloads each 上游运行时 hook receives on stdin for every
-event type, and how a hook's output reaches the user and the agent. Every payload
+This documents the JSON payloads each upstream hook receives on stdin for every
+event type, and how a hook's output reaches the user and the upstream runtime. Every payload
 also carries the common fields `session_id`, `transcript_path`, `cwd` and
 `hook_event_name`; the examples below show the event-specific ones. The full
-reference is the 上游运行时 hooks documentation (https://code.dsh.com/docs/en/hooks).
+reference is the upstream hooks documentation (https://code.claude.com/docs/en/hooks).
 
 ## PreToolUse
 
@@ -79,7 +77,7 @@ and on files outside the project, such as the user's own `~/.dsh/skills/`.
 ## PostToolUse
 
 Fired after a tool completes. **Cannot block** — the tool already ran. Exit 2
-shows stderr to the agent, so it can fix what it just wrote. stderr on exit 0 goes to
+shows stderr to the upstream runtime, so it can fix what it just wrote. stderr on exit 0 goes to
 the debug log only, so an advisory warning must be hook JSON on stdout.
 
 ### PostToolUse: Write
@@ -115,7 +113,7 @@ the debug log only, so an advisory warning must be hook JSON on stdout.
 ## SubagentStart
 
 Fired when a subagent is spawned via the `subagent` tool (named `Task` before
-上游运行时 2.1.63; `Task` still works as an alias in permission rules and
+The upstream runtime 2.1.63; `Task` still works as an alias in permission rules and
 `tools:` frontmatter, but the hook payload's `tool_name` is now `subagent`). The
 agent's name is in `agent_type` — there is no `agent_name` field.
 
@@ -130,20 +128,20 @@ agent's name is in `agent_type` — there is no `agent_name` field.
 
 Fired when a session starts, resumes, is cleared with `/clear`, or is compacted.
 Stdin carries `source`: `startup`, `resume`, `clear`, `compact` or `fork`. Plain stdout is
-added to the agent's context — this is the event that restores context after a
+added to the upstream runtime's context — this is the event that restores context after a
 compaction.
 
 ## PreCompact
 
 Fired before context compaction. Stdin carries `trigger` (`manual` or `auto`).
-**Its output does not reach the agent**: stdout goes to the debug log and
+**Its output does not reach the upstream runtime**: stdout goes to the debug log and
 `systemMessage` is discarded. Exit 2 blocks the compaction.
 
 ## Stop
 
-Fired **every time the agent finishes a response**, not once when the session ends.
+Fired **every time the upstream runtime finishes a response**, not once when the session ends.
 Stdin carries the common fields plus `stop_hook_active` and
-`last_assistant_message`. Exit 2 keeps the agent working instead of stopping.
+`last_assistant_message`. Exit 2 keeps the upstream runtime working instead of stopping.
 
 ## Output: warnings someone sees
 
@@ -155,7 +153,7 @@ no one**. Print a JSON object on stdout instead:
   "systemMessage": "Shown to the user",
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "Given to the agent next to the tool result"
+    "additionalContext": "Given to the upstream runtime next to the tool result"
   }
 }
 ```
@@ -178,16 +176,16 @@ exit 0
 
 | Exit Code | Meaning |
 |-----------|---------|
-| 0 | Success. A JSON object on stdout is read as hook output; other stdout goes to the debug log, except on UserPromptSubmit, UserPromptExpansion, SessionStart and PostModelSwitch, where it is added to the agent's context. stderr goes to the debug log only. |
-| 2 | Blocks on PreToolUse (the agent sees stderr as the reason), UserPromptSubmit (the prompt is erased), UserPromptExpansion, Stop, SubagentStop (the subagent keeps working) and PreCompact. On PostToolUse it shows stderr to the agent — the tool already ran. On SessionStart, SubagentStart, PostCompact and PostModelSwitch it shows stderr to the user only. On Notification it is ignored. The full per-event table is in the 上游运行时 hooks documentation. |
+| 0 | Success. A JSON object on stdout is read as hook output; other stdout goes to the debug log, except on UserPromptSubmit, UserPromptExpansion, SessionStart and PostModelSwitch, where it is added to the upstream runtime's context. stderr goes to the debug log only. |
+| 2 | Blocks on PreToolUse (the upstream runtime sees stderr as the reason), UserPromptSubmit (the prompt is erased), UserPromptExpansion, Stop, SubagentStop (the subagent keeps working) and PreCompact. On PostToolUse it shows stderr to the upstream runtime — the tool already ran. On SessionStart, SubagentStart, PostCompact and PostModelSwitch it shows stderr to the user only. On Notification it is ignored. The full per-event table is in the upstream hooks documentation. |
 | Other | Non-blocking error; the action proceeds. |
 
-**Output is capped at 10,000 characters (observed; the 上游运行时 hooks documentation does not state it).**
+**Output is capped at 10,000 characters (observed; the upstream hooks documentation does not state it).**
 Plain stdout, and each of `additionalContext`, `systemMessage` and
-`initialUserMessage`, is measured on its own. Past the cap 上游运行时 saves
+`initialUserMessage`, is measured on its own. Past the cap the upstream runtime saves
 the text to a file and passes a path
-plus a 2,000-character preview, and nothing tells the agent to read the file. Keep
-what the agent must see inside the cap — `session-start.sh` caps its checkpoint
+plus a 2,000-character preview, and nothing tells the upstream runtime to read the file. Keep
+what the upstream runtime must see inside the cap — `session-start.sh` caps its checkpoint
 preview for this reason.
 
 ## Notes

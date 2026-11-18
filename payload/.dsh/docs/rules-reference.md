@@ -1,6 +1,6 @@
 # Path-Specific Rules
 
-Rules in `.dsh/rules/` carry `paths:` frontmatter. 上游运行时 loads a
+Rules in `.dsh/rules/` carry `paths:` frontmatter. The upstream runtime loads a
 path-scoped rule **when it READS a file matching one of those globs** — not on
 every tool use, and not when it creates one.
 
@@ -29,7 +29,7 @@ To see which rules actually load, and why, wire the `InstructionsLoaded` hook �
 reason (`session_start`, `path_glob_match`, `nested_traversal`, `include`,
 `compact`) to `production/session-logs/instructions-loaded.log`.
 
-**Globs match regardless of case.** 上游运行时 2.1.282 matches `paths:`
+**Globs match regardless of case.** the upstream runtime 2.1.282 matches `paths:`
 gitignore-style and case-insensitively (observed; the docs do not say), so
 `Assets/**/UI/**` also matches a Godot project's `assets/ui/` art. That is why
 the Unity and Unreal code globs below name their file types.

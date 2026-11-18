@@ -38,13 +38,13 @@ the skill body instead.
 
 ## Why exactly this command — the permission check
 
-上游运行时 permission-checks every injected command **before** the skill
+The upstream runtime permission-checks every injected command **before** the skill
 renders. Outside auto mode, anything that does not come back "allow" — including
 a command that would normally just prompt — **aborts the whole invocation**, and
 the model never sees the skill. A read-only command such as `git status`, which
-上游运行时 approves on its own, comes back "allow" and runs without a grant. A preloaded skill (`skills:` on an agent) is
+The upstream runtime approves on its own, comes back "allow" and runs without a grant. A preloaded skill (`skills:` on an agent) is
 checked the same way at agent launch, so a failing bootstrap line stops the agent
-from starting. Measured on 上游运行时 2.1.281 in default
+from starting. Measured on the upstream runtime 2.1.281 in default
 mode:
 
 | Bootstrap form | Repo root | Subdirectory | Bash-less agent preloading it |
@@ -57,9 +57,9 @@ mode:
 What that table rules out:
 
 - **No `${VAR:-x}` expansion.** It fails as "Contains expansion", and no grant
-  can approve it. `<skill_dir>` and `<launch dir>` are fine: 上游运行时 substitutes them as text before the check.
+  can approve it. `<skill_dir>` and `<launch dir>` are fine: the upstream runtime substitutes them as text before the check.
 - **No `<launch dir>` for the path.** In a skill it is the directory
-  上游运行时 was launched from, not the repo root, so it breaks when 上游运行时 is started in a subdirectory.
+  the upstream runtime was launched from, not the repo root, so it breaks when the upstream runtime is started in a subdirectory.
   `<skill_dir>` always names the skill's own folder.
 - **No `source … && …` compound.** Each part must be approved; `bash <file>
   resolve_config` is one command. `yaml-helper.sh` dispatches only

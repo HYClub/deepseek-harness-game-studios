@@ -231,16 +231,22 @@ function resolved(root, keys) {
 /** Stage as recorded in the session checkpoint, else null. */
 function readStage(root) {
   const text = readText(join(root, 'production', 'session-state', 'active.md'));
-  if (text === null) return null;
-  for (const raw of text.split('\n')) {
-    let line = raw.replace(/\r$/, '').replace(/^[ \t]+/, '');
-    if (line.startsWith('> ')) line = line.slice(2);
-    if (line.startsWith('- ')) line = line.slice(2);
-    const stripped = line.replace(/\*/g, '');
-    const m = stripped.match(/^(?:stage|阶段)\s*[:：]\s*(.+)$/i);
-    if (m) return m[1].trim();
+  if (text !== null) {
+    for (const raw of text.split('\n')) {
+      let line = raw.replace(/\r$/, '').replace(/^[ \t]+/, '');
+      if (line.startsWith('> ')) line = line.slice(2);
+      if (line.startsWith('- ')) line = line.slice(2);
+      const stripped = line.replace(/\*/g, '');
+      const m = stripped.match(/^(?:stage|阶段)\s*[:：]\s*(.+)$/i);
+      if (m) return m[1].trim();
+    }
   }
-  return null;
+  // `/start` records the stage before a session checkpoint exists: it writes the legacy mirror and
+  // `project.stage`. Without these fallbacks a fresh project said "stage unknown" in /today and
+  // /dashboard while /statusline already showed the stage.
+  const mirror = readText(join(root, 'production', 'stage.txt'));
+  if (mirror !== null && mirror.trim() !== '') return mirror.trim();
+  return blockField(readText(join(root, 'project.yaml')), 'project', 'stage');
 }
 
 /**

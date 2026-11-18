@@ -11,15 +11,15 @@ Hooks are configured in `.dsh/settings.json` and fire automatically:
 | `validate-assets.sh` | PostToolUse (write/edit) | Asset file changes | Checks data-file JSON under `assets/`, `Assets/` or `Content/`, and asset naming in Godot's `assets/` only |
 | `session-start.sh` | SessionStart | Session begins | Loads sprint context, milestone, git activity; detects and previews active session state file for recovery |
 | `detect-gaps.sh` | SessionStart | Session begins | Detects fresh projects (suggests /start) and missing documentation when code/prototypes exist, suggests /reverse-document or /project-stage-detect |
-| `pre-compact.sh` | PreCompact | Context compression | Logs the compaction to `production/session-logs/compaction-log.txt`. Its state summary goes to the debug log only: 上游运行时 does not add PreCompact output to the conversation. `session-start.sh`, which runs again after every compaction, is what restores context |
-| `post-compact.sh` | PostCompact | After compaction | Prints a re-read reminder to the debug log. PostCompact output never reaches the agent; recovery comes from `session-start.sh` |
+| `pre-compact.sh` | PreCompact | Context compression | Logs the compaction to `production/session-logs/compaction-log.txt`. Its state summary goes to the debug log only: the upstream runtime does not add PreCompact output to the conversation. `session-start.sh`, which runs again after every compaction, is what restores context |
+| `post-compact.sh` | PostCompact | After compaction | Prints a re-read reminder to the debug log. PostCompact output never reaches the upstream runtime; recovery comes from `session-start.sh` |
 | `notify.sh` | Notification | Notification event | Shows Windows toast notification via PowerShell |
 | `session-stop.sh` | Stop | **Every response ends** — not once per session | Summarizes accomplishments, updates session log, and writes the subagent spawn tally to `production/session-logs/session-cost.md`. Archives `active.md` only when its content hash changed; without that guard a long session appended the whole file on every turn. |
 | `log-agent.sh` | SubagentStart | Agent spawned, resumed, or a teammate handles a new message | Audit trail start — logs subagent invocation with timestamp and session id. SubagentStart fires for a resume and for each agent-team message too, so the spawn tally counts those |
-| `log-agent-stop.sh` | SubagentStop | Agent stops | Audit trail stop — completes subagent record. Skips 上游运行时's internal agents (prompt suggestions, `/btw`), which arrive with an empty `agent_type` |
+| `log-agent-stop.sh` | SubagentStop | Agent stops | Audit trail stop — completes subagent record. Skips the upstream runtime's internal agents (prompt suggestions, `/btw`), which arrive with an empty `agent_type` |
 | `validate-skill-change.sh` | PostToolUse (write/edit) | Skill file changes | Advises running `/skill-test` after any `.dsh/skills/` file is written or edited |
 
-Warnings from the four `validate-*` hooks are shown to you and passed to the agent
+Warnings from the four `validate-*` hooks are shown to you and passed to the upstream runtime
 as hook JSON (`hook_warn` in `yaml-helper.sh`); only a problem that must be fixed
 now exits 2. See `hooks-reference/hook-input-schemas.md` for why stderr is not
 enough.
@@ -54,14 +54,14 @@ Three constraints that must not be "tidied" later:
 
 ## Events considered and deliberately not added
 
-上游运行时 offers many more hook events than the nine the hooks above use. These were
+The upstream runtime offers many more hook events than the nine the hooks above use. These were
 evaluated and rejected. Recorded so a future review does not re-propose them
 from the event list alone.
 
 | Event | Why not |
 | ---- | ---- |
 | `UserPromptSubmit` | Would re-inject session state on **every prompt**. `.dsh/docs/config-resolution.md` already rejects the weaker version of this — injecting config at session start — because it "would cost tokens on every session whether or not any skill needs config, and it would go stale mid-session as `/settings` writes land". Firing per prompt is the same argument, multiplied. |
-| `ConfigChange` | Fires only for 上游运行时's own settings files — user, project, local, policy and skills. It does **not** fire for `project.yaml`, so a hook watching DSGS config here would never run. `FileChanged` is the event that watches arbitrary files. |
+| `ConfigChange` | Fires only for the upstream runtime's own settings files — user, project, local, policy and skills. It does **not** fire for `project.yaml`, so a hook watching DSGS config here would never run. `FileChanged` is the event that watches arbitrary files. |
 | `FileChanged` on `project.yaml` | Config is resolved per skill invocation, in the skill body, precisely so each run reads fresh values. The only staleness left is text already injected into an earlier invocation, which is the accepted trade in `config-resolution.md`. A warning hook would second-guess a settled decision. |
 | `PreToolUse` `updatedInput` | Could rewrite a non-conventional commit message instead of blocking it. Silently editing the user's input contradicts the collaboration protocol: this project blocks and explains rather than acting unasked. |
 | `PostToolUseFailure` | Would add another log with no reader. This repo has already been bitten by that — `log-agent.sh` wrote per-spawn records nothing consumed until `session-stop.sh` was given the job. |

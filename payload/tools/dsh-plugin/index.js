@@ -67,6 +67,22 @@ export const inject = ['shell', 'sessionProjections', 'workingDirectory']
 const BRIDGE_PACKAGE = '@deepseek-ai/dsh-hooks-claude-code'
 
 /**
+ * The events the official bridge maps — its `CLAUDE_EVENTS` list in 0.2.1-rc.2. Kept here
+ * so a configured group that falls outside it is reported at mount time instead of being
+ * dropped without a trace (see the warning in `apply`).
+ */
+const BRIDGE_EVENTS = new Set([
+  'SessionStart',
+  'UserPromptSubmit',
+  'PreToolUse',
+  'PostToolUse',
+  'Stop',
+  'SubagentStart',
+  'SubagentStop',
+])
+
+
+/**
  * Mount-stamp location: `<project>/.verify-logs/dsgs-hooks-mount.log`, derived from the
  * config path so it always lands in the project the hooks belong to.
  * @param {string} configPath - absolute hook config path
@@ -82,7 +98,7 @@ function mountStampPath(configPath) {
  * @throws when the installation copy cannot be located
  */
 function loadBridge() {
-  const bases = [process.argv[1], process.execPath].filter(
+  const bases = [process.argv[1], process.execPath, fileURLToPath(import.meta.url)].filter(
     (value) => typeof value === 'string' && value.length > 0,
   )
   const failures = []
@@ -99,7 +115,7 @@ function loadBridge() {
   // Then the copy this package declares as a dependency: a dsh install that ships without the bridge
   // (a desktop build keeps it inside app.asar) would otherwise leave every hook unmounted.
   try {
-    const require = createRequire(import.meta.url)
+    const require = createRequire(fileURLToPath(import.meta.url))
     const entry = require.resolve(BRIDGE_PACKAGE)
     return require(entry)
   } catch (error) {
@@ -317,43 +333,77 @@ export function findHookConfig(startDir) {
 }
 
 /**
- * The three hook events DSH has an event for but the official bridge does not map.
+ * The hook events the official bridge does not map — and what DSH actually emits for them.
  *
- * Upstream's `hooks.json` declares nine events. The bridge covers six of them (SessionStart,
- * PreToolUse, PostToolUse, Stop, SubagentStart, SubagentStop) and has no code for the other three —
- * but the harness *does* emit events that mean the same thing, so the plugin runs those hook groups
- * itself:
+ * Upstream's `settings.json` declares EIGHT events; the bridge maps six of them
+ * (SessionStart, PreToolUse, PostToolUse, Stop, SubagentStart, SubagentStop) plus
+ * `UserPromptSubmit`, which DSGS does not configure. The remaining configured groups are
+ * `Notification` and `PreCompact` (there is no `PostCompact` group upstream either).
  *
- * | upstream event | DSH event      |
- * |----------------|----------------|
- * | PreCompact     | `compact/start` |
- * | PostCompact    | `compact/end`   |
- * | Notification   | `approval/asked` |
+ * Checked against the live Host Event catalog (`cordis_inspect_query` → host Event →
+ * `listEvents`, 2026-11-17). It matters because a wrong name does not throw: Cordis
+ * accepts any string, so the listener is registered and **never fires** — a silent no-op,
+ * which is exactly the failure this plugin exists to remove. Two names that look right
+ * are not events at all:
  *
- * The payload is the upstream contract plus whatever the DSH event carries (spread through rather
- * than guessed), so a hook port reading `message`, `trigger` or anything else gets a real value.
- * Output is logged, never injected: DSH has no model-facing channel for these points, and the
- * upstream hooks of these three events act through files anyway.
+ *   - `compact/start`, `compact/end` — these are session-event TYPES
+ *     (`dsh-session`'s `KNOWN_SESSION_EVENT_TYPES`), delivered by the single
+ *     `session/event` feed. Subscribe to the feed and filter `event.type`.
+ *   - `approval/asked` is a session-event TYPE (in dsh-session's catalogue, written by the approval
+ *     service), not a Cordis event name. It arrives through `session/event`, which is an emit with no
+ *     return value — so a notification hook has nothing to return and its `systemMessage` would only
+ *     be logged. That is why `notify.mjs` stays dormant instead of riding that feed.
  */
-export const UNMAPPED_EVENTS = [
+export const SUBSCRIPTIONS = ['session/event']
+
+/** Hook groups that cannot fire on this runtime, with the reason a reader needs. */
+export const DORMANT_EVENTS = {
+  Notification: 'DSH has no user-facing notification channel: `approval/asked` is a session-event type delivered on `session/event`, an emit with no return value, so notify.mjs\'s systemMessage would be logged and never shown',
+  PostCompact: 'upstream never registers a PostCompact group either — post-compact.mjs is dormant by design, and recovery comes from SessionStart after a compaction',
+}
+
+/**
+ * Event mappings this plugin runs itself.
+ *
+ * `hookConfigKey` is the upstream hook group; `event` must be a real Cordis event name
+ * (see SUBSCRIPTIONS); `matches` decides whether this delivery is the one we want.
+ */
+export const UNMAPPED_HOOKS = [
   {
-    dshEvent: 'compact/start',
-    point: 'PreCompact',
-    extra: (payload) => ({ trigger: payload?.trigger ?? 'auto' }),
-  },
-  { dshEvent: 'compact/end', point: 'PostCompact', extra: () => ({}) },
-  {
-    dshEvent: 'approval/asked',
-    point: 'Notification',
-    extra: (payload) => ({
-      message: `Approval requested for ${payload?.toolName ?? 'a tool'}`
-        + `${typeof payload?.reason === 'string' && payload.reason.length > 0 ? ` — ${payload.reason}` : ''}`,
-    }),
+    hookConfigKey: 'PreCompact',
+    event: 'session/event',
+    // `session/event` delivers every session event; only the start of a compaction is ours.
+    matches: (_session, event) => event?.type === 'compaction/start',
+    extra: () => ({ trigger: 'auto' }),
   },
 ]
 
 /**
+ * Configured hook groups that nothing on this runtime can trigger.
+ *
+ * Exported so the rule is testable without booting a plugin: a group the bridge does not
+ * map and this plugin does not run is dead weight, and the mount should say so.
+ *
+ * @param {Record<string, unknown>} configured - the `hooks` object of a hooks.json
+ * @returns {Array<{ event: string, reason: string }>}
+ */
+export function unhandledHookEvents(configured) {
+  const ours = new Set(UNMAPPED_HOOKS.map((mapping) => mapping.hookConfigKey))
+  return Object.keys(configured ?? {})
+    .filter((event) => !BRIDGE_EVENTS.has(event) && !ours.has(event))
+    .map((event) => ({
+      event,
+      reason: DORMANT_EVENTS[event] ?? 'no hook implementation for this event on this runtime',
+    }))
+}
+
+/**
  * Run the hook groups of the events the bridge leaves unmapped.
+ *
+ * Every mapping today rides the `session/event` feed: the listener is `(session, event)`, an emit,
+ * so there is no `next()` to call and a trailing function argument must never be invoked. A future
+ * mapping for a different event shape is refused loudly at registration instead of silently
+ * registering a listener whose arguments it does not understand.
  *
  * @param {object} ctx - the real plugin context
  * @param {object} options - `{ shell, configPath, projectDir, defaultTimeoutMs? }`
@@ -368,18 +418,22 @@ export function registerUnmappedHooks(ctx, options) {
     return []
   }
   const disposers = []
-  for (const mapping of UNMAPPED_EVENTS) {
-    const groups = parsed?.hooks?.[mapping.point]
+  for (const mapping of UNMAPPED_HOOKS) {
+    const groups = parsed?.hooks?.[mapping.hookConfigKey]
     if (!Array.isArray(groups) || groups.length === 0) continue
-    disposers.push(ctx.on(mapping.dshEvent, async (payload, next) => {
-      const session = payload?.session ?? payload?.agent?.session
+    if (mapping.event !== 'session/event') {
+      ctx.logger.warn(`dsgs-hooks: no listener adapter for ${mapping.event} — ${mapping.hookConfigKey} stays dormant`)
+      continue
+    }
+    disposers.push(ctx.on(mapping.event, async (session, event) => {
+      if (!mapping.matches(session, event)) return
       const body = {
-        session_id: session?.header?.id ?? payload?.sessionId ?? '',
+        ...(event ?? {}),
+        session_id: session?.header?.id ?? event?.sessionId ?? '',
         transcript_path: '',
         cwd: session?.header?.cwd ?? projectDir,
-        hook_event_name: mapping.point,
-        ...(payload ?? {}),
-        ...mapping.extra(payload),
+        hook_event_name: mapping.hookConfigKey,
+        ...mapping.extra(event),
       }
       for (const group of groups) {
         for (const hook of group.hooks ?? []) {
@@ -394,14 +448,13 @@ export function registerUnmappedHooks(ctx, options) {
             })
             const settled = await result.result()
             if ((settled?.exitCode ?? 0) !== 0) {
-              ctx.logger.warn(`dsgs-hooks: ${mapping.point} hook exited ${settled?.exitCode}: ${hook.command}`)
+              ctx.logger.warn(`dsgs-hooks: ${mapping.hookConfigKey} hook exited ${settled?.exitCode}: ${hook.command}`)
             }
           } catch (error) {
-            ctx.logger.warn(`dsgs-hooks: ${mapping.point} hook failed: ${String(error)}`)
+            ctx.logger.warn(`dsgs-hooks: ${mapping.hookConfigKey} hook failed: ${String(error)}`)
           }
         }
       }
-      return next === undefined ? undefined : next()
     }))
   }
   return disposers
@@ -426,17 +479,9 @@ function maybeSelfInstall(ctx) {
 
 export function apply(ctx, config = {}) {
   maybeSelfInstall(ctx);
-  // Resolution order: explicit config, then the environment override, then an upward search
-  // from the launch directory — so a plugin-manager install works with no configuration.
-  const rawPath = typeof config.configPath === 'string' && config.configPath.length > 0
-    ? config.configPath
-    : (process.env.DSH_DSGS_HOOKS_CONFIG ?? findHookConfig(process.cwd()))
-  if (typeof rawPath !== 'string' || rawPath.length === 0) {
-    ctx.logger.warn('dsgs-hooks: no hook config found — set configPath or DSH_DSGS_HOOKS_CONFIG, or launch inside a project that has .dsh/hooks.json')
-    return
-  }
-  const configPath = isAbsolute(rawPath) ? rawPath : resolve(process.cwd(), rawPath)
 
+  const mountHooks = (rawPath) => {
+    const configPath = isAbsolute(rawPath) ? rawPath : resolve(process.cwd(), rawPath)
   // DSGS hook commands are project-relative (`node ".dsh/hooks/x.mjs"`), and the config
   // lives at <project>/.dsh/hooks.json, so the project is two levels above the file.
   const projectDir =
@@ -502,6 +547,19 @@ export function apply(ctx, config = {}) {
     projectDir,
     defaultTimeoutMs: config.defaultTimeoutMs,
   })
+  // A configured group that nothing can trigger is a silent no-op — the exact failure mode
+  // this plugin exists to remove. Groups that are dormant by DESIGN are reported at info level
+  // (they are documented behaviour); anything else is a real gap and is reported as a warning.
+  try {
+    const configured = JSON.parse(readFileSync(configPath, 'utf8')).hooks ?? {}
+    for (const dead of unhandledHookEvents(configured)) {
+      const line = `dsgs-hooks: "${dead.event}" is configured but cannot fire here — ${dead.reason}`
+      if (DORMANT_EVENTS[dead.event] !== undefined) ctx.logger.info(line)
+      else ctx.logger.warn(line)
+    }
+  } catch {
+    // the bridge already parsed this file; a second failure here must not fail the mount
+  }
   ctx.logger.info(`dsgs-hooks: mounted ${configPath} (direct execution, cwd=${projectDir})`)
   // A mount stamp on disk, so "did the plugin even load?" never depends on the log level
   // of whatever surface mounted it.
@@ -514,6 +572,51 @@ export function apply(ctx, config = {}) {
   } catch {
     // diagnostics only
   }
+  }
+
+  // Resolution order: explicit config, the environment override, the launch directory, then the
+  // first session's workspace. The last one matters on the desktop app: apply() runs from the app
+  // folder (e.g. D:\DSH), which has no .dsh/hooks.json, while the session's workspace does.
+  const configuredPath = typeof config.configPath === 'string' && config.configPath.length > 0
+    ? config.configPath
+    : (process.env.DSH_DSGS_HOOKS_CONFIG ?? '')
+  if (configuredPath !== '') return mountHooks(configuredPath)
+  const fromLaunch = findHookConfig(process.cwd())
+  if (typeof fromLaunch === 'string' && fromLaunch.length > 0) return mountHooks(fromLaunch)
+
+  ctx.logger.info('dsgs-hooks: no config in the launch directory; waiting for a session workspace')
+  let mounted = false
+  const disposers = []
+  const sessionCwd = (session) => {
+    try {
+      const effective = ctx.workingDirectory?.get?.(session)
+      if (typeof effective === 'string' && effective.length > 0) return effective
+    } catch {
+      // unpublished sessions have no effective directory yet; use the original header
+    }
+    const header = session?.header?.cwd
+    return typeof header === 'string' ? header : ''
+  }
+  const trySession = (session) => {
+    if (mounted) return
+    const cwd = sessionCwd(session)
+    if (typeof cwd !== 'string' || cwd.length === 0) return
+    const found = findHookConfig(cwd)
+    if (typeof found !== 'string' || found.length === 0) return
+    mounted = true
+    for (const off of disposers.splice(0)) if (typeof off === 'function') off()
+    try {
+      mountHooks(found)
+    } catch (error) {
+      mounted = false
+      ctx.logger.error(`dsgs-hooks: mount failed: ${String(error)}`)
+    }
+  }
+  // session/created fires before the agent exists, so the bridge's SessionStart hooks still run.
+  disposers.push(ctx.on('session/created', (session) => trySession(session)))
+  // A hot-mounted install, or a session that predates the plugin, gets another chance when its
+  // next agent is created (the main agent on a restart, or a subagent later in the same session).
+  disposers.push(ctx.on('agent/created', (payload) => trySession(payload?.agent?.session)))
 }
 
 

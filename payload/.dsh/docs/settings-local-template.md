@@ -27,10 +27,10 @@ be committed to version control. Add it to `.gitignore`.
 
 ## Permission Modes
 
-上游运行时 supports different permission modes. Recommended for game dev:
+The upstream runtime supports different permission modes. Recommended for game dev:
 
 ### During Development (Default)
-Use **normal mode** — the agent asks before running most commands. This is safest
+Use **normal mode** — the upstream runtime asks before running most commands. This is safest
 for production code.
 
 ### During Prototyping
@@ -38,7 +38,7 @@ Use **auto-accept mode** with limited scope — faster iteration on throwaway co
 Only use this when working in `prototypes/` directory.
 
 ### During Code Review
-Use **read-only** permissions — the agent can read and search but not modify files.
+Use **read-only** permissions — the upstream runtime can read and search but not modify files.
 
 ## Customizing Hooks Locally
 
